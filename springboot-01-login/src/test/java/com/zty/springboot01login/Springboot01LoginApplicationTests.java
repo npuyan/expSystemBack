@@ -10,16 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class Springboot01LoginApplicationTests {
 
-
-    @Autowired
-    CourseMapper mapper;
-
     @Autowired
     UserMapper mapper1;
     @Test
     void test1() {
-
-        System.out.println(mapper.selectByPrimaryKey("1"));
         System.out.println(mapper1.selectByPrimaryKey("1"));
         User user=new User("2","zty","11111","1828282","zty2804@",2,"2");
         mapper1.insert(user);
