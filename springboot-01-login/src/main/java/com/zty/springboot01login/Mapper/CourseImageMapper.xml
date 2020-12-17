@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zty.springboot01login.Mapper.CourseImageMapper" >
+  <resultMap id="BaseResultMap" type="com.zty.springboot01login.Pojo.CourseImage" >
+    
+    <!-- 镜像id，主键 -->
+    <id column="image_id" property="imageId" jdbcType="VARCHAR" />
+    
+    <!-- 镜像名称 -->
+    <result column="image_name" property="imageName" jdbcType="VARCHAR" />
+    
+    <!-- 镜像版本号 -->
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    
+    <!-- 镜像上传路径 -->
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    
+    <!-- 创建时间 -->
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    
+    <!-- 创建人 -->
+    <result column="creato_id" property="creatoId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    image_id, image_name, version, path, create_time, creato_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zty.springboot01login.Pojo.CourseImageExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_course_image
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_course_image
+    where image_id = #{imageId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_course_image
+    where image_id = #{imageId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zty.springboot01login.Pojo.CourseImageExample" >
+    delete from tb_course_image
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" >
+    insert into tb_course_image (image_id, image_name, version, 
+      path, create_time, creato_id
+      )
+    values (#{imageId,jdbcType=VARCHAR}, #{imageName,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, 
+      #{path,jdbcType=VARCHAR}, #{createTime,jdbcType=CHAR}, #{creatoId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" >
+    insert into tb_course_image
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="imageId != null" >
+        image_id,
+      </if>
+      <if test="imageName != null" >
+        image_name,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="path != null" >
+        path,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="creatoId != null" >
+        creato_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="imageId != null" >
+        #{imageId,jdbcType=VARCHAR},
+      </if>
+      <if test="imageName != null" >
+        #{imageName,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="creatoId != null" >
+        #{creatoId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zty.springboot01login.Pojo.CourseImageExample" resultType="java.lang.Integer" >
+    select count(*) from tb_course_image
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_course_image
+    <set >
+      <if test="record.imageId != null" >
+        image_id = #{record.imageId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imageName != null" >
+        image_name = #{record.imageName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=VARCHAR},
+      </if>
+      <if test="record.path != null" >
+        path = #{record.path,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=CHAR},
+      </if>
+      <if test="record.creatoId != null" >
+        creato_id = #{record.creatoId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_course_image
+    set image_id = #{record.imageId,jdbcType=VARCHAR},
+      image_name = #{record.imageName,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=VARCHAR},
+      path = #{record.path,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=CHAR},
+      creato_id = #{record.creatoId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" >
+    update tb_course_image
+    <set >
+      <if test="imageName != null" >
+        image_name = #{imageName,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="creatoId != null" >
+        creato_id = #{creatoId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where image_id = #{imageId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" >
+    update tb_course_image
+    set image_name = #{imageName,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=CHAR},
+      creato_id = #{creatoId,jdbcType=VARCHAR}
+    where image_id = #{imageId,jdbcType=VARCHAR}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.zty.springboot01login.Pojo.CourseImageExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_course_image
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2020-12-17 18:01:31 ### -->
+
+
+
+  <!-- Your codes goes here!!! -->
+  
+</mapper>

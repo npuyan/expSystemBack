@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zty.springboot01login.Mapper.UserLabMapper" >
+  <resultMap id="BaseResultMap" type="com.zty.springboot01login.Pojo.UserLab" >
+    
+    <!-- 用户id，主键 -->
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    
+    <!-- 实验id，主键 -->
+    <id column="lab_id" property="labId" jdbcType="VARCHAR" />
+    
+    <!-- 实验环境id -->
+    <result column="env_id" property="envId" jdbcType="VARCHAR" />
+    
+    <!-- 试验完成标志：0 未完成；1 已完成 -->
+    <result column="flag" property="flag" jdbcType="CHAR" />
+    
+    <!-- 实验结束时间 -->
+    <result column="end_time" property="endTime" jdbcType="CHAR" />
+    
+    <!-- 实验开始时间 -->
+    <result column="start_time" property="startTime" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_id, lab_id, env_id, flag, end_time, start_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zty.springboot01login.Pojo.UserLabExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_user_lab
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.zty.springboot01login.Pojo.UserLabKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_lab
+    where user_id = #{userId,jdbcType=VARCHAR}
+      and lab_id = #{labId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.zty.springboot01login.Pojo.UserLabKey" >
+    delete from tb_user_lab
+    where user_id = #{userId,jdbcType=VARCHAR}
+      and lab_id = #{labId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zty.springboot01login.Pojo.UserLabExample" >
+    delete from tb_user_lab
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" >
+    insert into tb_user_lab (user_id, lab_id, env_id, 
+      flag, end_time, start_time)
+    values (#{userId,jdbcType=VARCHAR}, #{labId,jdbcType=VARCHAR}, #{envId,jdbcType=VARCHAR}, 
+      #{flag,jdbcType=CHAR}, #{endTime,jdbcType=CHAR}, #{startTime,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" >
+    insert into tb_user_lab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="labId != null" >
+        lab_id,
+      </if>
+      <if test="envId != null" >
+        env_id,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="labId != null" >
+        #{labId,jdbcType=VARCHAR},
+      </if>
+      <if test="envId != null" >
+        #{envId,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=CHAR},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=CHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zty.springboot01login.Pojo.UserLabExample" resultType="java.lang.Integer" >
+    select count(*) from tb_user_lab
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_user_lab
+    <set >
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.labId != null" >
+        lab_id = #{record.labId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.envId != null" >
+        env_id = #{record.envId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=CHAR},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=CHAR},
+      </if>
+      <if test="record.startTime != null" >
+        start_time = #{record.startTime,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_user_lab
+    set user_id = #{record.userId,jdbcType=VARCHAR},
+      lab_id = #{record.labId,jdbcType=VARCHAR},
+      env_id = #{record.envId,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=CHAR},
+      end_time = #{record.endTime,jdbcType=CHAR},
+      start_time = #{record.startTime,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" >
+    update tb_user_lab
+    <set >
+      <if test="envId != null" >
+        env_id = #{envId,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=CHAR},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=CHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=CHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+      and lab_id = #{labId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" >
+    update tb_user_lab
+    set env_id = #{envId,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=CHAR},
+      end_time = #{endTime,jdbcType=CHAR},
+      start_time = #{startTime,jdbcType=CHAR}
+    where user_id = #{userId,jdbcType=VARCHAR}
+      and lab_id = #{labId,jdbcType=VARCHAR}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.zty.springboot01login.Pojo.UserLabExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_user_lab
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2020-12-17 18:01:31 ### -->
+
+
+
+  <!-- Your codes goes here!!! -->
+  
+</mapper>

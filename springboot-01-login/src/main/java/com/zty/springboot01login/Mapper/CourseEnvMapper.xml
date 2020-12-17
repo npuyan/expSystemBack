@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zty.springboot01login.Mapper.CourseEnvMapper" >
+  <resultMap id="BaseResultMap" type="com.zty.springboot01login.Pojo.CourseEnv" >
+    
+    <!-- 环境id，主键 -->
+    <id column="env_id" property="envId" jdbcType="VARCHAR" />
+    
+    <!-- 环境名称 -->
+    <result column="env_name" property="envName" jdbcType="VARCHAR" />
+    
+    <!-- 环境描述 -->
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    
+    <!-- 节点名称，只能输入小写字母和数字 -->
+    <result column="node_name" property="nodeName" jdbcType="VARCHAR" />
+    
+    <!-- cpu大小 -->
+    <result column="cpu" property="cpu" jdbcType="INTEGER" />
+    
+    <!-- 内存大小，单位为GB -->
+    <result column="memsize" property="memsize" jdbcType="INTEGER" />
+    
+    <!-- 创建时间 -->
+    <result column="create_time" property="createTime" jdbcType="CHAR" />
+    
+    <!-- 创建人 -->
+    <result column="creator_id" property="creatorId" jdbcType="VARCHAR" />
+    
+    <!-- 镜像id，外键 -->
+    <result column="image_id" property="imageId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    env_id, env_name, remark, node_name, cpu, memsize, create_time, creator_id, image_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zty.springboot01login.Pojo.CourseEnvExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_course_env
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_course_env
+    where env_id = #{envId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_course_env
+    where env_id = #{envId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zty.springboot01login.Pojo.CourseEnvExample" >
+    delete from tb_course_env
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" >
+    insert into tb_course_env (env_id, env_name, remark, 
+      node_name, cpu, memsize, 
+      create_time, creator_id, image_id
+      )
+    values (#{envId,jdbcType=VARCHAR}, #{envName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{nodeName,jdbcType=VARCHAR}, #{cpu,jdbcType=INTEGER}, #{memsize,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=CHAR}, #{creatorId,jdbcType=VARCHAR}, #{imageId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" >
+    insert into tb_course_env
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="envId != null" >
+        env_id,
+      </if>
+      <if test="envName != null" >
+        env_name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="nodeName != null" >
+        node_name,
+      </if>
+      <if test="cpu != null" >
+        cpu,
+      </if>
+      <if test="memsize != null" >
+        memsize,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="creatorId != null" >
+        creator_id,
+      </if>
+      <if test="imageId != null" >
+        image_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="envId != null" >
+        #{envId,jdbcType=VARCHAR},
+      </if>
+      <if test="envName != null" >
+        #{envName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeName != null" >
+        #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="cpu != null" >
+        #{cpu,jdbcType=INTEGER},
+      </if>
+      <if test="memsize != null" >
+        #{memsize,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="creatorId != null" >
+        #{creatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="imageId != null" >
+        #{imageId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zty.springboot01login.Pojo.CourseEnvExample" resultType="java.lang.Integer" >
+    select count(*) from tb_course_env
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_course_env
+    <set >
+      <if test="record.envId != null" >
+        env_id = #{record.envId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.envName != null" >
+        env_name = #{record.envName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nodeName != null" >
+        node_name = #{record.nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cpu != null" >
+        cpu = #{record.cpu,jdbcType=INTEGER},
+      </if>
+      <if test="record.memsize != null" >
+        memsize = #{record.memsize,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=CHAR},
+      </if>
+      <if test="record.creatorId != null" >
+        creator_id = #{record.creatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imageId != null" >
+        image_id = #{record.imageId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_course_env
+    set env_id = #{record.envId,jdbcType=VARCHAR},
+      env_name = #{record.envName,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      node_name = #{record.nodeName,jdbcType=VARCHAR},
+      cpu = #{record.cpu,jdbcType=INTEGER},
+      memsize = #{record.memsize,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=CHAR},
+      creator_id = #{record.creatorId,jdbcType=VARCHAR},
+      image_id = #{record.imageId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" >
+    update tb_course_env
+    <set >
+      <if test="envName != null" >
+        env_name = #{envName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeName != null" >
+        node_name = #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="cpu != null" >
+        cpu = #{cpu,jdbcType=INTEGER},
+      </if>
+      <if test="memsize != null" >
+        memsize = #{memsize,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="creatorId != null" >
+        creator_id = #{creatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="imageId != null" >
+        image_id = #{imageId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where env_id = #{envId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" >
+    update tb_course_env
+    set env_name = #{envName,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      node_name = #{nodeName,jdbcType=VARCHAR},
+      cpu = #{cpu,jdbcType=INTEGER},
+      memsize = #{memsize,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=CHAR},
+      creator_id = #{creatorId,jdbcType=VARCHAR},
+      image_id = #{imageId,jdbcType=VARCHAR}
+    where env_id = #{envId,jdbcType=VARCHAR}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.zty.springboot01login.Pojo.CourseEnvExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_course_env
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2020-12-17 18:01:31 ### -->
+
+
+
+  <!-- Your codes goes here!!! -->
+  
+</mapper>
