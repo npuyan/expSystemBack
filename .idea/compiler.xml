@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="expSystem" />
         <module name="springboot-01-login" />
+        <module name="mybatis-generator-lombok-plugin" />
       </profile>
     </annotationProcessing>
   </component>
