@@ -7,9 +7,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="expSystem" />
         <module name="springboot-01-login" />
         <module name="mybatis-generator-lombok-plugin" />
+        <module name="expSystemBack" />
+        <module name="expSystem" />
       </profile>
     </annotationProcessing>
   </component>

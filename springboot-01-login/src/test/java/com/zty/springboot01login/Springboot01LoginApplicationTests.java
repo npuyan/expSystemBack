@@ -15,7 +15,7 @@ class Springboot01LoginApplicationTests {
     @Test
     void test1() {
         System.out.println(mapper1.selectByPrimaryKey("1"));
-        User user=new User("3","zty","11111","1828282","zty2804@",2,"2");
+        User user=new User("5","zty","11111","1828282","zty2804@",2,"2");
         mapper1.insert(user);
         System.out.println(1);
     }

@@ -5,9 +5,8 @@ spring:
     username: zty
     password: 123456
     url: jdbc:mysql://49.234.13.89:3306/experimental_system
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-
     #Spring Boot 默认是不注入这些属性值的，需要自己绑定
     #druid 数据源专有配置
     initialSize: 5
