@@ -21,81 +21,9 @@
     <!-- 实验开始时间 -->
     <result column="start_time" property="startTime" jdbcType="CHAR" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
   <sql id="Base_Column_List" >
     user_id, lab_id, env_id, flag, end_time, start_time
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zty.springboot01login.Pojo.UserLabExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from tb_user_lab
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.zty.springboot01login.Pojo.UserLabKey" >
     select 
     <include refid="Base_Column_List" />
@@ -107,12 +35,6 @@
     delete from tb_user_lab
     where user_id = #{userId,jdbcType=VARCHAR}
       and lab_id = #{labId,jdbcType=VARCHAR}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.zty.springboot01login.Pojo.UserLabExample" >
-    delete from tb_user_lab
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
   </delete>
   <insert id="insert" >
     insert into tb_user_lab (user_id, lab_id, env_id, 
@@ -163,50 +85,6 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.zty.springboot01login.Pojo.UserLabExample" resultType="java.lang.Integer" >
-    select count(*) from tb_user_lab
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update tb_user_lab
-    <set >
-      <if test="record.userId != null" >
-        user_id = #{record.userId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.labId != null" >
-        lab_id = #{record.labId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.envId != null" >
-        env_id = #{record.envId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.flag != null" >
-        flag = #{record.flag,jdbcType=CHAR},
-      </if>
-      <if test="record.endTime != null" >
-        end_time = #{record.endTime,jdbcType=CHAR},
-      </if>
-      <if test="record.startTime != null" >
-        start_time = #{record.startTime,jdbcType=CHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update tb_user_lab
-    set user_id = #{record.userId,jdbcType=VARCHAR},
-      lab_id = #{record.labId,jdbcType=VARCHAR},
-      env_id = #{record.envId,jdbcType=VARCHAR},
-      flag = #{record.flag,jdbcType=CHAR},
-      end_time = #{record.endTime,jdbcType=CHAR},
-      start_time = #{record.startTime,jdbcType=CHAR}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
   <update id="updateByPrimaryKeySelective" >
     update tb_user_lab
     <set >
@@ -235,22 +113,8 @@
     where user_id = #{userId,jdbcType=VARCHAR}
       and lab_id = #{labId,jdbcType=VARCHAR}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.zty.springboot01login.Pojo.UserLabExample" id="selectByExampleWithRowbounds" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from tb_user_lab
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   
-  <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2020-12-17 18:01:31 ### -->
+  <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2020-12-20 15:33:42 ### -->
 
 
 

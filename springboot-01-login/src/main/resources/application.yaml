@@ -1,5 +1,3 @@
-
-
 spring:
   datasource:
     username: zty
@@ -28,5 +26,13 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  security:
+    user:
+      name: lyt
+      password: lyt
 server:
-  port: 8889
+  port: 8800
+
+
+
+

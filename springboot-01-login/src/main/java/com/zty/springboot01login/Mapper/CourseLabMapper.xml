@@ -27,81 +27,9 @@
     <!-- 第几次实验 -->
     <result column="section_id" property="sectionId" jdbcType="INTEGER" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
   <sql id="Base_Column_List" >
     lab_id, course_id, course_name, lab_name, env_id, doc_path, remarks, section_id
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zty.springboot01login.Pojo.CourseLabExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from tb_course_lab
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -111,12 +39,6 @@
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_course_lab
     where lab_id = #{labId,jdbcType=VARCHAR}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.zty.springboot01login.Pojo.CourseLabExample" >
-    delete from tb_course_lab
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
   </delete>
   <insert id="insert" >
     insert into tb_course_lab (lab_id, course_id, course_name, 
@@ -181,58 +103,6 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.zty.springboot01login.Pojo.CourseLabExample" resultType="java.lang.Integer" >
-    select count(*) from tb_course_lab
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update tb_course_lab
-    <set >
-      <if test="record.labId != null" >
-        lab_id = #{record.labId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.courseId != null" >
-        course_id = #{record.courseId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.courseName != null" >
-        course_name = #{record.courseName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.labName != null" >
-        lab_name = #{record.labName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.envId != null" >
-        env_id = #{record.envId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.docPath != null" >
-        doc_path = #{record.docPath,jdbcType=VARCHAR},
-      </if>
-      <if test="record.remarks != null" >
-        remarks = #{record.remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sectionId != null" >
-        section_id = #{record.sectionId,jdbcType=INTEGER},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update tb_course_lab
-    set lab_id = #{record.labId,jdbcType=VARCHAR},
-      course_id = #{record.courseId,jdbcType=VARCHAR},
-      course_name = #{record.courseName,jdbcType=VARCHAR},
-      lab_name = #{record.labName,jdbcType=VARCHAR},
-      env_id = #{record.envId,jdbcType=VARCHAR},
-      doc_path = #{record.docPath,jdbcType=VARCHAR},
-      remarks = #{record.remarks,jdbcType=VARCHAR},
-      section_id = #{record.sectionId,jdbcType=INTEGER}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
   <update id="updateByPrimaryKeySelective" >
     update tb_course_lab
     <set >
@@ -271,22 +141,8 @@
       section_id = #{sectionId,jdbcType=INTEGER}
     where lab_id = #{labId,jdbcType=VARCHAR}
   </update>
-  <select resultMap="BaseResultMap" parameterType="com.zty.springboot01login.Pojo.CourseLabExample" id="selectByExampleWithRowbounds" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from tb_course_lab
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   
-  <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2020-12-17 18:01:31 ### -->
+  <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2020-12-20 15:33:42 ### -->
 
 
 
