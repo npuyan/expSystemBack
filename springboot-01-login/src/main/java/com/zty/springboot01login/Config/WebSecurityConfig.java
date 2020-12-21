@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username").passwordParameter("password")
                 .defaultSuccessUrl("/login-success",true)
 //                .failureHandler(new AuthenticationFailureHandler() {
-//                    @Override
+//                    @Overriden
 //                    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
 //                        PrintWriter out= httpServletResponse.getWriter();
 //                        out.write("登录失败");
