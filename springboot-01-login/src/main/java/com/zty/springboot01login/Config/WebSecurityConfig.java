@@ -98,7 +98,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 }).permitAll()
                 .and()
                 .logout().permitAll()
-                .and().csrf().disable()
+                .and()
+                .cors()
+                .and()
+                .csrf().disable()
                 .exceptionHandling().accessDeniedHandler(deniedHandler);
     }
 
