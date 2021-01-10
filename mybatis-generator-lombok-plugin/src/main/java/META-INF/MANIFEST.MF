@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Main-Class: com.zty.springboot01login.Springboot01LoginApplication
+Class-Path: logback-classic-1.2.3.jar slf4j-api-1.7.25.jar spring-web-5.
+ 2.6.RELEASE.jar spring-security-core-5.3.3.RELEASE.jar logback-core-1.2
+ .3.jar log4j-to-slf4j-2.13.3.jar snakeyaml-1.26.jar spring-security-web
+ -5.3.3.RELEASE.jar javax.persistence-api-2.2.jar spring-jcl-5.2.7.RELEA
+ SE.jar spring-beans-5.2.7.RELEASE.jar spring-core-5.2.7.RELEASE.jar spr
+ ing-aop-5.2.7.RELEASE.jar spring-boot-starter-security-2.3.1.RELEASE.ja
+ r spring-boot-starter-2.3.1.RELEASE.jar spring-boot-autoconfigure-2.3.1
+ .RELEASE.jar log4j-api-2.13.3.jar lombok-1.18.16.jar log4j-1.2.17.jar s
+ pring-security-config-5.3.3.RELEASE.jar spring-boot-starter-logging-2.3
+ .1.RELEASE.jar spring-boot-2.3.1.RELEASE.jar jakarta.annotation-api-1.3
+ .5.jar spring-expression-5.2.6.RELEASE.jar jul-to-slf4j-1.7.30.jar spri
+ ng-context-5.2.6.RELEASE.jar
+

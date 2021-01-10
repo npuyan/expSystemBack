@@ -104,5 +104,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .exceptionHandling().accessDeniedHandler(deniedHandler);
     }
-
 }
