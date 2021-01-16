@@ -26,6 +26,8 @@ class Springboot01LoginApplicationTests {
         String encode2=bCryptPasswordEncoder.encode("1111");
         System.err.println(encode1);
         System.err.println(bCryptPasswordEncoder.matches("1111", encode1));
+        String lmx= bCryptPasswordEncoder.encode("lmx");
+        System.err.println(lmx);
     }
     @Test
     public void testSSH(){
