@@ -1,7 +1,9 @@
 package com.zty.springboot01login.Pojo;
 
-import java.util.List;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+@Component
 public class RespPageBean {
     private Long total;
     private List<?> data;

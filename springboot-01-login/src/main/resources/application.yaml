@@ -30,8 +30,15 @@ spring:
     user:
       name: lyt
       password: lyt
+  devtools:
+    livereload:
+      enabled: true
+      port: 8801
+    restart:
+      enabled: true
 server:
   port: 8800
+
 
 
 

@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Mapper
 @Repository
 public interface CourseEnvMapper {
-    int deleteByPrimaryKey(String envId);
+    int deleteByPrimaryKey(Integer envId);
 
     int insert(CourseEnv record);
 
     int insertSelective(CourseEnv record);
 
-    CourseEnv selectByPrimaryKey(String envId);
+    CourseEnv selectByPrimaryKey(Integer envId);
 
     int updateByPrimaryKeySelective(CourseEnv record);
 

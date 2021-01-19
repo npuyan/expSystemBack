@@ -3,10 +3,12 @@ package com.zty.springboot01login.Pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 /**
  * Table: tb_course_lab
  */
+@Component
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +20,7 @@ public class CourseLab {
      * Column:    lab_id
      * Nullable:  false
      */
-    private String labId;
+    private Integer labId;
 
     /**
      * 关联课程的id
@@ -27,7 +29,7 @@ public class CourseLab {
      * Column:    course_id
      * Nullable:  false
      */
-    private String courseId;
+    private Integer courseId;
 
     /**
      * 关联课程的名称
@@ -54,7 +56,7 @@ public class CourseLab {
      * Column:    env_id
      * Nullable:  false
      */
-    private String envId;
+    private Integer envId;
 
     /**
      * 实验文档路径

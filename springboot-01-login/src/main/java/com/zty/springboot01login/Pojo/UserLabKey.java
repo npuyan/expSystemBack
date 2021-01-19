@@ -3,7 +3,9 @@ package com.zty.springboot01login.Pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

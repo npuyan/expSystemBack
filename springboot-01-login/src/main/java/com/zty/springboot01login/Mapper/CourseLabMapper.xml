@@ -2,50 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zty.springboot01login.Mapper.CourseLabMapper" >
   <resultMap id="BaseResultMap" type="com.zty.springboot01login.Pojo.CourseLab" >
-    
+
     <!-- 课程id，主键 -->
-    <id column="lab_id" property="labId" jdbcType="VARCHAR" />
-    
+    <id column="lab_id" property="labId" jdbcType="INTEGER" />
+
     <!-- 关联课程的id -->
-    <result column="course_id" property="courseId" jdbcType="VARCHAR" />
-    
+    <result column="course_id" property="courseId" jdbcType="INTEGER" />
+
     <!-- 关联课程的名称 -->
     <result column="course_name" property="courseName" jdbcType="VARCHAR" />
-    
+
     <!-- 实验名称 -->
     <result column="lab_name" property="labName" jdbcType="VARCHAR" />
-    
+
     <!-- 关联环境id -->
-    <result column="env_id" property="envId" jdbcType="VARCHAR" />
-    
+    <result column="env_id" property="envId" jdbcType="INTEGER" />
+
     <!-- 实验文档路径 -->
     <result column="doc_path" property="docPath" jdbcType="VARCHAR" />
-    
+
     <!-- 实验描述 -->
     <result column="remarks" property="remarks" jdbcType="VARCHAR" />
-    
+
     <!-- 第几次实验 -->
     <result column="section_id" property="sectionId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     lab_id, course_id, course_name, lab_name, env_id, doc_path, remarks, section_id
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
     <include refid="Base_Column_List" />
     from tb_course_lab
-    where lab_id = #{labId,jdbcType=VARCHAR}
+    where lab_id = #{labId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tb_course_lab
-    where lab_id = #{labId,jdbcType=VARCHAR}
+    where lab_id = #{labId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" >
-    insert into tb_course_lab (lab_id, course_id, course_name, 
-      lab_name, env_id, doc_path, 
+    insert into tb_course_lab (lab_id, course_id, course_name,
+      lab_name, env_id, doc_path,
       remarks, section_id)
-    values (#{labId,jdbcType=VARCHAR}, #{courseId,jdbcType=VARCHAR}, #{courseName,jdbcType=VARCHAR}, 
-      #{labName,jdbcType=VARCHAR}, #{envId,jdbcType=VARCHAR}, #{docPath,jdbcType=VARCHAR}, 
+    values (#{labId,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}, #{courseName,jdbcType=VARCHAR},
+      #{labName,jdbcType=VARCHAR}, #{envId,jdbcType=INTEGER}, #{docPath,jdbcType=VARCHAR},
       #{remarks,jdbcType=VARCHAR}, #{sectionId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" >
@@ -78,10 +78,10 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="labId != null" >
-        #{labId,jdbcType=VARCHAR},
+        #{labId,jdbcType=INTEGER},
       </if>
       <if test="courseId != null" >
-        #{courseId,jdbcType=VARCHAR},
+        #{courseId,jdbcType=INTEGER},
       </if>
       <if test="courseName != null" >
         #{courseName,jdbcType=VARCHAR},
@@ -90,7 +90,7 @@
         #{labName,jdbcType=VARCHAR},
       </if>
       <if test="envId != null" >
-        #{envId,jdbcType=VARCHAR},
+        #{envId,jdbcType=INTEGER},
       </if>
       <if test="docPath != null" >
         #{docPath,jdbcType=VARCHAR},
@@ -107,7 +107,7 @@
     update tb_course_lab
     <set >
       <if test="courseId != null" >
-        course_id = #{courseId,jdbcType=VARCHAR},
+        course_id = #{courseId,jdbcType=INTEGER},
       </if>
       <if test="courseName != null" >
         course_name = #{courseName,jdbcType=VARCHAR},
@@ -116,7 +116,7 @@
         lab_name = #{labName,jdbcType=VARCHAR},
       </if>
       <if test="envId != null" >
-        env_id = #{envId,jdbcType=VARCHAR},
+        env_id = #{envId,jdbcType=INTEGER},
       </if>
       <if test="docPath != null" >
         doc_path = #{docPath,jdbcType=VARCHAR},
@@ -128,24 +128,24 @@
         section_id = #{sectionId,jdbcType=INTEGER},
       </if>
     </set>
-    where lab_id = #{labId,jdbcType=VARCHAR}
+    where lab_id = #{labId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" >
     update tb_course_lab
-    set course_id = #{courseId,jdbcType=VARCHAR},
+    set course_id = #{courseId,jdbcType=INTEGER},
       course_name = #{courseName,jdbcType=VARCHAR},
       lab_name = #{labName,jdbcType=VARCHAR},
-      env_id = #{envId,jdbcType=VARCHAR},
+      env_id = #{envId,jdbcType=INTEGER},
       doc_path = #{docPath,jdbcType=VARCHAR},
       remarks = #{remarks,jdbcType=VARCHAR},
       section_id = #{sectionId,jdbcType=INTEGER}
-    where lab_id = #{labId,jdbcType=VARCHAR}
+    where lab_id = #{labId,jdbcType=INTEGER}
   </update>
-  
-  <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2020-12-20 15:33:42 ### -->
+
+  <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2021-01-19 11:34:40 ### -->
 
 
 
   <!-- Your codes goes here!!! -->
-  
+
 </mapper>

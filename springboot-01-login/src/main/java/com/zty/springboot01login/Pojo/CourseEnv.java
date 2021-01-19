@@ -3,10 +3,12 @@ package com.zty.springboot01login.Pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 /**
  * Table: tb_course_env
  */
+@Component
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +20,7 @@ public class CourseEnv {
      * Column:    env_id
      * Nullable:  false
      */
-    private String envId;
+    private Integer envId;
 
     /**
      * 环境名称

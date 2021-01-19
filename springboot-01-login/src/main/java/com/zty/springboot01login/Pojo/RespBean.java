@@ -1,5 +1,8 @@
 package com.zty.springboot01login.Pojo;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class RespBean {
     private Integer status;
     private String msg;

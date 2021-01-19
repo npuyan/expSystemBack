@@ -15,11 +15,16 @@ public class UserService implements UserDetailsService {
     UserMapper mapper;
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user=mapper.selectByUserName(s);
-        if(user==null){
-            throw new UsernameNotFoundException("zhanghubucunzai");
+        User user = mapper.selectByUserName(s);
+        if (user == null) {
+            throw new UsernameNotFoundException("用户名不存在");
         }
         System.err.println(user);
         return user;
+    }
+    public void addUser(User record){
+        BCryptPasswordEncoder encode=new BCryptPasswordEncoder(10);
+        record.setPassword(encode.encode(record.getPassword()));
+        mapper.insert(record);
     }
 }

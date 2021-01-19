@@ -7,13 +7,13 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface CourseImageMapper {
-    int deleteByPrimaryKey(String imageId);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(CourseImage record);
 
     int insertSelective(CourseImage record);
 
-    CourseImage selectByPrimaryKey(String imageId);
+    CourseImage selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(CourseImage record);
 

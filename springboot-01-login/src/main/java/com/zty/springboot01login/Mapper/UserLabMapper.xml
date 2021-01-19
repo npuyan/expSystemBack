@@ -2,60 +2,62 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zty.springboot01login.Mapper.UserLabMapper" >
   <resultMap id="BaseResultMap" type="com.zty.springboot01login.Pojo.UserLab" >
-    
-    <!-- 用户id，主键 -->
-    <id column="user_id" property="userId" jdbcType="VARCHAR" />
-    
-    <!-- 实验id，主键 -->
-    <id column="lab_id" property="labId" jdbcType="VARCHAR" />
-    
+    <!-- 主键id -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+
+    <!-- 用户id -->
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+
     <!-- 实验环境id -->
-    <result column="env_id" property="envId" jdbcType="VARCHAR" />
-    
-    <!-- 试验完成标志：0 未完成；1 已完成 -->
-    <result column="flag" property="flag" jdbcType="CHAR" />
-    
+    <result column="env_id" property="envId" jdbcType="INTEGER" />
+
+    <!-- 实验id -->
+    <result column="lab_id" property="labId" jdbcType="INTEGER" />
+
     <!-- 实验结束时间 -->
     <result column="end_time" property="endTime" jdbcType="CHAR" />
-    
+
     <!-- 实验开始时间 -->
     <result column="start_time" property="startTime" jdbcType="CHAR" />
+
+    <!-- 试验完成标志：0 未完成；1 已完成 -->
+    <result column="flag" property="flag" jdbcType="CHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    user_id, lab_id, env_id, flag, end_time, start_time
+    id, user_id, env_id, lab_id, end_time, start_time, flag
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.zty.springboot01login.Pojo.UserLabKey" >
-    select 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
     <include refid="Base_Column_List" />
     from tb_user_lab
-    where user_id = #{userId,jdbcType=VARCHAR}
-      and lab_id = #{labId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.zty.springboot01login.Pojo.UserLabKey" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tb_user_lab
-    where user_id = #{userId,jdbcType=VARCHAR}
-      and lab_id = #{labId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" >
-    insert into tb_user_lab (user_id, lab_id, env_id, 
-      flag, end_time, start_time)
-    values (#{userId,jdbcType=VARCHAR}, #{labId,jdbcType=VARCHAR}, #{envId,jdbcType=VARCHAR}, 
-      #{flag,jdbcType=CHAR}, #{endTime,jdbcType=CHAR}, #{startTime,jdbcType=CHAR})
+    insert into tb_user_lab (id, user_id, env_id,
+      lab_id, end_time, start_time,
+      flag)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{envId,jdbcType=INTEGER},
+      #{labId,jdbcType=INTEGER}, #{endTime,jdbcType=CHAR}, #{startTime,jdbcType=CHAR},
+      #{flag,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" >
     insert into tb_user_lab
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
       <if test="userId != null" >
         user_id,
-      </if>
-      <if test="labId != null" >
-        lab_id,
       </if>
       <if test="envId != null" >
         env_id,
       </if>
-      <if test="flag != null" >
-        flag,
+      <if test="labId != null" >
+        lab_id,
       </if>
       <if test="endTime != null" >
         end_time,
@@ -63,19 +65,22 @@
       <if test="startTime != null" >
         start_time,
       </if>
+      <if test="flag != null" >
+        flag,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
-        #{userId,jdbcType=VARCHAR},
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
       </if>
-      <if test="labId != null" >
-        #{labId,jdbcType=VARCHAR},
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
       </if>
       <if test="envId != null" >
-        #{envId,jdbcType=VARCHAR},
+        #{envId,jdbcType=INTEGER},
       </if>
-      <if test="flag != null" >
-        #{flag,jdbcType=CHAR},
+      <if test="labId != null" >
+        #{labId,jdbcType=INTEGER},
       </if>
       <if test="endTime != null" >
         #{endTime,jdbcType=CHAR},
@@ -83,16 +88,22 @@
       <if test="startTime != null" >
         #{startTime,jdbcType=CHAR},
       </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=CHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" >
     update tb_user_lab
     <set >
-      <if test="envId != null" >
-        env_id = #{envId,jdbcType=VARCHAR},
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="flag != null" >
-        flag = #{flag,jdbcType=CHAR},
+      <if test="envId != null" >
+        env_id = #{envId,jdbcType=INTEGER},
+      </if>
+      <if test="labId != null" >
+        lab_id = #{labId,jdbcType=INTEGER},
       </if>
       <if test="endTime != null" >
         end_time = #{endTime,jdbcType=CHAR},
@@ -100,24 +111,27 @@
       <if test="startTime != null" >
         start_time = #{startTime,jdbcType=CHAR},
       </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=CHAR},
+      </if>
     </set>
-    where user_id = #{userId,jdbcType=VARCHAR}
-      and lab_id = #{labId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" >
     update tb_user_lab
-    set env_id = #{envId,jdbcType=VARCHAR},
-      flag = #{flag,jdbcType=CHAR},
+    set user_id = #{userId,jdbcType=INTEGER},
+      env_id = #{envId,jdbcType=INTEGER},
+      lab_id = #{labId,jdbcType=INTEGER},
       end_time = #{endTime,jdbcType=CHAR},
-      start_time = #{startTime,jdbcType=CHAR}
-    where user_id = #{userId,jdbcType=VARCHAR}
-      and lab_id = #{labId,jdbcType=VARCHAR}
+      start_time = #{startTime,jdbcType=CHAR},
+      flag = #{flag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
-  
-  <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2020-12-20 15:33:42 ### -->
+
+  <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2021-01-19 11:34:40 ### -->
 
 
 
   <!-- Your codes goes here!!! -->
-  
+
 </mapper>

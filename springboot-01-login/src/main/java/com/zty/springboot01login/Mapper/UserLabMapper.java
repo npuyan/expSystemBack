@@ -8,13 +8,13 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface UserLabMapper {
-    int deleteByPrimaryKey(UserLabKey key);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(UserLab record);
 
     int insertSelective(UserLab record);
 
-    UserLab selectByPrimaryKey(UserLabKey key);
+    UserLab selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(UserLab record);
 

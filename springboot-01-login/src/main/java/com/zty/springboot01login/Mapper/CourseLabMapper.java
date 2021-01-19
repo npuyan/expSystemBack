@@ -7,13 +7,13 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface CourseLabMapper {
-    int deleteByPrimaryKey(String labId);
+    int deleteByPrimaryKey(Integer labId);
 
     int insert(CourseLab record);
 
     int insertSelective(CourseLab record);
 
-    CourseLab selectByPrimaryKey(String labId);
+    CourseLab selectByPrimaryKey(Integer labId);
 
     int updateByPrimaryKeySelective(CourseLab record);
 

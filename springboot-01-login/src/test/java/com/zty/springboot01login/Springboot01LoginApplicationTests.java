@@ -14,12 +14,15 @@ class Springboot01LoginApplicationTests {
     UserMapper mapper1;
 
     @Autowired
+    User user;
+
+    @Autowired
     UseSSH ssh;
     @Test
     void test1() {
         System.out.println(mapper1.selectByUserName("zty"));
         System.err.println(mapper1.selectByUserName("zty"));
-        System.err.println(mapper1.selectByPrimaryKey("1"));
+        System.err.println(mapper1.selectByPrimaryKey(1));
         System.out.println(new BCryptPasswordEncoder(10).encode("11111"));
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10);
         String encode1=bCryptPasswordEncoder.encode("zty981115");
@@ -32,5 +35,11 @@ class Springboot01LoginApplicationTests {
     @Test
     public void testSSH(){
         ssh.connect("0");
+    }
+    @Test
+    public void addUser(){
+        user.setUserName("testtoo");
+        user.setPassword(new BCryptPasswordEncoder(10).encode("ccccc"));
+        mapper1.insert(user);
     }
 }

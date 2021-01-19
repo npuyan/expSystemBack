@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +18,7 @@ import java.util.List;
 /**
  * Table: tb_user
  */
+@Component
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +30,7 @@ public class User implements UserDetails {
      * Column:    user_id
      * Nullable:  false
      */
-    private String userId;
+    private Integer userId;
 
     /**
      * 用户名
@@ -71,6 +75,7 @@ public class User implements UserDetails {
      * Column:    state
      * Nullable:  false
      */
+    @Value("1")
     private Integer state;
 
     /**
@@ -80,6 +85,7 @@ public class User implements UserDetails {
      * Column:    user_type
      * Nullable:  true
      */
+    @Value("2")
     private String userType;
 
     @Override

@@ -3,10 +3,12 @@ package com.zty.springboot01login.Pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 /**
  * Table: tb_course
  */
+@Component
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +20,7 @@ public class Course {
      * Column:    course_id
      * Nullable:  false
      */
-    private String courseId;
+    private Integer courseId;
 
     /**
      * 课程名称

@@ -3,14 +3,34 @@ package com.zty.springboot01login.Pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 /**
  * Table: tb_user_lab
  */
+@Component
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserLab extends UserLabKey {
+public class UserLab {
+    /**
+     * 主键id
+     *
+     * Table:     tb_user_lab
+     * Column:    id
+     * Nullable:  false
+     */
+    private Integer id;
+
+    /**
+     * 用户id
+     *
+     * Table:     tb_user_lab
+     * Column:    user_id
+     * Nullable:  false
+     */
+    private Integer userId;
+
     /**
      * 实验环境id
      *
@@ -18,16 +38,16 @@ public class UserLab extends UserLabKey {
      * Column:    env_id
      * Nullable:  true
      */
-    private String envId;
+    private Integer envId;
 
     /**
-     * 试验完成标志：0 未完成；1 已完成
+     * 实验id
      *
      * Table:     tb_user_lab
-     * Column:    flag
+     * Column:    lab_id
      * Nullable:  false
      */
-    private String flag;
+    private Integer labId;
 
     /**
      * 实验结束时间
@@ -46,4 +66,13 @@ public class UserLab extends UserLabKey {
      * Nullable:  true
      */
     private String startTime;
+
+    /**
+     * 试验完成标志：0 未完成；1 已完成
+     *
+     * Table:     tb_user_lab
+     * Column:    flag
+     * Nullable:  false
+     */
+    private String flag;
 }
