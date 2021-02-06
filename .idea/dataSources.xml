@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="@49.234.13.89" uuid="b15bf311-7597-48d2-883b-0ea6b3a73405">
+    <data-source source="LOCAL" name="腾讯" uuid="b15bf311-7597-48d2-883b-0ea6b3a73405">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://49.234.13.89:3306</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="@49.234.13.89 [2]" uuid="c2bcf7d1-a002-4ca9-94dd-4d32e9b20076">
+    <data-source source="LOCAL" name="华为" uuid="b1e3bc89-3b09-42c1-b8f5-693bfba2f729">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://49.234.13.89:3306</jdbc-url>
+      <jdbc-url>jdbc:mysql://124.70.84.98:3306</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="华为 [2]" uuid="b356618f-a5af-4560-aacb-82865392ae7d">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://124.70.84.98:3306</jdbc-url>
     </data-source>
   </component>
 </project>

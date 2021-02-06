@@ -11,7 +11,8 @@ import java.io.InputStreamReader;
 
 @Component
 public class UseSSH {
-    private static String ip="49.234.13.89";
+    // 华为云
+    private static String ip="124.70.84.98";
     private static int port=22;
     private static String user="root";
     private static String pswd="Zty981115";
