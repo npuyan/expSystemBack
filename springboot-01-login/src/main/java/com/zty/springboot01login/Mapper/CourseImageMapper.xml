@@ -7,7 +7,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
 
     <!-- image id 即实际的镜像id -->
-    <result column="img_id" property="imgId" jdbcType="INTEGER" />
+    <result column="img_id" property="imageId" jdbcType="VARCHAR" />
 
     <!-- 镜像名称 -->
     <result column="image_name" property="imageName" jdbcType="VARCHAR" />

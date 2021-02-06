@@ -5,6 +5,8 @@ import com.zty.springboot01login.Pojo.UserLabKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface UserLabMapper {
@@ -19,4 +21,5 @@ public interface UserLabMapper {
     int updateByPrimaryKeySelective(UserLab record);
 
     int updateByPrimaryKey(UserLab record);
+
 }

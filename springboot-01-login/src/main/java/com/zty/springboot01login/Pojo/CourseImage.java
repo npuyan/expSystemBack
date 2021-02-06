@@ -26,10 +26,10 @@ public class CourseImage {
      * image id 即实际的镜像id
      *
      * Table:     tb_course_image
-     * Column:    img_id
+     * Column:    image_id
      * Nullable:  false
      */
-    private Integer imgId;
+    private String imageId;
 
     /**
      * 镜像名称

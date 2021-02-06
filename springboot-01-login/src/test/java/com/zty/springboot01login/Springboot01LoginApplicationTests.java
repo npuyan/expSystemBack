@@ -1,5 +1,6 @@
 package com.zty.springboot01login;
 
+import com.zty.springboot01login.Mapper.CourseLabMapper;
 import com.zty.springboot01login.Mapper.UserCourseMapper;
 import com.zty.springboot01login.Mapper.UserMapper;
 import com.zty.springboot01login.Pojo.User;
@@ -25,7 +26,8 @@ class Springboot01LoginApplicationTests {
     UserCourseMapper userCourseMapper;
     @Autowired
     User user;
-
+    @Autowired
+    CourseLabMapper courseLabMapper;
     @Autowired
     UseSSH ssh;
     @Test
@@ -61,5 +63,10 @@ class Springboot01LoginApplicationTests {
         List<UserCourse> userCourses = userCourseMapper.selectUserCourseByUserId(user.getUserId());
         System.out.println(userCourses.size());
 
+    }
+    @Test
+    public void getCourseLabBycouseIdTest(){
+        courseLabMapper.selectByCourseId(1);
+        //System.out.println(courseService.getCourseLabBycouseId(1));
     }
 }

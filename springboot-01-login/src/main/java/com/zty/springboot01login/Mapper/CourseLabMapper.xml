@@ -144,8 +144,19 @@
 
   <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2021-01-19 11:34:40 ### -->
 
+  <select id="selectByCourseId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"></include>
+    from tb_course_lab
+    where course_id=#{courseId,jdbcType=INTEGER}
+  </select>
 
-
+<!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >-->
+<!--  select-->
+<!--  <include refid="Base_Column_List" />-->
+<!--  from tb_course_lab-->
+<!--  where lab_id = #{labId,jdbcType=INTEGER}-->
+<!--</select>-->
   <!-- Your codes goes here!!! -->
 
 </mapper>
