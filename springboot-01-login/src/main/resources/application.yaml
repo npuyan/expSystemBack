@@ -38,7 +38,11 @@ spring:
       enabled: true
 server:
   port: 8800
-
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 
 

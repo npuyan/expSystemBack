@@ -21,5 +21,7 @@ public interface UserCourseMapper {
 
     int updateByPrimaryKey(UserCourse record);
 
-    List<UserCourse> selectUserCourseByUserId(int userId);
+    List<UserCourse> selectByUserId(int userId);
+
+    UserCourse selectByUserIdAndCourseId(int userId, int courseId);
 }

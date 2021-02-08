@@ -2,11 +2,14 @@ package com.zty.springboot01login.Service;
 
 import com.zty.springboot01login.Mapper.CourseLabMapper;
 import com.zty.springboot01login.Mapper.CourseMapper;
+import com.zty.springboot01login.Mapper.UserCourseMapper;
 import com.zty.springboot01login.Pojo.Course;
 import com.zty.springboot01login.Pojo.CourseLab;
 import com.zty.springboot01login.Utils.PinyinComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Comparator;
 import java.util.List;
@@ -17,7 +20,8 @@ public class CourseService {
     CourseMapper courseMapper;
     @Autowired
     CourseLabMapper courseLabMapper;
-
+    @Autowired
+    UserCourseMapper userCourseMapper;
     /*得到所有的课程并排序*/
     public List<Course> getAllcourse() {
         List<Course> courses = courseMapper.selectAll();

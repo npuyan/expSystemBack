@@ -25,6 +25,7 @@ public class UserService implements UserDetailsService {
     UserCourseMapper userCourseMapper;
     @Autowired
     CourseMapper courseMapper;
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = mapper.selectByUserName(s);
@@ -34,17 +35,20 @@ public class UserService implements UserDetailsService {
         System.err.println(user);
         return user;
     }
-    public void addUser(User record){
-        BCryptPasswordEncoder encode=new BCryptPasswordEncoder(10);
+
+    public void addUser(User record) {
+        BCryptPasswordEncoder encode = new BCryptPasswordEncoder(10);
         record.setPassword(encode.encode(record.getPassword()));
         mapper.insert(record);
     }
-    public List<Course> getSelectedCourse(String username){
-        User user=mapper.selectByUserName(username);
-        int userId=user.getUserId();
-        List<UserCourse> userCourses=userCourseMapper.selectUserCourseByUserId(userId);
-        List<Course> courses=new LinkedList<>();
-        for(UserCourse userCourse:userCourses){
+
+    /*通过用户名选择此用户已选择的所有课程*/
+    public List<Course> getSelectedCourse(String username) {
+        User user = mapper.selectByUserName(username);
+        int userId = user.getUserId();
+        List<UserCourse> userCourses = userCourseMapper.selectByUserId(userId);
+        List<Course> courses = new LinkedList<>();
+        for (UserCourse userCourse : userCourses) {
             courses.add(courseMapper.selectByPrimaryKey(userCourse.getCourseId()));
         }
         return courses;

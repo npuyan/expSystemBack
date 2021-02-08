@@ -60,7 +60,7 @@ class Springboot01LoginApplicationTests {
 //        System.out.println(userService.getSelectedCourse("111"));
         User user = mapper1.selectByUserName("111");
         System.out.println(user.getUserId());
-        List<UserCourse> userCourses = userCourseMapper.selectUserCourseByUserId(user.getUserId());
+        List<UserCourse> userCourses = userCourseMapper.selectByUserId(user.getUserId());
         System.out.println(userCourses.size());
 
     }
