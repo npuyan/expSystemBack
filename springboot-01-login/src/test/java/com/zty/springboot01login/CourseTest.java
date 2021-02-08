@@ -17,4 +17,9 @@ class CourseTest {
         System.out.println(courseLabMapper.selectByCourseId(1).size());
         //System.out.println(courseService.getCourseLabBycouseId(1));
     }
+
+    @Test
+    public void getAllcourseTest(){
+        courseService.getAllcourse();
+    }
 }

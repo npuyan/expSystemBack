@@ -2,6 +2,10 @@
 
 > A spring boot project
 
+需求文档
+【腾讯文档】需求和接口
+https://docs.qq.com/sheet/DQUZyZHpLb2hPRmlQ
+
 ## 20201109
 1. 前端UI设计和novnc连接
 2. docker启动设置为通过端口连接
