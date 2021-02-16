@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface CourseEnvMapper {
@@ -19,4 +21,6 @@ public interface CourseEnvMapper {
     int updateByPrimaryKeySelective(CourseEnv record);
 
     int updateByPrimaryKey(CourseEnv record);
+
+    List<CourseEnv> selectAll();
 }

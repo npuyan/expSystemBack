@@ -23,4 +23,6 @@ public interface CourseLabMapper {
     int updateByPrimaryKey(CourseLab record);
 
     List<CourseLab> selectByCourseId(Integer courseId);
+
+    List<CourseLab> selectAll();
 }

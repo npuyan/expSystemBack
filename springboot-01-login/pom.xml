@@ -130,20 +130,25 @@
             <artifactId>ganymed-ssh2</artifactId>
             <version>262</version>
         </dependency>
-<!--        热更新-->
+        <!--        热更新-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
-<!--汉语to拼音-->
+        <!--汉语to拼音-->
         <!-- https://mvnrepository.com/artifact/com.belerweb/pinyin4j -->
         <dependency>
             <groupId>com.belerweb</groupId>
             <artifactId>pinyin4j</artifactId>
             <version>2.5.1</version>
         </dependency>
-
+        <!--json-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -189,7 +194,7 @@
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
-<!--            热更新-->
+            <!--            热更新-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

@@ -13,11 +13,5 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://124.70.84.98:3306</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="华为 [2]" uuid="b356618f-a5af-4560-aacb-82865392ae7d">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://124.70.84.98:3306</jdbc-url>
-    </data-source>
   </component>
 </project>

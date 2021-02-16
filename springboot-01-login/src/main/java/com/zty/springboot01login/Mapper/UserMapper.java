@@ -4,6 +4,8 @@ import com.zty.springboot01login.Pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface UserMapper {
@@ -20,4 +22,6 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     User selectByUserName(String userName);
+
+    List<User> selectAll();
 }

@@ -3,8 +3,7 @@ package com.zty.springboot01login;
 import com.zty.springboot01login.Mapper.CourseLabMapper;
 import com.zty.springboot01login.Mapper.UserCourseMapper;
 import com.zty.springboot01login.Mapper.UserMapper;
-import com.zty.springboot01login.Pojo.User;
-import com.zty.springboot01login.Pojo.UserCourse;
+import com.zty.springboot01login.Pojo.*;
 import com.zty.springboot01login.Service.UserService;
 import com.zty.springboot01login.Utils.UseSSH;
 import org.junit.jupiter.api.Test;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 @SpringBootTest
@@ -68,5 +68,13 @@ class Springboot01LoginApplicationTests {
     public void getCourseLabBycouseIdTest(){
         courseLabMapper.selectByCourseId(1);
         //System.out.println(courseService.getCourseLabBycouseId(1));
+    }
+    @Test
+    public void showAttName(){
+        User courseImage=new User();
+        Field[] fields=courseImage.getClass().getDeclaredFields();
+        for(Field f:fields){
+            System.err.println(f);
+        }
     }
 }

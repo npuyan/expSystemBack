@@ -143,4 +143,9 @@
     from tb_user
     where user_name = #{userName,jdbcType=VARCHAR}
   </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+    from tb_user
+  </select>
 </mapper>

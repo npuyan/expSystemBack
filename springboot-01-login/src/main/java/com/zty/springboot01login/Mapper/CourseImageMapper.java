@@ -4,6 +4,8 @@ import com.zty.springboot01login.Pojo.CourseImage;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface CourseImageMapper {
@@ -18,4 +20,6 @@ public interface CourseImageMapper {
     int updateByPrimaryKeySelective(CourseImage record);
 
     int updateByPrimaryKey(CourseImage record);
+
+    List<CourseImage> selectAll();
 }

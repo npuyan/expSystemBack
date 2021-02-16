@@ -88,6 +88,12 @@
         where user_id = #{param1,jdbcType=INTEGER}
         and course_id = #{param2,jdbcType=INTEGER}
     </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from tb_user_course
+    </select>
+
     <!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >-->
     <!--    select-->
     <!--    <include refid="Base_Column_List" />-->

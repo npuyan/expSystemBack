@@ -20,6 +20,6 @@ class CourseTest {
 
     @Test
     public void getAllcourseTest(){
-        courseService.getAllcourse();
+        courseService.getAllCourse();
     }
 }
