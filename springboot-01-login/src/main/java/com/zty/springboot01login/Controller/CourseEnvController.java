@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Repository
@@ -34,9 +35,10 @@ public class CourseEnvController {
     }
 
     @RequestMapping("/delcourseenvbyid")
-    public RespBean delCourseEnvById(@RequestParam() Integer id){
+    public RespBean delCourseEnvById(@RequestBody Map<String,Object> param) {
         String success = "删除成功";
         String failure = "删除异常";
+        int id=JSON.parseObject(JSON.toJSONString(param.get("id")),Integer.class);
         try {
             courseEnvService.delCourseEnvById(id);
         } catch (Exception e) {

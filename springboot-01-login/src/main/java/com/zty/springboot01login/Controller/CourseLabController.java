@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Repository
@@ -45,9 +46,10 @@ public class CourseLabController {
 
     /*通过实验id删除实验*/
     @RequestMapping("/delcourselabbyid")
-    public RespBean delCourseLabById(@RequestParam() Integer id) {
+    public RespBean delCourseLabById(@RequestBody Map<String,Object> param) {
         String success = "删除成功";
         String failure = "删除异常";
+        int id=JSON.parseObject(JSON.toJSONString(param.get("id")),Integer.class);
 
         try {
             courseLabService.delCourseLabById(id);

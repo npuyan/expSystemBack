@@ -44,11 +44,13 @@ public class UserCourseController {
 
     /*给某一用户选择某一课程*/
     @PostMapping(value = "/choosecourse")
-    public RespBean chooseCourse(@RequestParam("username") String username,
-                                 @RequestParam("courseid") int courseId) {
+    public RespBean chooseCourse(@RequestBody Map<String, Object> param) {
         String success = "选课成功";
         String beenChosen = "此课程已经选过";
         String failure = "选课失败";
+        String username = JSON.parseObject(JSON.toJSONString(param.get("username")), String.class);
+        int courseId = JSON.parseObject(JSON.toJSONString(param.get("courseid")), Integer.class);
+
         try {
             // 如果此学生已经选过此课程
             if (userCourseService.hasBeenChosen(username, courseId)) {
@@ -66,10 +68,13 @@ public class UserCourseController {
 
     /*给某一用户退掉某一课程*/
     @PostMapping(value = "/dropcourse")
-    public RespBean dropCourse(@RequestParam("username") String username,
-                               @RequestParam("courseid") int courseId) {
+    public RespBean dropCourse(@RequestBody Map<String, Object> param) {
+
         String success = "退课成功";
         String failure = "退课异常";
+        String username = JSON.parseObject(JSON.toJSONString(param.get("username")), String.class);
+        int courseId = JSON.parseObject(JSON.toJSONString(param.get("courseid")), Integer.class);
+
         try {
             userCourseService.dropCourse(username, courseId);
             return RespBean.ok(success);
@@ -81,9 +86,10 @@ public class UserCourseController {
 
     /*根据选课id退课*/
     @PostMapping(value = "/dropcoursebyid")
-    public RespBean dropCourseByid(@RequestParam() Integer id) {
-        String success = "退课成功";
-        String failure = "退课异常";
+    public RespBean dropCourseByid(@RequestBody Map<String,Object> param) {
+        String success = "删除成功";
+        String failure = "删除异常";
+        int id=JSON.parseObject(JSON.toJSONString(param.get("id")),Integer.class);
         try {
             userCourseService.dropCourseByid(id);
         } catch (Exception e) {
@@ -99,7 +105,7 @@ public class UserCourseController {
     public RespBean updateUserCourse(@RequestBody String obj) {
         String success = "更新成功";
         String failure = "更新异常";
-        UserCourse userCourse =  JSON.parseObject(obj).toJavaObject(UserCourse.class);
+        UserCourse userCourse = JSON.parseObject(obj).toJavaObject(UserCourse.class);
         try {
             userCourseService.updateUserCourse(userCourse);
         } catch (Exception e) {

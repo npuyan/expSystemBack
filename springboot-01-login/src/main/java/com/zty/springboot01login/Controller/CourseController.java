@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Repository
@@ -22,7 +23,8 @@ public class CourseController {
 
     /*通过课程id得到本课程所有的实验*/
     @RequestMapping("/getlabbycourseid")
-    public List<CourseLab> getCourseLabBycourseId(@RequestParam("courseid") int courseId) {
+    public List<CourseLab> getCourseLabBycourseId(@RequestBody Map<String,Object> param) {
+        int courseId=JSON.parseObject(JSON.toJSONString(param.get("courseid")),Integer.class);
         return courseService.getCourseLabByCouseId(courseId);
     }
 
@@ -41,10 +43,11 @@ public class CourseController {
 
     /*通过课程id删除课程*/
     @RequestMapping("/delcoursebyid")
-    public RespBean delCourseById(@RequestParam() Integer id) {
+    public RespBean delCourseById(@RequestBody Map<String,Object> param) {
         String success = "删除成功";
         String failure = "删除异常";
-
+        int id=JSON.parseObject(JSON.toJSONString(param.get("id")),Integer.class);
+        System.err.println(id);
         try {
             courseService.delCourseById(id);
         } catch (Exception e) {

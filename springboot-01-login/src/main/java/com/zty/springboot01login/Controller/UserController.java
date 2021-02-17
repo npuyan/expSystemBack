@@ -1,6 +1,8 @@
 package com.zty.springboot01login.Controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.zty.springboot01login.Pojo.Course;
 import com.zty.springboot01login.Pojo.RespBean;
 import com.zty.springboot01login.Pojo.User;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Repository
@@ -22,8 +25,9 @@ public class UserController {
 
     /*通过用户名得到本学生选过的所有课程*/
     @PostMapping(value = "/getselectedcourses")
-    public List<Course> getSelectedCourses(@RequestParam("username") String username) {
+    public List<Course> getSelectedCourses(@RequestBody Map<String,Object> param) {
 //        return new LinkedList<>();
+        String username= param.get("username").toString();
         return userService.getSelectedCourse(username);
     }
 
@@ -59,9 +63,10 @@ public class UserController {
 
     /*通过课程id删除课程*/
     @RequestMapping("/deluserbyid")
-    public RespBean delUserById(@RequestParam() Integer id) {
+    public RespBean delUserById(@RequestBody Map<String,Object> param) {
         String success = "删除成功";
         String failure = "删除异常";
+        int id=JSON.parseObject(JSON.toJSONString(param.get("id")),Integer.class);
 
         try {
             userService.delUserById(id);

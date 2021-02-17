@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Repository
@@ -34,9 +35,10 @@ public class CourseImageController {
 
     /*通过镜像id删除课程*/
     @RequestMapping("/delcourseimagebyid")
-    public RespBean delCourseImageById(@RequestParam() Integer id) {
+    public RespBean delCourseImageById(@RequestBody Map<String,Object> param) {
         String success = "删除成功";
         String failure = "删除异常";
+        int id=JSON.parseObject(JSON.toJSONString(param.get("id")),Integer.class);
         try {
             courseImageService.delCourseImageById(id);
         } catch (Exception e) {

@@ -24,6 +24,6 @@ public class UserCourseTest {
 //        userCourse.setUserId(2);
 //        userCourse.setCourseId(2);
 //        userCourseMapper.insert(userCourse);
-        System.out.println(userCourseController.chooseCourse("111", 1));
+//        System.out.println?(userCourseController.choos?eCourse("111", 1));
     }
 }
