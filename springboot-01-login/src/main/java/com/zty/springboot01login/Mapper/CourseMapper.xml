@@ -161,6 +161,11 @@
         <include refid="Base_Column_List"></include>
         from tb_course
     </select>
+    <select id="selectByAuthor" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select <include refid="Base_Column_List"></include>
+        from tb_course
+        where author = #{author,jdbcType=VARCHAR}
+    </select>
     <!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >-->
     <!--    select-->
     <!--    <include refid="Base_Column_List" />-->

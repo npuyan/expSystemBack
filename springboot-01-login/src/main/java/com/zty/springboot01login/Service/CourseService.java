@@ -21,9 +21,13 @@ public class CourseService {
     @Autowired
     CourseMapper courseMapper;
     @Autowired
-    CourseLabMapper courseLabMapper;
+    CourseLabService courseLabService;
     @Autowired
-    UserCourseMapper userCourseMapper;
+    UserCourseService userCourseService;
+
+    public Course getByPrimaryKey(int id) {
+        return courseMapper.selectByPrimaryKey(id);
+    }
 
     /*得到所有的课程并排序*/
     public List<Course> getAllCourse() {
@@ -43,8 +47,7 @@ public class CourseService {
 
     /*通过课程id得到本课程所有的实验*/
     public List<CourseLab> getCourseLabByCouseId(int courseId) {
-
-        return courseLabMapper.selectByCourseId(courseId);
+        return courseLabService.getByCourseId(courseId);
     }
 
     /*通过课程id删除课程*/
@@ -57,5 +60,10 @@ public class CourseService {
     public boolean updateCourse(Course course) throws Exception {
         courseMapper.updateByPrimaryKey(course);
         return true;
+    }
+
+    /*根据课程作者得到所有课程*/
+    public List<Course> getCourseByAuthor(String username){
+        return courseMapper.selectByAuthor(username);
     }
 }

@@ -22,4 +22,6 @@ public interface CourseMapper {
     int updateByPrimaryKey(Course record);
 
     List<Course> selectAll();
+
+    List<Course> selectByAuthor(String author);
 }

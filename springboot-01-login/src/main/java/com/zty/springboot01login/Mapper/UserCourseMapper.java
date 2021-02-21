@@ -23,6 +23,8 @@ public interface UserCourseMapper {
 
     List<UserCourse> selectByUserId(int userId);
 
+    List<UserCourse> selectByCourseaId(int courseId);
+
     List<UserCourse> selectAll();
 
     UserCourse selectByUserIdAndCourseId(int userId, int courseId);

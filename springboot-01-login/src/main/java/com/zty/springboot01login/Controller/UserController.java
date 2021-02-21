@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.zty.springboot01login.Pojo.Course;
+import com.zty.springboot01login.Pojo.CourseRequest;
 import com.zty.springboot01login.Pojo.RespBean;
 import com.zty.springboot01login.Pojo.User;
 import com.zty.springboot01login.Service.UserService;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,10 +27,18 @@ public class UserController {
 
     /*通过用户名得到本学生选过的所有课程*/
     @PostMapping(value = "/getselectedcourses")
-    public List<Course> getSelectedCourses(@RequestBody Map<String,Object> param) {
+    public List<Course> getSelectedCourses(@RequestBody Map<String, Object> param) {
 //        return new LinkedList<>();
-        String username= param.get("username").toString();
+        String username = JSON.parseObject(JSON.toJSONString(param.get("username")), String.class);
         return userService.getSelectedCourse(username);
+    }
+
+    /*当前登录教师的所有课程*/
+    @RequestMapping("/getcoursebyteacher")
+    public List<Course> getCourseByTeacher(@RequestBody Map<String, Object> param) {
+        String username = JSON.parseObject(JSON.toJSONString(param.get("username")), String.class);
+        System.err.println(username);
+        return userService.getCourseByTeacher(username);
     }
 
     /*得到所有的用户*/
@@ -63,10 +73,10 @@ public class UserController {
 
     /*通过课程id删除课程*/
     @RequestMapping("/deluserbyid")
-    public RespBean delUserById(@RequestBody Map<String,Object> param) {
+    public RespBean delUserById(@RequestBody Map<String, Object> param) {
         String success = "删除成功";
         String failure = "删除异常";
-        int id=JSON.parseObject(JSON.toJSONString(param.get("id")),Integer.class);
+        int id = JSON.parseObject(JSON.toJSONString(param.get("id")), Integer.class);
 
         try {
             userService.delUserById(id);
@@ -98,14 +108,36 @@ public class UserController {
                                     @RequestParam(defaultValue = "1") Integer page,
                                     @RequestParam(defaultValue = "") String sortField,
                                     @RequestParam(defaultValue = "ascend") String sortOrder) {
-        return getUserBytype(results,page,sortField,sortOrder,"2");
+        return getUserBytype(results, page, sortField, sortOrder, "2");
     }
+
     /*得到所有的老师，老师类别是1*/
     @RequestMapping("/getallteacher")
     public List<User> getAllTeacher(@RequestParam(defaultValue = "10") Integer results,
                                     @RequestParam(defaultValue = "1") Integer page,
                                     @RequestParam(defaultValue = "") String sortField,
                                     @RequestParam(defaultValue = "ascend") String sortOrder) {
-        return getUserBytype(results,page,sortField,sortOrder,"1");
+        return getUserBytype(results, page, sortField, sortOrder, "1");
+    }
+
+    /*审核者得到本人需要审核的队列*/
+    @RequestMapping("/getcourserequestqueue")
+    public List<CourseRequest> getCourseRequestQueue(@RequestBody Map<String, Object> param){
+        String username = JSON.parseObject(JSON.toJSONString(param.get("username")), String.class);
+        return userService.getCourseRequestQueue(username);
+    }
+
+    /*审核者审核申请，同意或者拒绝审核队列中的某一个申请*/
+    @RequestMapping("checkcourserequest")
+    public RespBean checkCourseRequest(@RequestBody Map<String, Object> param){
+        CourseRequest courseRequest=JSON.parseObject(JSON.toJSONString(param.get("courserequest")),CourseRequest.class);
+        boolean agree=JSON.parseObject(JSON.toJSONString(param.get("agree")),Boolean.class);
+        try {
+            userService.checkCourseRequest(courseRequest,agree);
+        }catch (Exception e){
+            e.printStackTrace();
+            return RespBean.error("审核失败");
+        }
+        return RespBean.ok("审核成功");
     }
 }

@@ -34,8 +34,8 @@
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://124.70.84.98/experimental_system" userId="zty"
-                        password="123456">
+                        connectionURL="jdbc:mysql://124.70.84.98/experimental_system" userId="root"
+                        password="DhMzWLgAoRN7fGOc">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -104,8 +104,16 @@
 <!--               enableUpdateByExample="false"-->
 <!--               selectByExampleQueryId="false">-->
 <!--        </table>-->
-        <table tableName="tb_user_course"
-               domainObjectName="UserCourse"
+<!--        <table tableName="tb_user_course"-->
+<!--               domainObjectName="UserCourse"-->
+<!--               enableCountByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               selectByExampleQueryId="false">-->
+<!--        </table>-->
+        <table tableName="tb_course_request"
+               domainObjectName="CourseRequest"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"

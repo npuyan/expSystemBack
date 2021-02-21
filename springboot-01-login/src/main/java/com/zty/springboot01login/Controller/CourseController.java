@@ -2,15 +2,16 @@ package com.zty.springboot01login.Controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.zty.springboot01login.Pojo.Course;
-import com.zty.springboot01login.Pojo.CourseLab;
-import com.zty.springboot01login.Pojo.RespBean;
+import com.zty.springboot01login.Pojo.*;
 import com.zty.springboot01login.Service.CourseService;
+import com.zty.springboot01login.Service.UserCourseService;
+import com.zty.springboot01login.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,12 +21,28 @@ import java.util.Map;
 public class CourseController {
     @Autowired
     CourseService courseService;
+    @Autowired
+    UserCourseService userCourseService;
+    @Autowired
+    UserService userService;
 
     /*通过课程id得到本课程所有的实验*/
     @RequestMapping("/getlabbycourseid")
-    public List<CourseLab> getCourseLabBycourseId(@RequestBody Map<String,Object> param) {
-        int courseId=JSON.parseObject(JSON.toJSONString(param.get("courseid")),Integer.class);
+    public List<CourseLab> getCourseLabBycourseId(@RequestBody Map<String, Object> param) {
+        int courseId = JSON.parseObject(JSON.toJSONString(param.get("courseid")), Integer.class);
         return courseService.getCourseLabByCouseId(courseId);
+    }
+
+    /*选择当前课程的所有学生*/
+    @RequestMapping("getallstudentbycourse")
+    public List<User> getAllstudentByCourse(@RequestBody Map<String, Object> param) {
+        int courseId = JSON.parseObject(JSON.toJSONString(param.get("courseid")), Integer.class);
+        List<UserCourse> userCourses = userCourseService.getByCourseId(courseId);
+        List<User> users = new LinkedList<>();
+        for (UserCourse userCourse : userCourses) {
+            users.add(userService.getByUserId(userCourse.getUserId()));
+        }
+        return users;
     }
 
     /*得到所有的课程并按照拼音排序*/
@@ -43,10 +60,10 @@ public class CourseController {
 
     /*通过课程id删除课程*/
     @RequestMapping("/delcoursebyid")
-    public RespBean delCourseById(@RequestBody Map<String,Object> param) {
+    public RespBean delCourseById(@RequestBody Map<String, Object> param) {
         String success = "删除成功";
         String failure = "删除异常";
-        int id=JSON.parseObject(JSON.toJSONString(param.get("id")),Integer.class);
+        int id = JSON.parseObject(JSON.toJSONString(param.get("id")), Integer.class);
         System.err.println(id);
         try {
             courseService.delCourseById(id);

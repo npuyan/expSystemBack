@@ -1,10 +1,12 @@
 package com.zty.springboot01login;
 
 import com.zty.springboot01login.Mapper.CourseLabMapper;
+import com.zty.springboot01login.Mapper.CourseRequestMapper;
 import com.zty.springboot01login.Mapper.UserCourseMapper;
 import com.zty.springboot01login.Mapper.UserMapper;
 import com.zty.springboot01login.Pojo.*;
 import com.zty.springboot01login.Service.UserService;
+import com.zty.springboot01login.Utils.RequestType;
 import com.zty.springboot01login.Utils.UseSSH;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,8 @@ class Springboot01LoginApplicationTests {
     CourseLabMapper courseLabMapper;
     @Autowired
     UseSSH ssh;
+    @Autowired
+    CourseRequestMapper courseRequestMapper;
     @Test
     void test1() {
         System.out.println(mapper1.selectByUserName("zty"));
@@ -76,5 +80,15 @@ class Springboot01LoginApplicationTests {
         for(Field f:fields){
             System.err.println(f);
         }
+    }
+
+    @Test
+    public void testenum(){
+        CourseRequest courseRequest=new CourseRequest();
+        courseRequest.setCourseId(1);
+        courseRequest.setCheckUserId(1);
+        courseRequest.setRequestType(RequestType.add);
+        courseRequest.setRequestUserId(1);
+        courseRequestMapper.insert(courseRequest);
     }
 }

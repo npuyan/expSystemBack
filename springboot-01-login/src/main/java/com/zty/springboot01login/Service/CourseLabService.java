@@ -18,11 +18,6 @@ import java.util.List;
 public class CourseLabService {
     @Autowired
     CourseLabMapper courseLabMapper;
-    @Autowired
-    CourseEnvMapper courseEnvMapper;
-    @Autowired
-    CourseImageMapper courseImageMapper;
-
     /*
     根据用户名和实验查询对应的实验环境：
     如果该用户做过本实验，则启动并返回原有的容器环境
@@ -48,5 +43,9 @@ public class CourseLabService {
     public boolean updateCourseLab(CourseLab course) throws Exception {
         courseLabMapper.updateByPrimaryKey(course);
         return true;
+    }
+    public List<CourseLab> getByCourseId(int id) {
+        List<CourseLab> courseslabs = courseLabMapper.selectByCourseId(id);
+        return courseslabs;
     }
 }
