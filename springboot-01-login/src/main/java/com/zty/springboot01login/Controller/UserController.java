@@ -9,10 +9,13 @@ import com.zty.springboot01login.Pojo.RespBean;
 import com.zty.springboot01login.Pojo.User;
 import com.zty.springboot01login.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.jws.soap.SOAPBinding;
+import java.security.Principal;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +27,16 @@ import java.util.Map;
 public class UserController {
     @Autowired
     UserService userService;
+
+    /*得到当前用户*/
+    @RequestMapping("/getuserprincipal")
+    public User getUserPrincipal(ModelMap model, Principal principal) {
+        if (principal !=null) {
+            return (User) principal;
+        } else {
+            return null;
+        }
+    }
 
     /*通过用户名得到本学生选过的所有课程*/
     @PostMapping(value = "/getselectedcourses")
@@ -122,19 +135,19 @@ public class UserController {
 
     /*审核者得到本人需要审核的队列*/
     @RequestMapping("/getcourserequestqueue")
-    public List<CourseRequest> getCourseRequestQueue(@RequestBody Map<String, Object> param){
+    public List<CourseRequest> getCourseRequestQueue(@RequestBody Map<String, Object> param) {
         String username = JSON.parseObject(JSON.toJSONString(param.get("username")), String.class);
         return userService.getCourseRequestQueue(username);
     }
 
     /*审核者审核申请，同意或者拒绝审核队列中的某一个申请*/
     @RequestMapping("checkcourserequest")
-    public RespBean checkCourseRequest(@RequestBody Map<String, Object> param){
-        CourseRequest courseRequest=JSON.parseObject(JSON.toJSONString(param.get("courserequest")),CourseRequest.class);
-        boolean agree=JSON.parseObject(JSON.toJSONString(param.get("agree")),Boolean.class);
+    public RespBean checkCourseRequest(@RequestBody Map<String, Object> param) {
+        CourseRequest courseRequest = JSON.parseObject(JSON.toJSONString(param.get("courserequest")), CourseRequest.class);
+        boolean agree = JSON.parseObject(JSON.toJSONString(param.get("agree")), Boolean.class);
         try {
-            userService.checkCourseRequest(courseRequest,agree);
-        }catch (Exception e){
+            userService.checkCourseRequest(courseRequest, agree);
+        } catch (Exception e) {
             e.printStackTrace();
             return RespBean.error("审核失败");
         }

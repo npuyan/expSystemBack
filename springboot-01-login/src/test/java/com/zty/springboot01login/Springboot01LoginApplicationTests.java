@@ -6,6 +6,7 @@ import com.zty.springboot01login.Mapper.UserCourseMapper;
 import com.zty.springboot01login.Mapper.UserMapper;
 import com.zty.springboot01login.Pojo.*;
 import com.zty.springboot01login.Service.UserService;
+import com.zty.springboot01login.Utils.K8sConnect;
 import com.zty.springboot01login.Utils.RequestType;
 import com.zty.springboot01login.Utils.UseSSH;
 import org.junit.jupiter.api.Test;
@@ -55,8 +56,9 @@ class Springboot01LoginApplicationTests {
     }
     @Test
     public void addUser(){
-        user.setUserName("testtoo");
-        user.setPassword(new BCryptPasswordEncoder(10).encode("ccccc"));
+        user.setUserName("admin");
+        user.setPassword(new BCryptPasswordEncoder(10).encode("admin"));
+        user.setUserType("0");
         mapper1.insert(user);
     }
     @Test
@@ -90,5 +92,16 @@ class Springboot01LoginApplicationTests {
         courseRequest.setRequestType(RequestType.add);
         courseRequest.setRequestUserId(1);
         courseRequestMapper.insert(courseRequest);
+    }
+
+    @Test
+    public void testK8s(){
+        K8sConnect k8sConnect=new K8sConnect();
+        try {
+            k8sConnect.test();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

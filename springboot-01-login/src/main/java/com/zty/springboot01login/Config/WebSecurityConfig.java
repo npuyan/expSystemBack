@@ -7,6 +7,9 @@ import com.zty.springboot01login.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -15,6 +18,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/index.html", "/static/**", "/login_g");
+        web.ignoring().antMatchers("index.html", "/static/**");
     }
 
     @Override
@@ -62,10 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("0")
                 .and()
-//                TODO
-//                应该增加loginpage
                 .formLogin()
-//                .loginPage()
                 .loginProcessingUrl("/login")
                 .usernameParameter("username").passwordParameter("password")
                 .failureHandler(new AuthenticationFailureHandler() {
@@ -73,7 +75,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
                         httpServletResponse.setContentType("application/json;charset=utf-8");
                         RespBean respBean = null;
-                        if (e != null) {
+                        if (e instanceof BadCredentialsException || e instanceof UsernameNotFoundException) {
+                            respBean = RespBean.error("账户名或密码输入错误");
+                        } else if (e instanceof LockedException) {
+                            respBean = RespBean.error("账号被锁定");
+                        } else if (e instanceof DisabledException) {
+                            respBean = RespBean.error("账户被被禁用");
+                        } else {
                             respBean = RespBean.error("登录失败哦");
                         }
                         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -88,7 +96,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
                         httpServletResponse.setContentType("application/json;charset=utf-8");
-                        RespBean respBean = RespBean.ok("登陆成功",(User)authentication.getPrincipal());
+                        RespBean respBean = RespBean.ok("登陆成功",
+                                SecurityContextHolder.getContext().getAuthentication().getPrincipal());
                         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
                         ObjectMapper om = new ObjectMapper();
                         PrintWriter out = httpServletResponse.getWriter();
@@ -96,7 +105,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         out.flush();
                         out.close();
                     }
-                }).permitAll()
+                })
+                .permitAll()
                 .and()
                 .logout().permitAll()
                 .and()
@@ -106,6 +116,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().accessDeniedHandler(deniedHandler);
         http.addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
     @Bean
     CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
         CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
@@ -114,7 +125,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication authentication) throws IOException, ServletException {
                 resp.setContentType("application/json;charset=utf-8");
                 PrintWriter out = resp.getWriter();
-                RespBean respBean = RespBean.ok("登录成功!");
+                RespBean respBean = RespBean.ok("登录成功!", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
                 out.write(new ObjectMapper().writeValueAsString(respBean));
                 out.flush();
                 out.close();
@@ -124,9 +135,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse resp, AuthenticationException e) throws IOException, ServletException {
                 resp.setContentType("application/json;charset=utf-8");
+                RespBean respBean = null;
+                if (e instanceof BadCredentialsException || e instanceof UsernameNotFoundException) {
+                    respBean = RespBean.error("账户名或密码输入错误");
+                } else if (e instanceof LockedException) {
+                    respBean = RespBean.error("账号被锁定");
+                } else if (e instanceof DisabledException) {
+                    respBean = RespBean.error("账户被被禁用");
+                } else {
+                    respBean = RespBean.error("登录失败哦");
+                }
+                resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                ObjectMapper om = new ObjectMapper();
                 PrintWriter out = resp.getWriter();
-                RespBean respBean = RespBean.error("登录失败!");
-                out.write(new ObjectMapper().writeValueAsString(respBean));
+                out.write(om.writeValueAsString(respBean));
                 out.flush();
                 out.close();
             }
