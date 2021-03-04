@@ -135,13 +135,18 @@
         <include refid="Base_Column_List"></include>
         from tb_course_image
     </select>
-
-<!--    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">-->
-<!--        select-->
-<!--        <include refid="Base_Column_List"/>-->
-<!--        from tb_course_image-->
-<!--        where id = #{id,jdbcType=INTEGER}-->
-<!--    </select>-->
+    <select id="selectByImageName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"></include>
+        from tb_course_image
+        where image_name=#{imageName,jdbcType=VARCHAR}
+    </select>
+    <!--    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">-->
+    <!--        select-->
+    <!--        <include refid="Base_Column_List"/>-->
+    <!--        from tb_course_image-->
+    <!--        where id = #{id,jdbcType=INTEGER}-->
+    <!--    </select>-->
     <!-- Your codes goes here!!! -->
 
 </mapper>

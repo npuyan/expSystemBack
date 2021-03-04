@@ -27,7 +27,7 @@
     <result column="creator_id" property="creatorId" jdbcType="VARCHAR" />
 
     <!-- 镜像id，外键 -->
-    <result column="image_id" property="imageId" jdbcType="VARCHAR" />
+    <result column="image_id" property="imageId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     env_id, env_name, remark, node_name, cpu, memsize, create_time, creator_id, image_id

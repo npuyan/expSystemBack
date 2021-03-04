@@ -92,5 +92,5 @@ public class CourseEnv {
      * Column:    image_id
      * Nullable:  false
      */
-    private String imageId;
+    private Integer imageId;
 }

@@ -34,9 +34,9 @@ public class CourseLabController {
     /*得到所有的实验*/
     @RequestMapping("/getallcourselab")
     public List<CourseLab> getAllcourseLab(@RequestParam(defaultValue = "10") Integer results,
-                                     @RequestParam(defaultValue = "1") Integer page,
-                                     @RequestParam(defaultValue = "") String sortField,
-                                     @RequestParam(defaultValue = "ascend") String sortOrder) {
+                                           @RequestParam(defaultValue = "1") Integer page,
+                                           @RequestParam(defaultValue = "") String sortField,
+                                           @RequestParam(defaultValue = "ascend") String sortOrder) {
         List<CourseLab> allcourse = courseLabService.getAllcourseLab();
         if (sortOrder.equals("descend")) {
             Collections.reverse(allcourse);
@@ -46,10 +46,10 @@ public class CourseLabController {
 
     /*通过实验id删除实验*/
     @RequestMapping("/delcourselabbyid")
-    public RespBean delCourseLabById(@RequestBody Map<String,Object> param) {
+    public RespBean delCourseLabById(@RequestBody Map<String, Object> param) {
         String success = "删除成功";
         String failure = "删除异常";
-        int id=JSON.parseObject(JSON.toJSONString(param.get("id")),Integer.class);
+        int id = JSON.parseObject(JSON.toJSONString(param.get("id")), Integer.class);
 
         try {
             courseLabService.delCourseLabById(id);
@@ -59,6 +59,7 @@ public class CourseLabController {
         }
         return RespBean.ok(success);
     }
+
     /*根据记录中的id更新一条数据*/
     @PostMapping("/updatecourselab")
     public RespBean updateCourseLab(@RequestBody String obj) {
@@ -73,4 +74,5 @@ public class CourseLabController {
         }
         return RespBean.ok(success);
     }
+
 }

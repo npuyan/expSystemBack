@@ -9,6 +9,8 @@ import com.zty.springboot01login.Service.UserService;
 import com.zty.springboot01login.Utils.K8sConnect;
 import com.zty.springboot01login.Utils.RequestType;
 import com.zty.springboot01login.Utils.UseSSH;
+import io.kubernetes.client.ApiException;
+import io.kubernetes.client.models.V1Service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -95,13 +97,15 @@ class Springboot01LoginApplicationTests {
     }
 
     @Test
-    public void testK8s(){
-        K8sConnect k8sConnect=new K8sConnect();
-        try {
-            k8sConnect.test();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+    public void testK8s() throws ApiException {
+//        K8sConnect k8sConnect=new K8sConnect();
+//        try {
+//            k8sConnect.test();
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+        V1Service dorowu2 = K8sConnect.getServiceByName(null, "dorowu2");
+        System.out.println(dorowu2);
     }
 }

@@ -22,4 +22,6 @@ public interface CourseImageMapper {
     int updateByPrimaryKey(CourseImage record);
 
     List<CourseImage> selectAll();
+
+    CourseImage selectByImageName(String imageName);
 }

@@ -17,7 +17,6 @@ public class CourseImageService {
     CourseImageMapper courseImageMapper;
 
     /*得到所有镜像*/
-    @RequestMapping("/getallcourseimage")
     public List<CourseImage> getAllcourseImage() {
         List<CourseImage> allcourseimage = courseImageMapper.selectAll();
         return allcourseimage;
@@ -30,8 +29,18 @@ public class CourseImageService {
     }
 
     /*根据记录中的id更新一条数据*/
-    public boolean updateCourseImage(CourseImage course) throws Exception {
-        courseImageMapper.updateByPrimaryKey(course);
+    public boolean updateCourseImage(CourseImage couseimage) throws Exception {
+        courseImageMapper.updateByPrimaryKey(couseimage);
         return true;
+    }
+
+    /*通过镜像名得到镜像*/
+    public CourseImage getCourseImageByName(String imageName){
+
+         return courseImageMapper.selectByImageName(imageName);
+    }
+    /*通过镜像id得到镜像*/
+    public CourseImage getCourseImageById(int id){
+        return courseImageMapper.selectByPrimaryKey(id);
     }
 }

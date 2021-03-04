@@ -18,13 +18,17 @@ public class CourseEnvService {
         return courseEnvMapper.selectAll();
     }
 
-    public boolean delCourseEnvById(@RequestParam() Integer id) throws Exception{
+    public boolean delCourseEnvById(@RequestParam() Integer id) throws Exception {
         courseEnvMapper.deleteByPrimaryKey(id);
         return true;
     }
 
-    public boolean updateCourseEnv(CourseEnv courseEnv) throws Exception{
+    public boolean updateCourseEnv(CourseEnv courseEnv) throws Exception {
         courseEnvMapper.updateByPrimaryKey(courseEnv);
         return true;
+    }
+
+    public CourseEnv getByEnvId(int envId) {
+        return courseEnvMapper.selectByPrimaryKey(envId);
     }
 }

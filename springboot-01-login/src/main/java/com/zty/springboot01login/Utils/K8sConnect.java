@@ -9,11 +9,14 @@ import io.kubernetes.client.apis.AppsV1Api;
 import io.kubernetes.client.apis.CoreV1Api;
 import io.kubernetes.client.apis.ExtensionsV1beta1Api;
 import io.kubernetes.client.models.*;
+import io.kubernetes.client.proto.V1Apps;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.Config;
 import io.kubernetes.client.util.KubeConfig;
 import io.kubernetes.client.util.Yaml;
 import io.kubernetes.client.util.credentials.AccessTokenAuthentication;
+import javafx.beans.DefaultProperty;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,10 +27,14 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Map;
 
+@Component
 public class K8sConnect {
     /*TODO 使用.kube/config无效，好像是ip是集群内部的，所以此处写死master节点的url，若需要进行动态master节点则需要重写脚本*/
     private static String url = "https://124.70.84.98:6443";
     private static String token = "";
+    public static String deploymentPath = "src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml";
+    public static String podPath = "src/main/java/com/zty/springboot01login/Utils/createPod.yaml";
+    public static String servicePath = "src/main/java/com/zty/springboot01login/Utils/createService.yaml";
 
     /*初始化client连接*/
     static {
@@ -45,6 +52,7 @@ public class K8sConnect {
 //        }
     }
 
+    /*Pod操作*/
     /* *
      * @描述：加载yaml配置文件
      * @param path
@@ -53,7 +61,7 @@ public class K8sConnect {
      */
     public static Object loadYaml(String path) throws Exception {
         Reader reader = new FileReader(path);
-        File file=new File(path);
+        File file = new File(path);
         return Yaml.load(file);
     }
 
@@ -65,6 +73,7 @@ public class K8sConnect {
      * @author zty
      */
     public static V1Pod creatPod(String nameSpace, V1Pod body) throws ApiException {
+        nameSpace=nameSpaceNullToDefault(nameSpace);
         return new CoreV1Api().createNamespacedPod(nameSpace, body, "true", "true", null);
     }
 
@@ -75,10 +84,12 @@ public class K8sConnect {
      * @return void
      */
     public static void deletePod(String nameSpace, String podName) throws Exception {
+        nameSpace=nameSpaceNullToDefault(nameSpace);
         new CoreV1Api().deleteNamespacedPod(podName, nameSpace, "true",
                 null, null, null, null, null);
     }
 
+    /*Service操作*/
     /* *
      * @描述：创建service
      * @param nameSpace 命名空间
@@ -86,6 +97,7 @@ public class K8sConnect {
      * @return void
      */
     public static void createService(String nameSpace, V1Service sv) throws ApiException {
+        nameSpace=nameSpaceNullToDefault(nameSpace);
         new CoreV1Api().createNamespacedService(nameSpace, sv, "true", "true", null);
     }
 
@@ -96,9 +108,22 @@ public class K8sConnect {
      * @return void
      */
     public static void deleteService(String nameSpace, String serviceName) throws Exception {
+        nameSpace=nameSpaceNullToDefault(nameSpace);
         new CoreV1Api().deleteNamespacedService(serviceName, nameSpace, null, null, null, null, null, null);
     }
 
+    /* *
+     * @描述：得到service
+     * @param nameSpace
+     * @param serviceName
+     * @return io.kubernetes.client.models.V1Service
+     */
+    public static V1Service getServiceByName(String nameSpace, String serviceName) throws ApiException {
+        nameSpace = nameSpaceNullToDefault(nameSpace);
+        return new CoreV1Api().readNamespacedService(serviceName, nameSpace, null, null, null);
+    }
+
+    /*Deployment操作*/
     /* *
      * @描述：创建deployment
      * @param nameSpace
@@ -106,6 +131,7 @@ public class K8sConnect {
      * @return void
      */
     public static void createDeployment(String nameSpace, V1Deployment body) throws ApiException {
+        nameSpace=nameSpaceNullToDefault(nameSpace);
         new AppsV1Api().createNamespacedDeployment(nameSpace, body, "true", null, null);
     }
 
@@ -116,7 +142,31 @@ public class K8sConnect {
      * @return void
      */
     public static void deleteDeployment(String nameSpace, String deployeName) throws ApiException {
+        nameSpace = nameSpaceNullToDefault(nameSpace);
         new AppsV1Api().deleteNamespacedDeployment(deployeName, nameSpace, "true", null, null, null, null, null);
+    }
+
+    /* *
+     * @描述:通过namespace和deploymentname查找Deployment
+     * @param namespace
+     * @param deployeName
+     * @return io.kubernetes.client.models.V1Deployment
+     */
+    public static V1Deployment getDeploymentByName(String nameSpace, String deployeName) throws ApiException {
+        nameSpace = nameSpaceNullToDefault(nameSpace);
+        return new AppsV1Api().readNamespacedDeployment(deployeName, nameSpace, "true", null, null);
+    }
+
+    /* *
+     * @描述：如果namespace是null，就传回"default"
+     * @param nameSpace
+     * @return java.lang.String
+     */
+    public static String nameSpaceNullToDefault(String nameSpace) {
+        if (nameSpace == null) {
+            return "default";
+        }
+        return nameSpace;
     }
 
     /*just a test -_-*/
@@ -147,8 +197,8 @@ public class K8sConnect {
 //            e.printStackTrace();
 //        }
         try {
-            V1Deployment deployment = (V1Deployment)loadYaml("src/main/java/com/zty/springboot01login/Utils/dorowu4.yaml");
-            createDeployment("default",deployment);
+            V1Deployment deployment = (V1Deployment) loadYaml("src/main/java/com/zty/springboot01login/Utils/dorowu4.yaml");
+            createDeployment("default", deployment);
         } catch (Exception e) {
             e.printStackTrace();
         }

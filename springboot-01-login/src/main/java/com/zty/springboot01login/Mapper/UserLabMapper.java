@@ -22,4 +22,5 @@ public interface UserLabMapper {
 
     int updateByPrimaryKey(UserLab record);
 
+    UserLab selectByUserIdAndLabId(Integer userid,Integer labid);
 }
