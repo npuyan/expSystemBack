@@ -10,6 +10,8 @@ import com.zty.springboot01login.Utils.RequestType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,6 +31,7 @@ public class UserCourseService {
     UserCourse userCourse;
     @Autowired
     CourseRequest courseRequest;
+
     /*返回所有的选课信息*/
     public List<UserCourse> getAllUserCourse() {
         return userCourseMapper.selectAll();
@@ -52,14 +55,19 @@ public class UserCourseService {
         courseRequest.setRequestUserId(user.getUserId());
         courseRequest.setCourseId(courseId);
         courseRequest.setCheckUserId(userService.getByUserName(courseService.getByPrimaryKey(courseId).getAuthor()).getUserId());
+        courseRequest.setState(0);
+        /*添加申请时间*/
+        courseRequest.setRequestTime(new Date().toString());
         courseRequestMapper.insert(courseRequest);
     }
+
     /*同意给某一用户选择某一课程,添加到选课表当中*/
-    public void agreeChooseCourse(CourseRequest courseRequest){
+    public void agreeChooseCourse(CourseRequest courseRequest) {
         userCourse.setUserId(courseRequest.getRequestUserId());
         userCourse.setCourseId(courseRequest.getCourseId());
         userCourseMapper.insert(userCourse);
     }
+
     /*给某一用户退掉某一课程*/
     public void dropCourse(String username, int courseId) throws Exception {
         User user = userService.getByUserName(username);

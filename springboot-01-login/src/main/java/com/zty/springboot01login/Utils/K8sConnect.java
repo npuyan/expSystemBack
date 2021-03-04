@@ -1,38 +1,156 @@
 package com.zty.springboot01login.Utils;
 
+import com.google.gson.Gson;
+import com.google.protobuf.Api;
 import io.kubernetes.client.ApiClient;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.Configuration;
+import io.kubernetes.client.apis.AppsV1Api;
 import io.kubernetes.client.apis.CoreV1Api;
-import io.kubernetes.client.models.V1NamespaceList;
-import io.kubernetes.client.models.V1Pod;
-import io.kubernetes.client.models.V1PodList;
+import io.kubernetes.client.apis.ExtensionsV1beta1Api;
+import io.kubernetes.client.models.*;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.Config;
 import io.kubernetes.client.util.KubeConfig;
+import io.kubernetes.client.util.Yaml;
 import io.kubernetes.client.util.credentials.AccessTokenAuthentication;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
+import java.util.Map;
 
 public class K8sConnect {
-    private static String ip="124.70.84.98";
-    private static int port=22;
     /*TODO 使用.kube/config无效，好像是ip是集群内部的，所以此处写死master节点的url，若需要进行动态master节点则需要重写脚本*/
-    private static String url="https://124.70.84.98:6443";
-    private static String token="eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkYXNoYm9hcmQtYWRtaW4tdG9rZW4tYjI3ZjQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGFzaGJvYXJkLWFkbWluIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiMzY3NDhkN2UtNzFmOC0xMWViLWE2MTAtZmExNjNlMjY2MDQ4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmRhc2hib2FyZC1hZG1pbiJ9.irCWDuRkQ4y7DKof32np2Ybdeig5DXaXsR42FRV2qfvjq_-3TJyBkoIPXt-QLiFoN51Ke14wurHYs8EXSNnpWO3myF9R_99E674qQYPJSfZaFhUC268qeuH2M-sbjTr12unRfLZ8UjXGyb97nnGfYf-Dp1f1RS_cXSMgTQ19wYcfb7E-T20_PXJ1Z1y99d3rgftYm7Z1g5UymK6DtUDiv0VR270fP2cWEudNuAPl_-sNIqnb7a3h7H-RULJHIYPQVKqIaO6cDqqyJXczhzsd4nfEzWKcT8fMORgZxGwLVb6FVkDT4cMlNQqtSyQ6I0gnr5qWbYsi__SbEuZS1SwXQQ";
-//    private String filename="src/main/java/com/zty/springboot01login/Utils/k8s.conf";
-    public void test() throws IOException, ApiException {
+    private static String url = "https://124.70.84.98:6443";
+    private static String token = "";
+
+    /*初始化client连接*/
+    static {
+        System.out.println(url);
+        System.out.println(token);
         ApiClient client = new ClientBuilder().setBasePath(url).setVerifyingSsl(false).setAuthentication(new AccessTokenAuthentication(token)).build();
         Configuration.setDefaultApiClient(client);
-        System.out.println(client.getBasePath());
-        CoreV1Api api = new CoreV1Api();
+//        try {
+//            ApiClient client=ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader("src/main/java/com/zty/springboot01login/Utils/admin.conf"))).build();
+//            client.setBasePath(url);
+//            Configuration.setDefaultApiClient(client);
+//            System.out.println(client.getBasePath());;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
 
-        // invokes the CoreV1Api client
-        V1NamespaceList v1NamespaceList = api.listNamespace(null, null, null, null, null, null, null, null);
-        V1PodList list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null);
-        for (V1Pod item : list.getItems()) {
-            System.out.println(item.getMetadata().getName());
+    /* *
+     * @描述：加载yaml配置文件
+     * @param path
+     * @return java.lang.Object
+     * @author zty
+     */
+    public static Object loadYaml(String path) throws Exception {
+        Reader reader = new FileReader(path);
+        File file=new File(path);
+        return Yaml.load(file);
+    }
+
+    /* *
+     * @描述：创建pod
+     * @param nameSpace 命名空间
+     * @param body  pod体
+     * @return io.kubernetes.client.models.V1Pod
+     * @author zty
+     */
+    public static V1Pod creatPod(String nameSpace, V1Pod body) throws ApiException {
+        return new CoreV1Api().createNamespacedPod(nameSpace, body, "true", "true", null);
+    }
+
+    /* *
+     * @描述：删除pod
+     * @param nameSpace 命名空间
+     * @param podName pod名字
+     * @return void
+     */
+    public static void deletePod(String nameSpace, String podName) throws Exception {
+        new CoreV1Api().deleteNamespacedPod(podName, nameSpace, "true",
+                null, null, null, null, null);
+    }
+
+    /* *
+     * @描述：创建service
+     * @param nameSpace 命名空间
+     * @param sv service体
+     * @return void
+     */
+    public static void createService(String nameSpace, V1Service sv) throws ApiException {
+        new CoreV1Api().createNamespacedService(nameSpace, sv, "true", "true", null);
+    }
+
+    /* *
+     * @描述：删除service
+     * @param nameSpace 命名空间
+     * @param serviceName  service名
+     * @return void
+     */
+    public static void deleteService(String nameSpace, String serviceName) throws Exception {
+        new CoreV1Api().deleteNamespacedService(serviceName, nameSpace, null, null, null, null, null, null);
+    }
+
+    /* *
+     * @描述：创建deployment
+     * @param nameSpace
+     * @param body
+     * @return void
+     */
+    public static void createDeployment(String nameSpace, V1Deployment body) throws ApiException {
+        new AppsV1Api().createNamespacedDeployment(nameSpace, body, "true", null, null);
+    }
+
+    /* *
+     * @描述：删除deployment
+     * @param nameSpace
+     * @param deployeName
+     * @return void
+     */
+    public static void deleteDeployment(String nameSpace, String deployeName) throws ApiException {
+        new AppsV1Api().deleteNamespacedDeployment(deployeName, nameSpace, "true", null, null, null, null, null);
+    }
+
+    /*just a test -_-*/
+    public void test() throws IOException, ApiException {
+//        CoreV1Api api = new CoreV1Api();
+//        // invokes the CoreV1Api client
+//        V1PodList list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null);
+//        for (V1Pod item : list.getItems()) {
+//            System.out.println(item.getMetadata().getName());
+//        }
+//        V1NamespaceList aTrue = api.listNamespace("true", null, null, null, null, null, null, null);
+//
+//        for (V1Namespace namespace : aTrue.getItems()) {
+//            System.out.println(namespace);
+//        }
+//        ExtensionsV1beta1Api apiInstance = new ExtensionsV1beta1Api();
+////        apiInstance.deleteNamespacedDeployment("web","default",null,null,null,null,null,null);
+//        ExtensionsV1beta1DeploymentList extensionsV1beta1DeploymentList = apiInstance.listNamespacedDeployment("default", "true", null, null, null, null, null, null, null);
+//        for (ExtensionsV1beta1Deployment e : extensionsV1beta1DeploymentList.getItems()) {
+//            System.out.println(e);
+//        }
+
+//        try {
+//            ExtensionsV1beta1Api apiInstance2 = new ExtensionsV1beta1Api();
+//            V1Status v1Status = apiInstance2.deleteNamespacedDeployment("web", "default", "true", null, null, null, null, null);
+//            System.out.println(v1Status);
+//        } catch (IllegalStateException e) {
+//            e.printStackTrace();
+//        }
+        try {
+            V1Deployment deployment = (V1Deployment)loadYaml("src/main/java/com/zty/springboot01login/Utils/dorowu4.yaml");
+            createDeployment("default",deployment);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
