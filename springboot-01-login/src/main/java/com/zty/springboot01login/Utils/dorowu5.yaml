@@ -1,6 +1,0 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: testDeployment
-  annotations:
-    deployment.kubernetes.io/revision: "1"

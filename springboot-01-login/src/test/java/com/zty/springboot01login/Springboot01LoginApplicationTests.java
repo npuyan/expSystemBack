@@ -8,6 +8,7 @@ import com.zty.springboot01login.Pojo.*;
 import com.zty.springboot01login.Service.UserService;
 import com.zty.springboot01login.Utils.K8sConnect;
 import com.zty.springboot01login.Utils.RequestType;
+import com.zty.springboot01login.Utils.SftpOperator;
 import com.zty.springboot01login.Utils.UseSSH;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.V1Service;
@@ -107,5 +108,22 @@ class Springboot01LoginApplicationTests {
 //        }
         V1Service dorowu2 = K8sConnect.getServiceByName(null, "dorowu2");
         System.out.println(dorowu2);
+    }
+
+    @Test
+    public void testSshd() throws Exception{
+        SftpOperator sftpOperator=new SftpOperator();
+        try {
+            sftpOperator.login();
+            sftpOperator.download("chengji.pdf","src/main/java/META-INF/chengji.pdf");
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                sftpOperator.logout();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }

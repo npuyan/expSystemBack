@@ -4,13 +4,24 @@ import com.zty.springboot01login.Mapper.UserLabMapper;
 import com.zty.springboot01login.Pojo.*;
 import com.zty.springboot01login.Utils.K8sConnect;
 import com.zty.springboot01login.Utils.Pod;
+import com.zty.springboot01login.Utils.SftpOperator;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.apis.CoreV1Api;
 import io.kubernetes.client.models.V1Deployment;
 import io.kubernetes.client.models.V1Service;
+import org.apache.commons.compress.utils.IOUtils;
+import org.eclipse.sisu.space.Streams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 
 @Service
@@ -28,6 +39,8 @@ public class UserLabService {
     @Autowired
     UserService userService;
 
+    private String tmpFileDir="springboot-01-login/src/main/java/META-INF/";
+    /*通过实验和用户创建或者打开容器*/
     public int openLabEnv(String username, CourseLab courseLab) throws Exception {
         User user = userService.getByUserName(username);
         UserLab userLab = userLabMapper.selectByUserIdAndLabId(user.getUserId(), courseLab.getLabId());
@@ -121,4 +134,66 @@ public class UserLabService {
             throw new NoSuchFieldException("k8s未找到对应的Service！");
         }
     }
+
+//    /*下载文件*/
+//    public Object downloadFile(String filename, final HttpServletResponse response, final HttpServletRequest request) {
+//        OutputStream outputStream = null;
+//        InputStream inputStream = null;
+//        try {
+//            // 取得输出流
+//            outputStream = response.getOutputStream();
+//            // 清空输出流
+//            response.reset();
+//            response.setContentType("application/x-download;charset=GBK");
+//            response.setHeader("Content-Disposition", "attachment;filename=" + filename);
+//            //下载文件
+//            SftpOperator sftpOperator = new SftpOperator();
+//            try {
+//                sftpOperator.login();
+//                sftpOperator.download(filename, outputStream);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            //刷新
+//            response.getOutputStream().flush();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }//文件的关闭放在finally中
+//        finally {
+//            try {
+//                if (inputStream != null) {
+//                    inputStream.close();
+//                }
+//                if (outputStream != null) {
+//                    outputStream.close();
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return null;
+//    }
+//    /* *
+//     * @描述：上传文件
+//     * @param multipartFiles
+//    	 * @param response
+//    	 * @param request
+//     * @return java.lang.Object
+//     */
+//    public Object uploadFile(Integer labid,MultipartFile multipartFiles , final HttpServletResponse response, final HttpServletRequest request)
+//    {
+//        try {
+//            if(multipartFiles!=null){
+//                SftpOperator sftpOperator = new SftpOperator();
+//                String filename=multipartFiles.getOriginalFilename();
+//                /*上传文件*/
+//                sftpOperator.login();
+//                sftpOperator.upload(filename,multipartFiles.getInputStream());
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        return RespBean.ok("上传成功");
+//    }
 }

@@ -9,7 +9,10 @@ import com.zty.springboot01login.Service.CourseLabService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -75,4 +78,15 @@ public class CourseLabController {
         return RespBean.ok(success);
     }
 
+    /*通过文件名下载文件*/
+    @RequestMapping("/downloadfile")
+    public Object downloadFile(@RequestParam String filename, final HttpServletResponse response, final HttpServletRequest request) {
+        return courseLabService.downloadFile(filename, response, request);
+    }
+
+    /*上传实验id和实验文件*/
+    @RequestMapping("/uploadfile")
+    public Object uploadFile(@RequestParam("labid") Integer labId, @RequestParam("file") MultipartFile multipartFiles, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
+        return courseLabService.uploadFile(labId, multipartFiles, response, request);
+    }
 }
