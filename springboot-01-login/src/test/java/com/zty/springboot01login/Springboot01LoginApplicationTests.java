@@ -11,6 +11,7 @@ import com.zty.springboot01login.Utils.RequestType;
 import com.zty.springboot01login.Utils.SftpOperator;
 import com.zty.springboot01login.Utils.UseSSH;
 import io.kubernetes.client.ApiException;
+import io.kubernetes.client.models.V1Deployment;
 import io.kubernetes.client.models.V1Service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,16 +99,11 @@ class Springboot01LoginApplicationTests {
     }
 
     @Test
-    public void testK8s() throws ApiException {
-//        K8sConnect k8sConnect=new K8sConnect();
-//        try {
-//            k8sConnect.test();
-//        }
-//        catch (Exception e){
-//            e.printStackTrace();
-//        }
+    public void testK8s() throws Exception {
         V1Service dorowu2 = K8sConnect.getServiceByName(null, "dorowu2");
         System.out.println(dorowu2);
+        V1Deployment deployment1 = (V1Deployment) K8sConnect.loadYaml("src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml");
+//        K8sConnect.createDeployment(null, deployment1);
     }
 
     @Test
@@ -125,5 +121,10 @@ class Springboot01LoginApplicationTests {
                 e.printStackTrace();
             }
         }
+//        V1Deployment deployment1 = (V1Deployment) K8sConnect.loadYaml("src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml");
+//        K8sConnect.createDeployment(null, deployment1);
+
+        V1Service service = (V1Service) K8sConnect.loadYaml("src/main/java/com/zty/springboot01login/Utils/createService.yaml");
+        K8sConnect.createService(null,service);
     }
 }

@@ -38,59 +38,5 @@ public class UserLabController {
         String username = JSON.parseObject(JSON.toJSONString(param.get("username")), String.class);
         CourseLab courseLab = JSON.parseObject(JSON.toJSONString(param.get("courselab")), CourseLab.class);
         return RespBean.ok("成功得到端口", userLabService.openLabEnv(username, courseLab));
-//        return RespBean.ok("成功得到端口",31805);
     }
-
-    /*通过path得到文件 遗弃*/
-//    @RequestMapping("/getfilebyurl")
-//    public ResponseEntity<byte[]> getFileByurl(@RequestBody Map<String, Object> param) throws Exception {
-//        String path = JSON.parseObject(JSON.toJSONString(param.get("path")), String.class);
-//        SftpOperator sftpOperator = new SftpOperator();
-//        try {
-//            sftpOperator.login();
-//            sftpOperator.list("").forEach(p -> System.out.println(p.toString()));
-//            sftpOperator.download("chengji.pdf", "springboot-01-login/src/main/java/META-INF/chengji.pdf");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        File file = new File("springboot-01-login/src/main/java/META-INF/chengji.pdf");
-//        if (!file.exists()) {
-//            throw new FileNotFoundException(file.getName());
-//        }
-//        FileChannel channel = null;
-//        FileInputStream fs = null;
-//        try {
-//            fs = new FileInputStream(file);
-//            channel = fs.getChannel();
-//            ByteBuffer byteBuffer = ByteBuffer.allocate((int) channel.size());
-//            while ((channel.read(byteBuffer)) > 0) {
-//                //no nothing
-//            }
-//            ResponseEntity<byte[]> response = null;
-//            HttpHeaders headers = new HttpHeaders();
-//            //这行代码比较重要，有这个属性则告知浏览器下载文件，无则使用浏览器打开PDF
-////        headers.setContentDispositionFormData("name", "filename");
-//            headers.setContentType(MediaType.parseMediaType("application/pdf"));
-//            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-//            byte[] content = byteBuffer.array();
-//            response = new ResponseEntity<byte[]>(content, headers, HttpStatus.OK);
-//            return response;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            file.delete();
-//        }
-//        return null;
-//    }
-
-//    @RequestMapping("/downloadfile")
-//    public Object downloadFile(@RequestParam String filename, final HttpServletResponse response, final HttpServletRequest request) {
-//        return userLabService.downloadFile(filename,response,request);
-//    }
-//    @RequestMapping("/uploadfile")
-//    public Object uploadFile(@RequestParam("labid") Integer labId,@RequestParam("file") MultipartFile multipartFiles , final HttpServletResponse response, final HttpServletRequest request)
-//    {
-//        System.err.println(labId);
-//        return userLabService.uploadFile(multipartFiles,response,request);
-//    }
 }

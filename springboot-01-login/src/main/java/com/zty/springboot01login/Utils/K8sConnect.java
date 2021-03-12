@@ -32,9 +32,9 @@ public class K8sConnect {
     /*TODO 使用.kube/config无效，好像是ip是集群内部的，所以此处写死master节点的url，若需要进行动态master节点则需要重写脚本*/
     private static String url = "https://124.70.84.98:6443";
     private static String token = "";
-    public static String deploymentPath = "src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml";
-    public static String podPath = "src/main/java/com/zty/springboot01login/Utils/createPod.yaml";
-    public static String servicePath = "src/main/java/com/zty/springboot01login/Utils/createService.yaml";
+    public static String deploymentPath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml";
+    public static String podPath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createPod.yaml";
+    public static String servicePath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createService.yaml";
 
     /*初始化client连接*/
     static {
@@ -98,7 +98,7 @@ public class K8sConnect {
      */
     public static void createService(String nameSpace, V1Service sv) throws ApiException {
         nameSpace=nameSpaceNullToDefault(nameSpace);
-        new CoreV1Api().createNamespacedService(nameSpace, sv, "true", "true", null);
+        new CoreV1Api().createNamespacedService(nameSpace, sv, "true", null, null);
     }
 
     /* *

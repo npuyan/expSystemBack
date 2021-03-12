@@ -4,15 +4,15 @@ metadata:
   annotations:
     deployment.kubernetes.io/revision: "1"
   labels:
-    app: dorowu3
-  name: dorowu4
+    app: pod-111-1
+  name: pod-111-1
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: dorowu3
+      app: pod-111-1
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-        app: dorowu3
+        app: pod-111-1
     spec:
       containers:
         - image: dorowu/ubuntu-desktop-lxde-vnc:bionic-arm64

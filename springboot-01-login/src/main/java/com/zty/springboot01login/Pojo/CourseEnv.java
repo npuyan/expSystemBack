@@ -86,7 +86,7 @@ public class CourseEnv {
     private String creatorId;
 
     /**
-     * 镜像id，外键
+     * 镜像id，外键,对应的是image的主键id，不是实际imageid
      *
      * Table:     tb_course_env
      * Column:    image_id
