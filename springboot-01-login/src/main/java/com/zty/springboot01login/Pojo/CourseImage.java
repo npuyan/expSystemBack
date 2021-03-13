@@ -74,5 +74,5 @@ public class CourseImage {
      * Column:    creato_id
      * Nullable:  false
      */
-    private String creatoId;
+    private int creatorId;
 }

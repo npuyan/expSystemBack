@@ -24,7 +24,7 @@
     <result column="create_time" property="createTime" jdbcType="CHAR" />
 
     <!-- 创建人 -->
-    <result column="creator_id" property="creatorId" jdbcType="VARCHAR" />
+    <result column="creator_id" property="creatorId" jdbcType="INTEGER" />
 
     <!-- 镜像id，外键 -->
     <result column="image_id" property="imageId" jdbcType="INTEGER" />
@@ -49,7 +49,7 @@
       )
     values (#{envId,jdbcType=INTEGER}, #{envName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
       #{nodeName,jdbcType=VARCHAR}, #{cpu,jdbcType=INTEGER}, #{memsize,jdbcType=INTEGER},
-      #{createTime,jdbcType=CHAR}, #{creatorId,jdbcType=VARCHAR}, #{imageId,jdbcType=VARCHAR}
+      #{createTime,jdbcType=CHAR}, #{creatorId,jdbcType=INTEGER}, #{imageId,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" >
@@ -135,7 +135,7 @@
         create_time = #{createTime,jdbcType=CHAR},
       </if>
       <if test="creatorId != null" >
-        creator_id = #{creatorId,jdbcType=VARCHAR},
+        creator_id = #{creatorId,jdbcType=INTEGER},
       </if>
       <if test="imageId != null" >
         image_id = #{imageId,jdbcType=VARCHAR},
@@ -151,7 +151,7 @@
       cpu = #{cpu,jdbcType=INTEGER},
       memsize = #{memsize,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=CHAR},
-      creator_id = #{creatorId,jdbcType=VARCHAR},
+      creator_id = #{creatorId,jdbcType=INTEGER},
       image_id = #{imageId,jdbcType=VARCHAR}
     where env_id = #{envId,jdbcType=INTEGER}
   </update>

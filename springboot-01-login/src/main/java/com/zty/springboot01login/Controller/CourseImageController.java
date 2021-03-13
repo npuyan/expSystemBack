@@ -35,10 +35,10 @@ public class CourseImageController {
 
     /*通过镜像id删除课程*/
     @RequestMapping("/delcourseimagebyid")
-    public RespBean delCourseImageById(@RequestBody Map<String,Object> param) {
+    public RespBean delCourseImageById(@RequestBody Map<String, Object> param) {
         String success = "删除成功";
         String failure = "删除异常";
-        int id=JSON.parseObject(JSON.toJSONString(param.get("id")),Integer.class);
+        int id = JSON.parseObject(JSON.toJSONString(param.get("id")), Integer.class);
         try {
             courseImageService.delCourseImageById(id);
         } catch (Exception e) {
@@ -61,5 +61,12 @@ public class CourseImageController {
             return RespBean.error(failure);
         }
         return RespBean.ok(success);
+    }
+
+    /*根据用户id得到本用户创建的所有镜像加上基础镜像*/
+    @PostMapping("/getimagebycreatorid")
+    public List<CourseImage> getCourseImageByCreatorId(@RequestBody Map<String, Object> param) {
+        int creatorid = JSON.parseObject(JSON.toJSONString(param.get("creatorid")), Integer.class);
+        return courseImageService.getCourseImageByCreatorId(creatorid);
     }
 }
