@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -70,7 +71,8 @@ public class CourseService {
     }
 
     /*增加一条课程记录*/
-    public boolean addCourse(Course course) throws Exception{
+    public boolean addCourse(Course course) throws Exception {
+        course.setCreateTime(String.valueOf(new Date().getTime()));
         courseMapper.insert(course);
         return true;
     }
@@ -88,7 +90,7 @@ public class CourseService {
         }
         try {
             if (multipartFiles != null) {
-                String filename = course1.getCourseId()+"_"+course1.getCourseName() + ".jpg";
+                String filename = course1.getCourseId() + "_" + course1.getCourseName() + ".jpg";
                 /*上传文件*/
                 SftpOperator.uploadFile(filename, multipartFiles, response, request);
                 /*改变course的doc*/
