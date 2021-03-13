@@ -1,5 +1,6 @@
 package com.zty.springboot01login.Utils;
 
+import com.zty.springboot01login.Pojo.RespBean;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.apache.sshd.client.SshClient;
@@ -7,7 +8,12 @@ import org.apache.sshd.client.session.ClientSession;
 import org.apache.sshd.sftp.client.SftpClientFactory;
 import org.apache.sshd.sftp.client.fs.SftpFileSystem;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.RescaleOp;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -167,5 +173,58 @@ public class SftpOperator {
         ftpdir = this.ftpdir + ftpdir;
         Path remoteFile = fs.getDefaultDir().resolve(ftpdir);
         return Files.list(remoteFile).collect(Collectors.toList());
+    }
+
+    /*下载文件,并流式返回*/
+    public static RespBean downloadFile(String filename, final HttpServletResponse response, final HttpServletRequest request) {
+        OutputStream outputStream = null;
+        InputStream inputStream = null;
+        try {
+            // 取得输出流
+            outputStream = response.getOutputStream();
+            // 清空输出流
+            response.reset();
+            response.setContentType("application/x-download;charset=GBK");
+            response.setHeader("Content-Disposition", "attachment;filename=" + filename);
+            //下载文件
+            SftpOperator sftpOperator = new SftpOperator();
+            try {
+                sftpOperator.login();
+                sftpOperator.download(filename, outputStream);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //刷新
+            response.getOutputStream().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }//文件的关闭放在finally中
+        finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return RespBean.ok("下载成功");
+    }
+
+    /*上传文件*/
+    public static RespBean uploadFile(String rename, MultipartFile multipartFile, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
+        try {
+            if (multipartFile != null) {
+                SftpOperator sftpOperator = new SftpOperator();
+                sftpOperator.login();
+                sftpOperator.upload(rename, multipartFile.getInputStream());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return RespBean.ok("上传 成功");
     }
 }

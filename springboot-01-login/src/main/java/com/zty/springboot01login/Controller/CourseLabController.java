@@ -6,6 +6,7 @@ import com.zty.springboot01login.Pojo.CourseEnv;
 import com.zty.springboot01login.Pojo.CourseLab;
 import com.zty.springboot01login.Pojo.RespBean;
 import com.zty.springboot01login.Service.CourseLabService;
+import com.zty.springboot01login.Utils.SftpOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
@@ -80,13 +81,13 @@ public class CourseLabController {
 
     /*通过文件名下载文件*/
     @RequestMapping("/downloadfile")
-    public Object downloadFile(@RequestParam String filename, final HttpServletResponse response, final HttpServletRequest request) {
+    public RespBean downloadLabFile(@RequestParam String filename, final HttpServletResponse response, final HttpServletRequest request) {
         return courseLabService.downloadFile(filename, response, request);
     }
 
     /*上传实验id和实验文件*/
     @RequestMapping("/uploadfile")
-    public Object uploadFile(@RequestParam("labid") Integer labId, @RequestParam("file") MultipartFile multipartFiles, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
+    public RespBean uploadLabFile(@RequestParam("labid") Integer labId, @RequestParam("file") MultipartFile multipartFiles, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
         return courseLabService.uploadFile(labId, multipartFiles, response, request);
     }
 }

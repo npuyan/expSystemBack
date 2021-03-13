@@ -65,66 +65,34 @@ public class CourseLabService {
         return courseslabs;
     }
 
-    /*下载文件*/
-    public Object downloadFile(String filename, final HttpServletResponse response, final HttpServletRequest request) {
-        OutputStream outputStream = null;
-        InputStream inputStream = null;
-        try {
-            // 取得输出流
-            outputStream = response.getOutputStream();
-            // 清空输出流
-            response.reset();
-            response.setContentType("application/x-download;charset=GBK");
-            response.setHeader("Content-Disposition", "attachment;filename=" + filename);
-            //下载文件
-            SftpOperator sftpOperator = new SftpOperator();
-            try {
-                sftpOperator.login();
-                sftpOperator.download(filename, outputStream);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            //刷新
-            response.getOutputStream().flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }//文件的关闭放在finally中
-        finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
+    /* *
+     * @描述：下载实验文件
+     * @param filename
+     * @param response
+     * @param request
+     * @return java.lang.Object
+     */
+    public RespBean downloadFile(@RequestParam String filename, final HttpServletResponse response, final HttpServletRequest request) {
+        return SftpOperator.downloadFile(filename, response, request);
     }
 
     /* *
-     * @描述：上传文件
+     * @描述：上传实验文件
      * @param multipartFiles
      * @param response
      * @param request
      * @return java.lang.Object
      */
-    public Object uploadFile(Integer labid, MultipartFile multipartFiles, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
+    public RespBean uploadFile(Integer labid, MultipartFile multipartFiles, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
         CourseLab courseLab = courseLabMapper.selectByPrimaryKey(labid);
         if (courseLab == null) {
             throw new Exception("not find couselab");
         }
         try {
             if (multipartFiles != null) {
-                SftpOperator sftpOperator = new SftpOperator();
-//                String filename=multipartFiles.getOriginalFilename();
                 String filename = labid.toString() + ".pdf";
                 /*上传文件*/
-                sftpOperator.login();
-                sftpOperator.upload(filename, multipartFiles.getInputStream());
+                SftpOperator.uploadFile(filename, multipartFiles, response, request);
                 /*改变couselab的docpath*/
                 courseLab.setDocPath(filename);
                 courseLabMapper.updateByPrimaryKey(courseLab);
