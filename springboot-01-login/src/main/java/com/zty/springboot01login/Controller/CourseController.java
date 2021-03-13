@@ -72,7 +72,6 @@ public class CourseController {
         String success = "删除成功";
         String failure = "删除异常";
         int id = JSON.parseObject(JSON.toJSONString(param.get("id")), Integer.class);
-        System.err.println(id);
         try {
             courseService.delCourseById(id);
         } catch (Exception e) {
@@ -96,15 +95,31 @@ public class CourseController {
         }
         return RespBean.ok(success);
     }
+
+    /*增加一条课程记录*/
+    @PostMapping("/addcourse")
+    public RespBean addCourse(@RequestBody Map<String, Object> param) {
+        String success = "插入成功";
+        String failure = "插入异常";
+        Course course = JSON.parseObject(JSON.toJSONString(param.get("course")), Course.class);
+        try {
+            courseService.addCourse(course);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error(failure);
+        }
+        return RespBean.ok(success);
+    }
+
     /*上传课程图片*/
     @RequestMapping("/uploadcoursepicture")
-    public Object uploadPicture(@RequestParam("courseid") Integer courseid, @RequestParam("file") MultipartFile multipartFiles, final HttpServletResponse response, final HttpServletRequest request) throws Exception{
+    public Object uploadPicture(@RequestParam("courseid") Integer courseid, @RequestParam("file") MultipartFile multipartFiles, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
         return courseService.uploadImage(courseid, multipartFiles, response, request);
     }
 
     /*下载课程图片*/
     @RequestMapping("/downloadcoursepicture")
-    public Object downloadPicture(@RequestParam String filename, final HttpServletResponse response, final HttpServletRequest request){
+    public Object downloadPicture(@RequestParam String filename, final HttpServletResponse response, final HttpServletRequest request) {
         return SftpOperator.downloadFile(filename, response, request);
     }
 }

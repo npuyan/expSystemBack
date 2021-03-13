@@ -69,6 +69,12 @@ public class CourseService {
         return true;
     }
 
+    /*增加一条课程记录*/
+    public boolean addCourse(Course course) throws Exception{
+        courseMapper.insert(course);
+        return true;
+    }
+
     /*根据课程作者得到所有课程*/
     public List<Course> getCourseByAuthor(String username) {
         return courseMapper.selectByAuthor(username);

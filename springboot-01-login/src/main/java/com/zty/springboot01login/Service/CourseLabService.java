@@ -59,7 +59,11 @@ public class CourseLabService {
         courseLabMapper.updateByPrimaryKey(course);
         return true;
     }
-
+    /*增加一条实验记录*/
+    public boolean addCourseLab(CourseLab courseLab) throws Exception{
+        courseLabMapper.insert(courseLab);
+        return true;
+    }
     public List<CourseLab> getByCourseId(int id) {
         List<CourseLab> courseslabs = courseLabMapper.selectByCourseId(id);
         return courseslabs;

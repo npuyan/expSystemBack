@@ -79,6 +79,21 @@ public class CourseLabController {
         return RespBean.ok(success);
     }
 
+    /*增加一条实验记录*/
+    @PostMapping("/addcourselab")
+    public RespBean addCourseLab(@RequestBody Map<String, Object> param) {
+        String success = "插入成功";
+        String failure = "插入异常";
+        CourseLab courseLab = JSON.parseObject(JSON.toJSONString(param.get("courselab")), CourseLab.class);
+        try {
+            courseLabService.addCourseLab(courseLab);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error(failure);
+        }
+        return RespBean.ok(success);
+    }
+
     /*通过文件名下载文件*/
     @RequestMapping("/downloadfile")
     public RespBean downloadLabFile(@RequestParam String filename, final HttpServletResponse response, final HttpServletRequest request) {
