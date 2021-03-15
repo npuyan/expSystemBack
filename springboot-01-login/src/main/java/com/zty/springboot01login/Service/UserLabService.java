@@ -68,7 +68,7 @@ public class UserLabService {
             }
         } else {
             /*没创建过容器*/
-            /*吐过没有容器也没有镜像，那么去查找对应的基础环境并启动容器*/
+            /*没有容器也没有镜像，那么去查找对应的基础环境并启动容器*/
             CourseImage courseImage = courseImageService.getCourseImageById(courseEnv.getImageId());
             if (courseImage != null) {
                 /*启动镜像*/

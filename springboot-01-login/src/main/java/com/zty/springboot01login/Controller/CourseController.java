@@ -102,13 +102,14 @@ public class CourseController {
         String success = "插入成功";
         String failure = "插入异常";
         Course course = JSON.parseObject(JSON.toJSONString(param.get("course")), Course.class);
+        Course course1 = null;
         try {
-            courseService.addCourse(course);
+            course1 = courseService.addCourse(course);
         } catch (Exception e) {
             e.printStackTrace();
             return RespBean.error(failure);
         }
-        return RespBean.ok(success);
+        return RespBean.ok(success, course1);
     }
 
     /*上传课程图片*/

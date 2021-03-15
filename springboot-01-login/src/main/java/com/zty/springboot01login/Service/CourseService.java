@@ -71,10 +71,12 @@ public class CourseService {
     }
 
     /*增加一条课程记录*/
-    public boolean addCourse(Course course) throws Exception {
+    public Course addCourse(Course course) throws Exception {
         course.setCreateTime(String.valueOf(new Date().getTime()));
         courseMapper.insert(course);
-        return true;
+        int i = courseMapper.selectLastInsertId();
+        Course course1 = courseMapper.selectByPrimaryKey(i);
+        return course1;
     }
 
     /*根据课程作者得到所有课程*/

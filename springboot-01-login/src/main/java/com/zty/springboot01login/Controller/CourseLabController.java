@@ -85,13 +85,14 @@ public class CourseLabController {
         String success = "插入成功";
         String failure = "插入异常";
         CourseLab courseLab = JSON.parseObject(JSON.toJSONString(param.get("courselab")), CourseLab.class);
+        CourseLab courseLab1 = null;
         try {
-            courseLabService.addCourseLab(courseLab);
+            courseLab1 = courseLabService.addCourseLab(courseLab);
         } catch (Exception e) {
             e.printStackTrace();
             return RespBean.error(failure);
         }
-        return RespBean.ok(success);
+        return RespBean.ok(success, courseLab1);
     }
 
     /*通过文件名下载文件*/
@@ -105,4 +106,6 @@ public class CourseLabController {
     public RespBean uploadLabFile(@RequestParam("labid") Integer labId, @RequestParam("file") MultipartFile multipartFiles, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
         return courseLabService.uploadFile(labId, multipartFiles, response, request);
     }
+
+
 }

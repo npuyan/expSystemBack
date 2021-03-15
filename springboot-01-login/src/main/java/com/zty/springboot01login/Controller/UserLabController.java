@@ -39,4 +39,5 @@ public class UserLabController {
         CourseLab courseLab = JSON.parseObject(JSON.toJSONString(param.get("courselab")), CourseLab.class);
         return RespBean.ok("成功得到端口", userLabService.openLabEnv(username, courseLab));
     }
+
 }

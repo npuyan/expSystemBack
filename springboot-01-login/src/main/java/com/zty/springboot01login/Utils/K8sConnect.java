@@ -169,6 +169,8 @@ public class K8sConnect {
         return nameSpace;
     }
 
+//    public static String saveDeploy
+
     /*just a test -_-*/
     public void test() throws IOException, ApiException {
 //        CoreV1Api api = new CoreV1Api();

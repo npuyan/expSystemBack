@@ -24,4 +24,6 @@ public interface CourseMapper {
     List<Course> selectAll();
 
     List<Course> selectByAuthor(String author);
+
+    int selectLastInsertId();
 }

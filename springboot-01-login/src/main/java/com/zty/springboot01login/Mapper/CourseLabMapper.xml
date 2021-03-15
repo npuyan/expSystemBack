@@ -155,6 +155,9 @@
     select <include refid="Base_Column_List"></include>
     from tb_course_lab
   </select>
+  <select id="selectLastInsertId" resultType="java.lang.Integer">
+        SELECT LAST_INSERT_ID()
+    </select>
 <!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >-->
 <!--  select-->
 <!--  <include refid="Base_Column_List" />-->

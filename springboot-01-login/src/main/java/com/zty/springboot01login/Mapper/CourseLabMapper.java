@@ -25,4 +25,6 @@ public interface CourseLabMapper {
     List<CourseLab> selectByCourseId(Integer courseId);
 
     List<CourseLab> selectAll();
+
+    int selectLastInsertId();
 }
