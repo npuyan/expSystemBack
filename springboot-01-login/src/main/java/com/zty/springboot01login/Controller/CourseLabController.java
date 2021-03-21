@@ -48,6 +48,13 @@ public class CourseLabController {
         return allcourse;
     }
 
+    /*通过实验id得到实验*/
+    @RequestMapping("/getcourselabbyid")
+    public CourseLab getCourseLabById(@RequestBody Map<String, Object> param) {
+        int id = JSON.parseObject(JSON.toJSONString(param.get("id")), Integer.class);
+        return courseLabService.getCourseLabById(id);
+    }
+
     /*通过实验id删除实验*/
     @RequestMapping("/delcourselabbyid")
     public RespBean delCourseLabById(@RequestBody Map<String, Object> param) {

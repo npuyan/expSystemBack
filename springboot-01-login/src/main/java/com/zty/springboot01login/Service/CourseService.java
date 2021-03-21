@@ -1,5 +1,6 @@
 package com.zty.springboot01login.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.zty.springboot01login.Mapper.CourseLabMapper;
 import com.zty.springboot01login.Mapper.CourseMapper;
 import com.zty.springboot01login.Mapper.UserCourseMapper;
@@ -10,9 +11,7 @@ import com.zty.springboot01login.Utils.PinyinComparator;
 import com.zty.springboot01login.Utils.SftpOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CourseService {
@@ -56,6 +56,11 @@ public class CourseService {
     /*通过课程id得到本课程所有的实验*/
     public List<CourseLab> getCourseLabByCouseId(int courseId) {
         return courseLabService.getByCourseId(courseId);
+    }
+
+    /*通过课程id得到课程*/
+    public Course getCourseByCourseId(int courseId) {
+        return courseMapper.selectByPrimaryKey(courseId);
     }
 
     /*通过课程id删除课程*/

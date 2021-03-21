@@ -48,6 +48,11 @@ public class CourseLabService {
         return courseslabs;
     }
 
+    /*通过实验id得到实验*/
+    public CourseLab getCourseLabById(Integer id) {
+        return courseLabMapper.selectByPrimaryKey(id);
+    }
+
     /*通过实验id删除实验*/
     public boolean delCourseLabById(@RequestParam() Integer id) throws Exception {
         courseLabMapper.deleteByPrimaryKey(id);

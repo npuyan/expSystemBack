@@ -41,6 +41,13 @@ public class CourseController {
         return courseService.getCourseLabByCouseId(courseId);
     }
 
+    /*通过课程id得到课程*/
+    @RequestMapping("/getcoursebyid")
+    public Course getCourseByCourseId(@RequestBody Map<String, Object> param) {
+        int courseId = JSON.parseObject(JSON.toJSONString(param.get("id")), Integer.class);
+        return courseService.getCourseByCourseId(courseId);
+    }
+
     /*选择当前课程的所有学生*/
     @RequestMapping("getallstudentbycourse")
     public List<User> getAllstudentByCourse(@RequestBody Map<String, Object> param) {
