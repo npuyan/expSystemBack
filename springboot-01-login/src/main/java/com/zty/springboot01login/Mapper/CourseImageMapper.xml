@@ -41,7 +41,7 @@
     insert into tb_course_image (id, image_id, image_name,
       version, path, create_time,
       creator_id)
-    values (#{id,jdbcType=INTEGER}, #{imgId,jdbcType=INTEGER}, #{imageName,jdbcType=VARCHAR},
+    values (#{id,jdbcType=INTEGER}, #{imageId,jdbcType=INTEGER}, #{imageName,jdbcType=VARCHAR},
       #{version,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, #{createTime,jdbcType=CHAR},
       #{creatorId,jdbcType=INTEGER})
   </insert>
@@ -146,6 +146,9 @@
         <include refid="Base_Column_List"></include>
         from tb_course_image
         where creator_id = #{creatorid,jdbcType=INTEGER}
+    </select>
+    <select id="selectLastInsertId" resultType="java.lang.Integer">
+        SELECT LAST_INSERT_ID()
     </select>
     <!--    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">-->
     <!--        select-->

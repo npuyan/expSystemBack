@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: pod-111-1
-  name: pod-111-1
+    app: pod-111-2
+  name: pod-111-2
 spec:
   externalTrafficPolicy: Cluster
   ports:
@@ -11,6 +11,6 @@ spec:
       protocol: TCP
       targetPort: 80
   selector:
-    app: dorowu2
+    app: pod-111-2
   sessionAffinity: None
   type: NodePort

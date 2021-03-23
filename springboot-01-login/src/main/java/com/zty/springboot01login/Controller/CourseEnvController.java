@@ -83,6 +83,7 @@ public class CourseEnvController {
         return RespBean.ok("创建环境成功", port);
     }
 
+    /*把某一环境存储为镜像，并存储到镜像表中*/
     @PostMapping("/savecourseenvtoimage")
     public RespBean saveCourseEnvToImage(@RequestBody Map<String, Object> param) {
         String username = JSON.parseObject(JSON.toJSONString(param.get("username")), String.class);

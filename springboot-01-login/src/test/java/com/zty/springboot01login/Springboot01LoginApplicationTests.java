@@ -1,18 +1,17 @@
 package com.zty.springboot01login;
 
+import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.zty.springboot01login.Mapper.CourseLabMapper;
 import com.zty.springboot01login.Mapper.CourseRequestMapper;
 import com.zty.springboot01login.Mapper.UserCourseMapper;
 import com.zty.springboot01login.Mapper.UserMapper;
 import com.zty.springboot01login.Pojo.*;
+import com.zty.springboot01login.Service.CourseEnvService;
 import com.zty.springboot01login.Service.UserService;
-import com.zty.springboot01login.Utils.K8sConnect;
-import com.zty.springboot01login.Utils.RequestType;
-import com.zty.springboot01login.Utils.SftpOperator;
-import com.zty.springboot01login.Utils.UseSSH;
+import com.zty.springboot01login.Utils.*;
 import io.kubernetes.client.ApiException;
-import io.kubernetes.client.models.V1Deployment;
-import io.kubernetes.client.models.V1Service;
+import io.kubernetes.client.apis.CoreV1Api;
+import io.kubernetes.client.models.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,6 +38,9 @@ class Springboot01LoginApplicationTests {
     UseSSH ssh;
     @Autowired
     CourseRequestMapper courseRequestMapper;
+
+    @Autowired
+    CourseEnvService courseEnvService;
     @Test
     void test1() {
         System.out.println(mapper1.selectByUserName("zty"));
@@ -46,27 +48,30 @@ class Springboot01LoginApplicationTests {
         System.err.println(mapper1.selectByPrimaryKey(1));
         System.out.println(new BCryptPasswordEncoder(10).encode("11111"));
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10);
-        String encode1=bCryptPasswordEncoder.encode("zty981115");
-        String encode2=bCryptPasswordEncoder.encode("1111");
-        String encode3=bCryptPasswordEncoder.encode("111");
+        String encode1 = bCryptPasswordEncoder.encode("zty981115");
+        String encode2 = bCryptPasswordEncoder.encode("1111");
+        String encode3 = bCryptPasswordEncoder.encode("111");
         System.err.println(encode1);
         System.err.println(bCryptPasswordEncoder.matches("1111", encode1));
-        String lmx= bCryptPasswordEncoder.encode("lmx");
+        String lmx = bCryptPasswordEncoder.encode("lmx");
         System.err.println(lmx);
     }
+
     @Test
-    public void testSSH(){
+    public void testSSH() {
         ssh.connect("0");
     }
+
     @Test
-    public void addUser(){
+    public void addUser() {
         user.setUserName("admin");
         user.setPassword(new BCryptPasswordEncoder(10).encode("admin"));
         user.setUserType("0");
         mapper1.insert(user);
     }
+
     @Test
-    public void testGetSelectCourse(){
+    public void testGetSelectCourse() {
 //        System.out.println(userService.getSelectedCourse("111"));
         User user = mapper1.selectByUserName("111");
         System.out.println(user.getUserId());
@@ -74,23 +79,25 @@ class Springboot01LoginApplicationTests {
         System.out.println(userCourses.size());
 
     }
+
     @Test
-    public void getCourseLabBycouseIdTest(){
+    public void getCourseLabBycouseIdTest() {
         courseLabMapper.selectByCourseId(1);
         //System.out.println(courseService.getCourseLabBycouseId(1));
     }
+
     @Test
-    public void showAttName(){
-        User courseImage=new User();
-        Field[] fields=courseImage.getClass().getDeclaredFields();
-        for(Field f:fields){
+    public void showAttName() {
+        User courseImage = new User();
+        Field[] fields = courseImage.getClass().getDeclaredFields();
+        for (Field f : fields) {
             System.err.println(f);
         }
     }
 
     @Test
-    public void testenum(){
-        CourseRequest courseRequest=new CourseRequest();
+    public void testenum() {
+        CourseRequest courseRequest = new CourseRequest();
         courseRequest.setCourseId(1);
         courseRequest.setCheckUserId(1);
         courseRequest.setRequestType(RequestType.add);
@@ -107,24 +114,58 @@ class Springboot01LoginApplicationTests {
     }
 
     @Test
-    public void testSshd() throws Exception{
-        SftpOperator sftpOperator=new SftpOperator();
+    public void testSshd() throws Exception {
+        SftpOperator sftpOperator = new SftpOperator();
         try {
             sftpOperator.login();
-            sftpOperator.download("chengji.pdf","src/main/java/META-INF/chengji.pdf");
-        }catch (Exception e){
+            sftpOperator.download("chengji.pdf", "src/main/java/META-INF/chengji.pdf");
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 sftpOperator.logout();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-//        V1Deployment deployment1 = (V1Deployment) K8sConnect.loadYaml("src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml");
-//        K8sConnect.createDeployment(null, deployment1);
+        V1Deployment deployment1 = (V1Deployment) K8sConnect.loadYaml("src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml");
+        K8sConnect.createDeployment(null, deployment1);
+//        V1Pod pod = (V1Pod) K8sConnect.loadYaml("src/main/java/com/zty/springboot01login/Utils/createPod.yaml");
+//        K8sConnect.creatPod(null, pod);
+    }
 
-        V1Service service = (V1Service) K8sConnect.loadYaml("src/main/java/com/zty/springboot01login/Utils/createService.yaml");
-        K8sConnect.createService(null,service);
+    @Test
+    public void testDockerConnnect() {
+        DockerConnect dockerConnect = new DockerConnect();
+        CreateContainerResponse containers = dockerConnect.createContainers("nginx");
+        dockerConnect.startContainer(containers.getId());
+        dockerConnect.pasueContainer(containers.getId());
+    }
+
+    @Test
+    public void testK8sPod() throws Exception {
+//        System.out.println(K8sConnect.getPodByName(null, "dorowu-pod"));
+        V1Pod pod1 = K8sConnect.getPodByName(null, "dorowu-pod");
+        System.out.println(pod1.getStatus().getContainerStatuses().get(0).getContainerID());
+        for (V1ContainerStatus containerStatus : pod1.getStatus().getContainerStatuses()) {
+            System.out.println(containerStatus.getName());
+            System.out.println(DockerConnect.inspectContainer(containerStatus.getContainerID()));
+        }
+    }
+
+    @Test
+    public void testK8sDeployment() throws Exception {
+        V1Deployment deploymentByName = K8sConnect.getDeploymentByName(null, "dorowu-pod");
+        System.out.println(deploymentByName);
+    }
+
+    @Test
+    public void testK8sRS() throws Exception {
+        System.out.println(K8sConnect.getReplicaSetByName(null, "dorowu-pod-6b7866674"));
+    }
+
+    @Test
+    public void testsaveCourseEnvToImage() throws Exception{
+        courseEnvService.saveCourseEnvToImage("111",new CourseEnv());
     }
 }

@@ -1,31 +1,20 @@
 package com.zty.springboot01login.Utils;
 
-import com.google.gson.Gson;
-import com.google.protobuf.Api;
 import io.kubernetes.client.ApiClient;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.Configuration;
 import io.kubernetes.client.apis.AppsV1Api;
 import io.kubernetes.client.apis.CoreV1Api;
-import io.kubernetes.client.apis.ExtensionsV1beta1Api;
 import io.kubernetes.client.models.*;
-import io.kubernetes.client.proto.V1Apps;
 import io.kubernetes.client.util.ClientBuilder;
-import io.kubernetes.client.util.Config;
-import io.kubernetes.client.util.KubeConfig;
 import io.kubernetes.client.util.Yaml;
 import io.kubernetes.client.util.credentials.AccessTokenAuthentication;
-import javafx.beans.DefaultProperty;
-import lombok.Builder;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Map;
 
 @Component
 public class K8sConnect {
@@ -73,8 +62,8 @@ public class K8sConnect {
      * @author zty
      */
     public static V1Pod creatPod(String nameSpace, V1Pod body) throws ApiException {
-        nameSpace=nameSpaceNullToDefault(nameSpace);
-        return new CoreV1Api().createNamespacedPod(nameSpace, body, "true", "true", null);
+        nameSpace = nameSpaceNullToDefault(nameSpace);
+        return new CoreV1Api().createNamespacedPod(nameSpace, body, "true", null, null);
     }
 
     /* *
@@ -84,9 +73,27 @@ public class K8sConnect {
      * @return void
      */
     public static void deletePod(String nameSpace, String podName) throws Exception {
-        nameSpace=nameSpaceNullToDefault(nameSpace);
+        nameSpace = nameSpaceNullToDefault(nameSpace);
         new CoreV1Api().deleteNamespacedPod(podName, nameSpace, "true",
                 null, null, null, null, null);
+    }
+
+    /* *
+     * @描述：通过pod名称的部分匹配得到pod
+     * @param nameSpace
+     * @param podName
+     * @return io.kubernetes.client.models.V1Pod
+     */
+    public static V1Pod getPodByName(String nameSpace, String podName) throws Exception {
+        nameSpace = nameSpaceNullToDefault(nameSpace);
+        V1PodList aTrue = new CoreV1Api().listNamespacedPod(nameSpace, "true", null, null, null, null, null, null, null);
+        for (V1Pod pod : aTrue.getItems()) {
+            if (pod.getMetadata().getName().contains(podName)) {
+                return pod;
+            }
+        }
+        return null;
+//        return new CoreV1Api().readNamespacedPod(podName, nameSpace, "true", null, null);
     }
 
     /*Service操作*/
@@ -97,7 +104,7 @@ public class K8sConnect {
      * @return void
      */
     public static void createService(String nameSpace, V1Service sv) throws ApiException {
-        nameSpace=nameSpaceNullToDefault(nameSpace);
+        nameSpace = nameSpaceNullToDefault(nameSpace);
         new CoreV1Api().createNamespacedService(nameSpace, sv, "true", null, null);
     }
 
@@ -108,7 +115,7 @@ public class K8sConnect {
      * @return void
      */
     public static void deleteService(String nameSpace, String serviceName) throws Exception {
-        nameSpace=nameSpaceNullToDefault(nameSpace);
+        nameSpace = nameSpaceNullToDefault(nameSpace);
         new CoreV1Api().deleteNamespacedService(serviceName, nameSpace, null, null, null, null, null, null);
     }
 
@@ -131,7 +138,7 @@ public class K8sConnect {
      * @return void
      */
     public static void createDeployment(String nameSpace, V1Deployment body) throws ApiException {
-        nameSpace=nameSpaceNullToDefault(nameSpace);
+        nameSpace = nameSpaceNullToDefault(nameSpace);
         new AppsV1Api().createNamespacedDeployment(nameSpace, body, "true", null, null);
     }
 
@@ -154,7 +161,19 @@ public class K8sConnect {
      */
     public static V1Deployment getDeploymentByName(String nameSpace, String deployeName) throws ApiException {
         nameSpace = nameSpaceNullToDefault(nameSpace);
-        return new AppsV1Api().readNamespacedDeployment(deployeName, nameSpace, "true", null, null);
+//        return new AppsV1Api().readNamespacedDeployment(deployeName, nameSpace, "true", null, null);
+        return new AppsV1Api().readNamespacedDeploymentStatus(deployeName, nameSpace, "true");
+    }
+
+    /* *
+     * @描述：通过RS名称得到RS
+     * @param nameSpace
+     * @param name
+     * @return io.kubernetes.client.models.V1ReplicaSet
+     */
+    public static V1ReplicaSet getReplicaSetByName(String nameSpace, String name) throws ApiException {
+        nameSpace = nameSpaceNullToDefault(nameSpace);
+        return new AppsV1Api().readNamespacedReplicaSet(name, nameSpace, "true", null, null);
     }
 
     /* *

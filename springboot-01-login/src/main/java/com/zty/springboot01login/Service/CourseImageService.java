@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,14 +31,22 @@ public class CourseImageService {
     }
 
     /*根据记录中的id更新一条数据*/
-    public boolean updateCourseImage(CourseImage couseimage) throws Exception {
-        courseImageMapper.updateByPrimaryKey(couseimage);
+    public boolean updateCourseImage(CourseImage courseImage) throws Exception {
+        courseImageMapper.updateByPrimaryKey(courseImage);
         return true;
+    }
+
+    /*增加一条镜像*/
+    public CourseImage addCourseImage(CourseImage courseImage) throws Exception {
+        courseImage.setCreateTime(String.valueOf(new Date().getTime()));
+        courseImageMapper.insert(courseImage);
+        int i = courseImageMapper.selectLastInsertId();
+        CourseImage courseImage1 = courseImageMapper.selectByPrimaryKey(i);
+        return courseImage1;
     }
 
     /*通过镜像名得到镜像*/
     public CourseImage getCourseImageByName(String imageName) {
-
         return courseImageMapper.selectByImageName(imageName);
     }
 
@@ -57,7 +66,7 @@ public class CourseImageService {
                 return o1.getId() - o2.getId();
             }
         });
-        /*如果没有基础novnc镜像，那么假如基础novn镜像*/
+        /*如果没有基础novnc镜像，那么加入基础novn镜像*/
         if ((courseImages.isEmpty()) ||
                 (!courseImages.isEmpty() && courseImages.get(0).getId() != novnc.getId())) {
             courseImages.add(novnc);

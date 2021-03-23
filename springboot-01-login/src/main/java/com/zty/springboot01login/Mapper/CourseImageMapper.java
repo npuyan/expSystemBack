@@ -26,4 +26,6 @@ public interface CourseImageMapper {
     CourseImage selectByImageName(String imageName);
 
     List<CourseImage> selectByCreatorId(Integer creatorid);
+
+    int selectLastInsertId();
 }
