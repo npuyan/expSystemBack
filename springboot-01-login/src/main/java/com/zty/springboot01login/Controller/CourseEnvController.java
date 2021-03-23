@@ -79,6 +79,7 @@ public class CourseEnvController {
             port = courseEnvService.addCourseEnv(courseLab, courseImage, courseEnv);
         } catch (Exception e) {
             e.printStackTrace();
+            return RespBean.error("创建环境失败！");
         }
         return RespBean.ok("创建环境成功", port);
     }

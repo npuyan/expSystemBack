@@ -57,9 +57,13 @@ public class CourseEnvService {
     public int addCourseEnv(CourseLab courseLab, CourseImage courseImage, CourseEnv courseEnv) throws Exception {
         User user = userService.getByUserId(courseImage.getCreatorId());
         String deployName = Pod.PodName(user.getUsername(), courseEnv.getEnvId());
+        System.out.println("deployName" + deployName);
         if (courseImage != null) {
             V1Service service = userLabService.createDeploymentByImageAndServiceByDeployemnt(courseImage, deployName);
-            return userLabService.getServiceNodePortByDeployment(deployName);
+            Integer port = userLabService.getServiceNodePortByDeployment(deployName);
+
+            /**/
+            return port;
         } else {
             throw new Exception("无法创建环境：找不到镜像");
         }

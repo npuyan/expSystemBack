@@ -110,12 +110,16 @@ public class UserLabService {
         V1Service service = (V1Service) K8sConnect.loadYaml(K8sConnect.servicePath);
         service.getMetadata().getLabels().replace("app", deployName);
         service.getMetadata().setName(deployName);
+        service.getSpec().getSelector().replace("app", deployName);
         return service;
     }
 
     /*通过镜像创建deploy和service*/
     public V1Service createDeploymentByImageAndServiceByDeployemnt(CourseImage courseImage, String deployName) throws Exception {
         /*创建deploy*/
+
+        System.out.println(courseImage.getImageName());
+        System.out.println(deployName);
         V1Deployment deployment1 = createDeploymentByImage(courseImage, deployName);
         K8sConnect.createDeployment(null, deployment1);
 
