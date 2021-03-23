@@ -2,12 +2,14 @@ package com.zty.springboot01login.Service;
 
 import com.zty.springboot01login.Mapper.UserLabMapper;
 import com.zty.springboot01login.Pojo.*;
+import com.zty.springboot01login.Utils.DockerConnect;
 import com.zty.springboot01login.Utils.K8sConnect;
 import com.zty.springboot01login.Utils.Pod;
 import com.zty.springboot01login.Utils.SftpOperator;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.apis.CoreV1Api;
 import io.kubernetes.client.models.V1Deployment;
+import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1Service;
 import org.apache.commons.compress.utils.IOUtils;
 import org.eclipse.sisu.space.Streams;
@@ -43,18 +45,24 @@ public class UserLabService {
     public int openLabEnv(String username, CourseLab courseLab) throws Exception {
         User user = userService.getByUserName(username);
         UserLab userLab = userLabMapper.selectByUserIdAndLabId(user.getUserId(), courseLab.getLabId());
-        CourseEnv courseEnv = courseEnvService.getByEnvId(courseLab.getCourseId());
-        /*podname为{username_envid},后期可以修改*/
+        CourseEnv courseEnv = courseEnvService.getByEnvId(courseLab.getEnvId());
+        /*podname为{pod_username_envid},后期可以修改*/
         String deployName = Pod.PodName(username, courseEnv.getEnvId());
         /*先查询对应的实验容器是否已经创建过*/
         if (userLab != null) {
             /*创建过容器*/
             V1Deployment deployment = K8sConnect.getDeploymentByName(null, deployName);
             if (deployment != null) {
-                /*查询对应容器的名称是否已经打开，如果已经打开直接返回port*/
+                /*查询对应容器的名称是否已经打开，如果已经打开就取消容器的暂停直接返回port*/
+                /*unpause对应的容器*/
+                V1Pod pod = K8sConnect.getPodByName(null, deployName);
+                DockerConnect.unpasueContainer(pod.getStatus().getContainerStatuses().get(0).getContainerID());
+
                 return getServiceNodePortByDeployment(deployName);
             } else {
+                /*TODO 以下代码无效*/
                 /*如果没打开则查询是否有对应的镜像，如果有镜像则直接启动镜像并返回port*/
+
                 CourseImage courseImage = courseImageService.getCourseImageByName(deployName);
                 if (courseImage != null) {
                     /*创建deployment和service*/
@@ -67,6 +75,7 @@ public class UserLabService {
                 }
             }
         } else {
+
             /*没创建过容器*/
             /*没有容器也没有镜像，那么去查找对应的基础环境并启动容器*/
             CourseImage courseImage = courseImageService.getCourseImageById(courseEnv.getImageId());
@@ -138,9 +147,20 @@ public class UserLabService {
             throw new NoSuchFieldException("k8s未找到对应的Service！");
         }
     }
+
+    /*当用户关闭窗口时，发送请求暂停对应的容器*/
+    public boolean pauseLabEnv(String username, CourseLab courseLab) throws Exception {
+        User user = userService.getByUserName(username);
+        UserLab userLab = userLabMapper.selectByUserIdAndLabId(user.getUserId(), courseLab.getLabId());
+        CourseEnv courseEnv = courseEnvService.getByEnvId(courseLab.getEnvId());
+        String deployName = Pod.PodName(username, courseEnv.getEnvId());
+        if (userLab != null) {
+            /*暂停*/
+            V1Pod pod = K8sConnect.getPodByName(null, deployName);
+            DockerConnect.pasueContainer(pod.getStatus().getContainerStatuses().get(0).getContainerID());
+            return true;
+        } else {
+            throw new Exception("未找到要暂停的环境");
+        }
+    }
 }
-
-
-/*
-https://view.officeapps.live.com/op/view.aspx?src=http://storage.xuetangx.com/public_assets/xuetangx/PDF/1.xls
- */

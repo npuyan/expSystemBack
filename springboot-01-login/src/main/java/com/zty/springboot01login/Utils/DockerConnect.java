@@ -4,6 +4,7 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.command.InspectImageResponse;
+import com.github.dockerjava.api.command.UnpauseContainerCmd;
 import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.Ports;
 import com.github.dockerjava.core.DockerClientBuilder;
@@ -71,6 +72,16 @@ public class DockerConnect {
     public static void pasueContainer(String containerId) {
         containerId = formatContainerId(containerId);
         client.pauseContainerCmd(containerId).exec();
+    }
+
+    /* *
+     * @描述：取消暂停
+     * @param containerId
+     * @return void
+     */
+    public static void unpasueContainer(String containerId) {
+        containerId = formatContainerId(containerId);
+        client.unpauseContainerCmd(containerId).exec();
     }
 
     /* *

@@ -40,4 +40,11 @@ public class UserLabController {
         return RespBean.ok("成功得到端口", userLabService.openLabEnv(username, courseLab));
     }
 
+    /*当用户关闭窗口时，发送请求暂停对应的容器*/
+    @RequestMapping("/pauselabenv")
+    public RespBean pauseLabEnv(@RequestBody Map<String, Object> param) throws Exception {
+        String username = JSON.parseObject(JSON.toJSONString(param.get("username")), String.class);
+        CourseLab courseLab = JSON.parseObject(JSON.toJSONString(param.get("courselab")), CourseLab.class);
+        return RespBean.ok("成功暂停", userLabService.pauseLabEnv(username, courseLab));
+    }
 }

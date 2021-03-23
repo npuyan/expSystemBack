@@ -75,7 +75,7 @@ public class CourseEnvService {
         String deployName = Pod.PodName(user.getUsername(), courseEnv.getEnvId());
 //        String deployName = Pod.PodName("111", 2);
         try {
-//            V1Deployment deployment = K8sConnect.getDeploymentByName(null, deployName);
+            V1Deployment deployment = K8sConnect.getDeploymentByName(null, deployName);
             V1Pod pod = K8sConnect.getPodByName(null, deployName);
             if (pod != null) {
                 /* 保存镜像 得到镜像id*/
@@ -89,6 +89,10 @@ public class CourseEnvService {
                 courseImage.setVersion(version);
                 courseImage.setPath("node1");
                 courseImageService.addCourseImage(courseImage);
+
+                /*关闭deploy和svc*/
+                K8sConnect.deleteDeployment(null,deployName);
+                K8sConnect.deleteService(null,deployName);
             }
         } catch (Exception e) {
             e.printStackTrace();
