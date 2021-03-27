@@ -1,7 +1,6 @@
 package com.zty.springboot01login.Controller;
 
 import com.alibaba.fastjson.JSON;
-import com.zty.springboot01login.Pojo.Course;
 import com.zty.springboot01login.Pojo.CourseImage;
 import com.zty.springboot01login.Pojo.RespBean;
 import com.zty.springboot01login.Service.CourseImageService;

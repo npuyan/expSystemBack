@@ -12,36 +12,36 @@ import java.io.InputStreamReader;
 @Component
 public class UseSSH {
     // 华为云
-    private static String ip="124.70.84.98";
-    private static int port=22;
-    private static String user="root";
-    private static String pswd="Zty981115";
-    public void connect(String newport){
+    private static String ip = "124.70.84.98";
+    private static int port = 22;
+    private static String user = "root";
+    private static String pswd = "Zty981115";
+
+    public void connect(String newport) {
         try {
-            Connection connection=new Connection(ip,port);
+            Connection connection = new Connection(ip, port);
             connection.connect();
-            boolean isAuthenticated=connection.authenticateWithPassword(user,pswd);
-            if(!isAuthenticated){
+            boolean isAuthenticated = connection.authenticateWithPassword(user, pswd);
+            if (!isAuthenticated) {
                 throw new Exception("Authenticated faild");
             }
-            Session session=connection.openSession();
+            Session session = connection.openSession();
 //            session.execCommand("docker ps -a");
 //            session.execCommand("docker stop $(docker ps -a | grep "+newport+") &&" +
 //                            "docker rm $(docker ps -a | grep"+newport+" && "+
 //                    "docker run -p "+newport+":80 -e RESOLUTION=1960x1080 -d -v /dev/shm:/dev/shm zty/novnc-vscode\n");
 
-            session.execCommand("docker stop $(docker ps -l -q) && docker rm $(docker ps -a -l -q) && docker run -p "+newport+":80 -e RESOLUTION=1960x1080 -d -v /dev/shm:/dev/shm zty/novnc-vscode\n");
-            InputStream stdout=new StreamGobbler(session.getStdout());
-            BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(stdout));
-            while (true){
-                String line=bufferedReader.readLine();
-                if(line==null) break;
+            session.execCommand("docker stop $(docker ps -l -q) && docker rm $(docker ps -a -l -q) && docker run -p " + newport + ":80 -e RESOLUTION=1960x1080 -d -v /dev/shm:/dev/shm zty/novnc-vscode\n");
+            InputStream stdout = new StreamGobbler(session.getStdout());
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stdout));
+            while (true) {
+                String line = bufferedReader.readLine();
+                if (line == null) break;
                 System.out.println(line);
             }
             session.close();
             connection.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

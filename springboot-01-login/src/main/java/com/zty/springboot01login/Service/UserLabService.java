@@ -5,25 +5,12 @@ import com.zty.springboot01login.Pojo.*;
 import com.zty.springboot01login.Utils.DockerConnect;
 import com.zty.springboot01login.Utils.K8sConnect;
 import com.zty.springboot01login.Utils.Pod;
-import com.zty.springboot01login.Utils.SftpOperator;
-import io.kubernetes.client.ApiException;
-import io.kubernetes.client.apis.CoreV1Api;
 import io.kubernetes.client.models.V1Deployment;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1Service;
-import org.apache.commons.compress.utils.IOUtils;
-import org.eclipse.sisu.space.Streams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Date;
 
 @Service
@@ -56,7 +43,13 @@ public class UserLabService {
                 /*查询对应容器的名称是否已经打开，如果已经打开就取消容器的暂停直接返回port*/
                 /*unpause对应的容器*/
                 V1Pod pod = K8sConnect.getPodByName(null, deployName);
-                DockerConnect.unpasueContainer(pod.getStatus().getContainerStatuses().get(0).getContainerID());
+                String containerId = pod.getStatus().getContainerStatuses().get(0).getContainerID();
+                System.out.println(containerId);
+                try {
+                    DockerConnect.unpasueContainer(containerId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 return getServiceNodePortByDeployment(deployName);
             } else {

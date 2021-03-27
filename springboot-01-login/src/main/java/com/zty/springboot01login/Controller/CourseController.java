@@ -1,7 +1,6 @@
 package com.zty.springboot01login.Controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.zty.springboot01login.Pojo.*;
 import com.zty.springboot01login.Service.CourseLabService;
 import com.zty.springboot01login.Service.CourseService;
@@ -15,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.html.ObjectView;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;

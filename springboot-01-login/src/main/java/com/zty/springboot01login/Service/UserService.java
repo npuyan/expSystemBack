@@ -1,22 +1,21 @@
 package com.zty.springboot01login.Service;
 
-import com.alibaba.fastjson.JSON;
 import com.zty.springboot01login.Mapper.CourseRequestMapper;
 import com.zty.springboot01login.Mapper.UserMapper;
-import com.zty.springboot01login.Pojo.*;
+import com.zty.springboot01login.Pojo.Course;
+import com.zty.springboot01login.Pojo.CourseRequest;
+import com.zty.springboot01login.Pojo.User;
+import com.zty.springboot01login.Pojo.UserCourse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserService implements UserDetailsService {

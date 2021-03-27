@@ -3,8 +3,6 @@ package com.zty.springboot01login.Mapper;
 import com.zty.springboot01login.Pojo.CourseEnv;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @Mapper

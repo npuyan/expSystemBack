@@ -4,12 +4,16 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.command.InspectImageResponse;
-import com.github.dockerjava.api.command.UnpauseContainerCmd;
 import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.Ports;
 import com.github.dockerjava.core.DockerClientBuilder;
-import org.apache.commons.lang.math.RandomUtils;
 
+/* *
+ * @描述：docker 连接和原生操作
+ * @param null
+ * @return
+ * @author：zty
+ */
 public class DockerConnect {
     static DockerClient client;
     static String ip = "tcp://124.70.84.98:2375";
@@ -64,6 +68,10 @@ public class DockerConnect {
         client.removeContainerCmd(imageId).exec();
     }
 
+    public static boolean isPasue(String containerId){
+        containerId = formatContainerId(containerId);
+        return true;
+    }
     /* *
      * @描述：暂停容器
      * @param containerId

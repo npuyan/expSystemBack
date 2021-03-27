@@ -1,7 +1,6 @@
 package com.zty.springboot01login.Mapper;
 
 import com.zty.springboot01login.Pojo.CourseLab;
-import com.zty.springboot01login.Pojo.UserLab;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

@@ -1,11 +1,9 @@
 package com.zty.springboot01login.Service;
 
 import com.zty.springboot01login.Mapper.CourseImageMapper;
-import com.zty.springboot01login.Pojo.Course;
 import com.zty.springboot01login.Pojo.CourseImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;

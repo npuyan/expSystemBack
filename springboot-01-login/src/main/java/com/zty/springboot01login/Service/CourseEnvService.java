@@ -8,7 +8,6 @@ import com.zty.springboot01login.Pojo.User;
 import com.zty.springboot01login.Utils.DockerConnect;
 import com.zty.springboot01login.Utils.K8sConnect;
 import com.zty.springboot01login.Utils.Pod;
-import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.V1Deployment;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1Service;

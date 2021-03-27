@@ -1,7 +1,6 @@
 package com.zty.springboot01login.Controller;
 
 import com.alibaba.fastjson.JSON;
-import com.zty.springboot01login.Pojo.User;
 import com.zty.springboot01login.Utils.UseSSH;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

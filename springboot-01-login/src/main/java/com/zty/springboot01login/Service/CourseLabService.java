@@ -1,29 +1,18 @@
 package com.zty.springboot01login.Service;
 
-import com.alibaba.fastjson.JSON;
-import com.zty.springboot01login.Mapper.CourseEnvMapper;
-import com.zty.springboot01login.Mapper.CourseImageMapper;
 import com.zty.springboot01login.Mapper.CourseLabMapper;
-import com.zty.springboot01login.Pojo.Course;
 import com.zty.springboot01login.Pojo.CourseEnv;
 import com.zty.springboot01login.Pojo.CourseLab;
 import com.zty.springboot01login.Pojo.RespBean;
-import com.zty.springboot01login.Utils.PinyinComparator;
 import com.zty.springboot01login.Utils.SftpOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class CourseLabService {

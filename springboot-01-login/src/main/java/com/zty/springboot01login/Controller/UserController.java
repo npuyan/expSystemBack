@@ -1,20 +1,16 @@
 package com.zty.springboot01login.Controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.zty.springboot01login.Pojo.Course;
 import com.zty.springboot01login.Pojo.CourseRequest;
 import com.zty.springboot01login.Pojo.RespBean;
 import com.zty.springboot01login.Pojo.User;
 import com.zty.springboot01login.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.soap.SOAPBinding;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.LinkedList;
