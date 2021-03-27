@@ -189,7 +189,11 @@ public class SftpOperator {
             SftpOperator sftpOperator = new SftpOperator();
             try {
                 sftpOperator.login();
-                sftpOperator.download(filename, outputStream);
+                if (sftpOperator.exists(filename)) {
+                    sftpOperator.download(filename, outputStream);
+                } else {
+                    sftpOperator.download("default.jpg", outputStream);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
