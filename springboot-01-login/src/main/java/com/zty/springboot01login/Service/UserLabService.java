@@ -38,7 +38,12 @@ public class UserLabService {
         /*先查询对应的实验容器是否已经创建过*/
         if (userLab != null) {
             /*创建过容器*/
-            V1Deployment deployment = K8sConnect.getDeploymentByName(null, deployName);
+            V1Deployment deployment=null;
+            try {
+                deployment = K8sConnect.getDeploymentByName(null, deployName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (deployment != null) {
                 /*查询对应容器的名称是否已经打开，如果已经打开就取消容器的暂停直接返回port*/
                 /*unpause对应的容器*/
@@ -50,7 +55,6 @@ public class UserLabService {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
                 return getServiceNodePortByDeployment(deployName);
             } else {
                 /*TODO 以下代码无效*/
