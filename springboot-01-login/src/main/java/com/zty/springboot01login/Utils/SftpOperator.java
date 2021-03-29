@@ -69,6 +69,7 @@ public class SftpOperator {
         fs.close();
         session.close();
         client.stop();
+        System.out.println("sftp 关闭连接");
     }
 
     /* *
@@ -194,6 +195,7 @@ public class SftpOperator {
                 } else {
                     sftpOperator.download("default.jpg", outputStream);
                 }
+                sftpOperator.logout();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -219,12 +221,13 @@ public class SftpOperator {
 
     /*上传文件*/
     public static RespBean uploadFile(String rename, MultipartFile multipartFile, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
+        SftpOperator sftpOperator = new SftpOperator();
         try {
             if (multipartFile != null) {
-                SftpOperator sftpOperator = new SftpOperator();
                 sftpOperator.login();
                 sftpOperator.upload(rename, multipartFile.getInputStream());
             }
+            sftpOperator.logout();
         } catch (Exception e) {
             e.printStackTrace();
         }

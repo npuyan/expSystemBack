@@ -5,13 +5,17 @@ import com.zty.springboot01login.Mapper.CourseLabMapper;
 import com.zty.springboot01login.Mapper.CourseRequestMapper;
 import com.zty.springboot01login.Mapper.UserCourseMapper;
 import com.zty.springboot01login.Mapper.UserMapper;
-import com.zty.springboot01login.Pojo.*;
+import com.zty.springboot01login.Pojo.CourseEnv;
+import com.zty.springboot01login.Pojo.CourseRequest;
+import com.zty.springboot01login.Pojo.User;
+import com.zty.springboot01login.Pojo.UserCourse;
 import com.zty.springboot01login.Service.CourseEnvService;
 import com.zty.springboot01login.Service.UserService;
 import com.zty.springboot01login.Utils.*;
-import io.kubernetes.client.ApiException;
-import io.kubernetes.client.apis.CoreV1Api;
-import io.kubernetes.client.models.*;
+import io.kubernetes.client.models.V1ContainerStatus;
+import io.kubernetes.client.models.V1Deployment;
+import io.kubernetes.client.models.V1Pod;
+import io.kubernetes.client.models.V1Service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,6 +45,7 @@ class Springboot01LoginApplicationTests {
 
     @Autowired
     CourseEnvService courseEnvService;
+
     @Test
     void test1() {
         System.out.println(mapper1.selectByUserName("zty"));
@@ -115,21 +120,23 @@ class Springboot01LoginApplicationTests {
 
     @Test
     public void testSshd() throws Exception {
-        SftpOperator sftpOperator = new SftpOperator();
-        try {
-            sftpOperator.login();
-            sftpOperator.download("chengji.pdf", "src/main/java/META-INF/chengji.pdf");
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
+        for (int i = 0; i < 100; i++) {
+            SftpOperator sftpOperator = new SftpOperator();
             try {
-                sftpOperator.logout();
+                sftpOperator.login();
+                sftpOperator.download("chengji.pdf", "src/main/java/META-INF/chengji.pdf");
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    sftpOperator.logout();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-        V1Deployment deployment1 = (V1Deployment) K8sConnect.loadYaml("src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml");
-        K8sConnect.createDeployment(null, deployment1);
+//        V1Deployment deployment1 = (V1Deployment) K8sConnect.loadYaml("src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml");
+//        K8sConnect.createDeployment(null, deployment1);
 //        V1Pod pod = (V1Pod) K8sConnect.loadYaml("src/main/java/com/zty/springboot01login/Utils/createPod.yaml");
 //        K8sConnect.creatPod(null, pod);
     }
@@ -165,7 +172,7 @@ class Springboot01LoginApplicationTests {
     }
 
     @Test
-    public void testsaveCourseEnvToImage() throws Exception{
-        courseEnvService.saveCourseEnvToImage("111",new CourseEnv());
+    public void testsaveCourseEnvToImage() throws Exception {
+        courseEnvService.saveCourseEnvToImage("111", new CourseEnv());
     }
 }

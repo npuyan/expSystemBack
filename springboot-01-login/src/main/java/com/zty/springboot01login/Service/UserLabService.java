@@ -38,7 +38,7 @@ public class UserLabService {
         /*先查询对应的实验容器是否已经创建过*/
         if (userLab != null) {
             /*创建过容器*/
-            V1Deployment deployment=null;
+            V1Deployment deployment = null;
             try {
                 deployment = K8sConnect.getDeploymentByName(null, deployName);
             } catch (Exception e) {
@@ -50,6 +50,7 @@ public class UserLabService {
                 V1Pod pod = K8sConnect.getPodByName(null, deployName);
                 String containerId = pod.getStatus().getContainerStatuses().get(0).getContainerID();
                 System.out.println(containerId);
+                /*取消暂停*/
                 try {
                     DockerConnect.unpasueContainer(containerId);
                 } catch (Exception e) {
@@ -57,7 +58,7 @@ public class UserLabService {
                 }
                 return getServiceNodePortByDeployment(deployName);
             } else {
-                /*TODO 以下代码无效*/
+                /*TODO 以下代码无效 只有在出现bug时才会走下边的代码 即表里有信息但是服务器没有pod*/
                 /*如果没打开则查询是否有对应的镜像，如果有镜像则直接启动镜像并返回port*/
 
                 CourseImage courseImage = courseImageService.getCourseImageByName(deployName);
@@ -72,7 +73,6 @@ public class UserLabService {
                 }
             }
         } else {
-
             /*没创建过容器*/
             /*没有容器也没有镜像，那么去查找对应的基础环境并启动容器*/
             CourseImage courseImage = courseImageService.getCourseImageById(courseEnv.getImageId());
@@ -87,8 +87,11 @@ public class UserLabService {
                 userLabInstance.setEnvId(courseEnv.getEnvId());
                 userLabInstance.setFlag("0");
                 userLabInstance.setStartTime(String.valueOf(new Date().getTime()));
-                userLabMapper.insert(userLabInstance);
-
+                try {
+                    userLabMapper.insert(userLabInstance);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 /*得到service，返回port*/
                 return getServiceNodePortByDeployment(deployName);
             } else {
