@@ -33,7 +33,8 @@ public class UserLabService {
         User user = userService.getByUserName(username);
         UserLab userLab = userLabMapper.selectByUserIdAndLabId(user.getUserId(), courseLab.getLabId());
         CourseEnv courseEnv = courseEnvService.getByEnvId(courseLab.getEnvId());
-        /*podname为{pod_username_envid},后期可以修改*/
+
+        /*TODO podname为{pod_username_envid},后期可以修改*/
         String deployName = Pod.PodName(username, courseEnv.getEnvId());
         /*先查询对应的实验容器是否已经创建过*/
         if (userLab != null) {
