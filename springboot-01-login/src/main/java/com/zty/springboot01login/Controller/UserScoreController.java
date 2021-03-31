@@ -44,8 +44,8 @@ public class UserScoreController {
     }
 
     /*下载或预览单个作业*/
-    @RequestMapping("/downloadHomework")
-    public RespBean downloadhomework(@RequestParam("userid") Integer userid,
+    @RequestMapping("/downloadhomework")
+    public RespBean downloadHomework(@RequestParam("userid") Integer userid,
                                      @RequestParam("labid") Integer labid,
                                      final HttpServletResponse response, final HttpServletRequest request) throws IOException {
         return userScoreService.downloadhomework(userid, labid, response, request);
