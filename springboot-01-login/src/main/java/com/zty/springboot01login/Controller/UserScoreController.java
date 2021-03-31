@@ -89,4 +89,6 @@ public class UserScoreController {
         Integer labid = JSON.parseObject(JSON.toJSONString(param.get("labid")), Integer.class);
         return userScoreService.getUserScore(username, labid);
     }
+
+
 }

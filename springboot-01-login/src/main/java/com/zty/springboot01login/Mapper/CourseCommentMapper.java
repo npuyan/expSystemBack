@@ -4,6 +4,8 @@ import com.zty.springboot01login.Pojo.CourseComment;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface CourseCommentMapper {
@@ -20,4 +22,6 @@ public interface CourseCommentMapper {
     int updateByPrimaryKeyWithBLOBs(CourseComment record);
 
     int updateByPrimaryKey(CourseComment record);
+
+    List<CourseComment> selectByCourseId(Integer courseId);
 }

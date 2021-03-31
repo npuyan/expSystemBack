@@ -1,10 +1,7 @@
 package com.zty.springboot01login;
 
 import com.github.dockerjava.api.command.CreateContainerResponse;
-import com.zty.springboot01login.Mapper.CourseLabMapper;
-import com.zty.springboot01login.Mapper.CourseRequestMapper;
-import com.zty.springboot01login.Mapper.UserCourseMapper;
-import com.zty.springboot01login.Mapper.UserMapper;
+import com.zty.springboot01login.Mapper.*;
 import com.zty.springboot01login.Pojo.CourseEnv;
 import com.zty.springboot01login.Pojo.CourseRequest;
 import com.zty.springboot01login.Pojo.User;
@@ -48,11 +45,14 @@ class Springboot01LoginApplicationTests {
     UseSSH ssh;
     @Autowired
     CourseRequestMapper courseRequestMapper;
+    @Autowired
+    CourseCommentMapper courseCommentMapper;
 
     @Autowired
     CourseEnvService courseEnvService;
     @Autowired
     UserScoreService userScoreService;
+
     @Test
     void test1() {
         System.out.println(mapper1.selectByUserName("zty"));
@@ -184,10 +184,14 @@ class Springboot01LoginApplicationTests {
     }
 
     @Test
-    public void testuploadHomework() throws Exception{
-        File file=new File("src/test/java/com/zty/springboot01login/test.docx");
+    public void testuploadHomework() throws Exception {
+        File file = new File("src/test/java/com/zty/springboot01login/test.docx");
         InputStream inputStream = Files.newInputStream(file.toPath());
-        MultipartFile multipartFile=new MockMultipartFile("test.docx",inputStream);
+        MultipartFile multipartFile = new MockMultipartFile("test.docx", inputStream);
 //        userScoreService.uploadHomework(12,1,multipartFile)
+    }
+    @Test
+    public void testcourseCommentMapper() throws Exception{
+        System.out.println(courseCommentMapper.selectByPrimaryKey(1));
     }
 }
