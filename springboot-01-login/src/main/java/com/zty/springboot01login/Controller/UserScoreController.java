@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 @RestController
 @Repository
@@ -31,6 +32,14 @@ public class UserScoreController {
 //        File file=new File("springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml");
 //        InputStream inputStream = Files.newInputStream(file.toPath());
 //        MultipartFile multipartFile=new MockMultipartFile("test.docx","test.docx", ContentType.APPLICATION_OCTET_STREAM.toString(),inputStream);
+        Float size = Float.parseFloat(String.valueOf(multipartFile.getSize())) / 1024;
+        BigDecimal b = new BigDecimal(size);
+        // 2表示2位 ROUND_HALF_UP表明四舍五入，
+        size = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+        size=size/1024;
+        if(size>16){
+            return RespBean.error("文件过大");
+        }
         return userScoreService.uploadHomework(userid, labid, multipartFile, response, request);
     }
 
