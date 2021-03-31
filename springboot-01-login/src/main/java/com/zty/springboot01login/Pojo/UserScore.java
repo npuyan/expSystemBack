@@ -12,23 +12,7 @@ import org.springframework.stereotype.Component;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserScore {
-    /**
-     * Table:     tb_user_score
-     * Column:    lab_id
-     * Nullable:  false
-     */
-    private Integer labId;
-
-    /**
-     * 用户id
-     *
-     * Table:     tb_user_score
-     * Column:    user_id
-     * Nullable:  false
-     */
-    private Integer userId;
-
+public class UserScore extends UserScoreKey {
     /**
      * Table:     tb_user_score
      * Column:    score
@@ -36,6 +20,14 @@ public class UserScore {
      */
     private Integer score;
 
+    /**
+     * 作业文件类型，因为可能出现不同的类型，但是保存blob时只保存二进制不保存名称，所以需要另外存储
+     * <p>
+     * Table:     tb_user_score
+     * Column:    homeworktype
+     * Nullable:  false
+     */
+    private String homeworktype;
     /**
      * Table:     tb_user_score
      * Column:    homework

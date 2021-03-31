@@ -85,16 +85,16 @@ public class CourseLabService {
      * @param request
      * @return java.lang.Object
      */
-    public RespBean uploadFile(Integer labid, MultipartFile multipartFiles, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
+    public RespBean uploadFile(Integer labid, MultipartFile multipartFile, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
         CourseLab courseLab = courseLabMapper.selectByPrimaryKey(labid);
         if (courseLab == null) {
             throw new Exception("not find couselab");
         }
         try {
-            if (multipartFiles != null) {
+            if (multipartFile != null) {
                 String filename = labid.toString() + ".pdf";
                 /*上传文件*/
-                SftpOperator.uploadFile(filename, multipartFiles, response, request);
+                SftpOperator.uploadFile(filename, multipartFile, response, request);
                 /*改变couselab的docpath*/
                 courseLab.setDocPath(filename);
                 courseLabMapper.updateByPrimaryKey(courseLab);

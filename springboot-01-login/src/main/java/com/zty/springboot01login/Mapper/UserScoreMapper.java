@@ -1,15 +1,20 @@
 package com.zty.springboot01login.Mapper;
 
 import com.zty.springboot01login.Pojo.UserScore;
+import com.zty.springboot01login.Pojo.UserScoreKey;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
+@Mapper
+@Repository
 public interface UserScoreMapper {
-    int deleteByPrimaryKey(Integer labId);
+    int deleteByPrimaryKey(UserScoreKey key);
 
     int insert(UserScore record);
 
     int insertSelective(UserScore record);
 
-    UserScore selectByPrimaryKey(Integer labId);
+    UserScore selectByPrimaryKey(UserScoreKey key);
 
     int updateByPrimaryKeySelective(UserScore record);
 
@@ -17,4 +22,5 @@ public interface UserScoreMapper {
     int updateByPrimaryKeyWithBLOBs(UserScore record);
 
     int updateByPrimaryKey(UserScore record);
+
 }

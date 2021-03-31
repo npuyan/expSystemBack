@@ -10,6 +10,7 @@ import com.zty.springboot01login.Pojo.CourseRequest;
 import com.zty.springboot01login.Pojo.User;
 import com.zty.springboot01login.Pojo.UserCourse;
 import com.zty.springboot01login.Service.CourseEnvService;
+import com.zty.springboot01login.Service.UserScoreService;
 import com.zty.springboot01login.Service.UserService;
 import com.zty.springboot01login.Utils.*;
 import io.kubernetes.client.models.V1ContainerStatus;
@@ -19,9 +20,14 @@ import io.kubernetes.client.models.V1Service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.util.List;
 
 @SpringBootTest
@@ -45,7 +51,8 @@ class Springboot01LoginApplicationTests {
 
     @Autowired
     CourseEnvService courseEnvService;
-
+    @Autowired
+    UserScoreService userScoreService;
     @Test
     void test1() {
         System.out.println(mapper1.selectByUserName("zty"));
@@ -174,5 +181,13 @@ class Springboot01LoginApplicationTests {
     @Test
     public void testsaveCourseEnvToImage() throws Exception {
         courseEnvService.saveCourseEnvToImage("111", new CourseEnv());
+    }
+
+    @Test
+    public void testuploadHomework() throws Exception{
+        File file=new File("src/test/java/com/zty/springboot01login/test.docx");
+        InputStream inputStream = Files.newInputStream(file.toPath());
+        MultipartFile multipartFile=new MockMultipartFile("test.docx",inputStream);
+//        userScoreService.uploadHomework(12,1,multipartFile)
     }
 }

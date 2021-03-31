@@ -1,7 +1,11 @@
 package com.zty.springboot01login.Mapper;
 
 import com.zty.springboot01login.Pojo.CourseComment;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
+@Mapper
+@Repository
 public interface CourseCommentMapper {
     int deleteByPrimaryKey(Integer id);
 

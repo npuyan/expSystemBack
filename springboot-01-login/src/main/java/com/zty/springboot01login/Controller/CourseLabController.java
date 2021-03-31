@@ -111,6 +111,4 @@ public class CourseLabController {
     public RespBean uploadLabFile(@RequestParam("labid") Integer labId, @RequestParam("file") MultipartFile multipartFiles, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
         return courseLabService.uploadFile(labId, multipartFiles, response, request);
     }
-
-
 }

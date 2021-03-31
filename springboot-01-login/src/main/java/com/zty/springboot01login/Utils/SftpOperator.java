@@ -12,9 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -232,5 +230,46 @@ public class SftpOperator {
             e.printStackTrace();
         }
         return RespBean.ok("上传 成功");
+    }
+
+    /*下載文件，用流的方式下载，流的方式赶回*/
+    public static RespBean downloadFile(MultipartFile multipartFile, final HttpServletResponse response, final HttpServletRequest request){
+        OutputStream outputStream = null;
+        try {
+            // 取得输出流
+            outputStream=response.getOutputStream();
+            /*清空输出流*/
+            response.reset();
+            response.setContentType("application/x-download;charset=GBK");
+            response.setHeader("Content-Disposition", "attachment;filename=" + multipartFile.getOriginalFilename());
+            System.err.println(multipartFile.getOriginalFilename());
+            try {
+                if(multipartFile!=null){
+                    String[] split = multipartFile.getOriginalFilename().split("\\.");
+                    File file = File.createTempFile(split[0], "." + split[1]);
+                    multipartFile.transferTo(file);
+                    FileInputStream fileInputStream=new FileInputStream(file);
+                    Files.copy(file.toPath(),outputStream);
+                    file.delete();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return RespBean.error("下载失败");
+            }
+            //刷新
+            response.getOutputStream().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return RespBean.error("下载失败");
+        } finally {
+            try {
+                if(outputStream!=null){
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return RespBean.ok("下载成功");
     }
 }

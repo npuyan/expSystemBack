@@ -2,64 +2,75 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zty.springboot01login.Mapper.UserScoreMapper" >
   <resultMap id="BaseResultMap" type="com.zty.springboot01login.Pojo.UserScore" >
-    <id column="lab_id" property="labId" jdbcType="INTEGER" />
 
     <!-- 用户id -->
-    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <id column="lab_id" property="labId" jdbcType="INTEGER" />
     <result column="score" property="score" jdbcType="INTEGER" />
+
+    <!-- 作业文件类型，因为可能出现不同的类型，但是保存blob时只保存二进制不保存名称，所以需要另外存储 -->
+    <result column="homeworktype" property="homeworktype" jdbcType="VARCHAR" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.zty.springboot01login.Pojo.UserScore" extends="BaseResultMap" >
     <result column="homework" property="homework" jdbcType="LONGVARBINARY" />
   </resultMap>
   <sql id="Base_Column_List" >
-    lab_id, user_id, score
+    user_id, lab_id, score, homeworktype
   </sql>
   <sql id="Blob_Column_List" >
     homework
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="com.zty.springboot01login.Pojo.UserScoreKey" >
     select
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from tb_user_score
-    where lab_id = #{labId,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+    and lab_id = #{labId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="com.zty.springboot01login.Pojo.UserScoreKey" >
     delete from tb_user_score
-    where lab_id = #{labId,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+      and lab_id = #{labId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" >
-    insert into tb_user_score (lab_id, user_id, score,
-      homework)
-    values (#{labId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{score,jdbcType=INTEGER},
-      #{homework,jdbcType=LONGVARBINARY})
+    insert into tb_user_score (user_id, lab_id, score,
+      homeworktype, homework)
+    values (#{userId,jdbcType=INTEGER}, #{labId,jdbcType=INTEGER}, #{score,jdbcType=INTEGER},
+      #{homeworktype,jdbcType=VARCHAR}, #{homework,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" >
     insert into tb_user_score
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="labId != null" >
-        lab_id,
-      </if>
       <if test="userId != null" >
         user_id,
       </if>
+      <if test="labId != null" >
+        lab_id,
+      </if>
       <if test="score != null" >
         score,
+      </if>
+      <if test="homeworktype != null" >
+        homeworktype,
       </if>
       <if test="homework != null" >
         homework,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="labId != null" >
-        #{labId,jdbcType=INTEGER},
-      </if>
       <if test="userId != null" >
         #{userId,jdbcType=INTEGER},
       </if>
+      <if test="labId != null" >
+        #{labId,jdbcType=INTEGER},
+      </if>
       <if test="score != null" >
         #{score,jdbcType=INTEGER},
+      </if>
+      <if test="homeworktype != null" >
+        #{homeworktype,jdbcType=VARCHAR},
       </if>
       <if test="homework != null" >
         #{homework,jdbcType=LONGVARBINARY},
@@ -69,33 +80,36 @@
   <update id="updateByPrimaryKeySelective" >
     update tb_user_score
     <set >
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=INTEGER},
-      </if>
       <if test="score != null" >
         score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="homeworktype != null" >
+        homeworktype = #{homeworktype,jdbcType=VARCHAR},
       </if>
       <if test="homework != null" >
         homework = #{homework,jdbcType=LONGVARBINARY},
       </if>
     </set>
-    where lab_id = #{labId,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+    and lab_id = #{labId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" >
     update tb_user_score
-    set user_id = #{userId,jdbcType=INTEGER},
-      score = #{score,jdbcType=INTEGER},
+    set score = #{score,jdbcType=INTEGER},
+      homeworktype = #{homeworktype,jdbcType=VARCHAR},
       homework = #{homework,jdbcType=LONGVARBINARY}
-    where lab_id = #{labId,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+      and lab_id = #{labId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" >
     update tb_user_score
-    set user_id = #{userId,jdbcType=INTEGER},
-      score = #{score,jdbcType=INTEGER}
-    where lab_id = #{labId,jdbcType=INTEGER}
+    set score = #{score,jdbcType=INTEGER},
+      homeworktype = #{homeworktype,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+      and lab_id = #{labId,jdbcType=INTEGER}
   </update>
 
-  <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2021-03-29 23:42:25 ### -->
+  <!-- ### 以上代码由MBG + CommentPlugin自动生成, 生成时间: 2021-03-31 16:02:56 ### -->
 
 
 
