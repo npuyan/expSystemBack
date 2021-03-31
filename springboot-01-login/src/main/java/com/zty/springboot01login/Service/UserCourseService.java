@@ -2,7 +2,6 @@ package com.zty.springboot01login.Service;
 
 import com.zty.springboot01login.Mapper.CourseRequestMapper;
 import com.zty.springboot01login.Mapper.UserCourseMapper;
-import com.zty.springboot01login.Pojo.Course;
 import com.zty.springboot01login.Pojo.CourseRequest;
 import com.zty.springboot01login.Pojo.User;
 import com.zty.springboot01login.Pojo.UserCourse;
@@ -10,7 +9,6 @@ import com.zty.springboot01login.Utils.RequestType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +24,8 @@ public class UserCourseService {
     UserService userService;
     @Autowired
     CourseService courseService;
+    @Autowired
+    UserScoreService userScoreService;
 
     @Autowired
     UserCourse userCourse;
@@ -66,6 +66,7 @@ public class UserCourseService {
         userCourse.setUserId(courseRequest.getRequestUserId());
         userCourse.setCourseId(courseRequest.getCourseId());
         userCourseMapper.insert(userCourse);
+        userScoreService.addUserScoreWhileAgreeChooseCourse(courseRequest.getCourseId(), (courseRequest.getRequestUserId()));
     }
 
     /*给某一用户退掉某一课程*/

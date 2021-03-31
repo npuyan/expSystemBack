@@ -37,4 +37,6 @@ public class UserLabController {
         CourseLab courseLab = JSON.parseObject(JSON.toJSONString(param.get("courselab")), CourseLab.class);
         return RespBean.ok("成功暂停", userLabService.pauseLabEnv(username, courseLab));
     }
+
+
 }
