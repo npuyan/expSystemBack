@@ -5,20 +5,15 @@ import com.zty.springboot01login.Pojo.RespBean;
 import com.zty.springboot01login.Pojo.UserScore;
 import com.zty.springboot01login.Service.UserScoreService;
 import com.zty.springboot01login.Service.UserService;
-import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 
@@ -37,12 +32,12 @@ public class UserScoreController {
     @RequestMapping("/uploadhomework")
     public RespBean uploadHomework(@RequestParam("userid") Integer userid,
                                    @RequestParam("labid") Integer labid,
-//                                   @RequestParam("file") MultipartFile multipartFile,
+                                   @RequestParam("file") MultipartFile multipartFile,
                                    final HttpServletResponse response, final HttpServletRequest request) throws Exception {
         /*test*/
-        File file = new File("springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml");
-        InputStream inputStream = Files.newInputStream(file.toPath());
-        MultipartFile multipartFile = new MockMultipartFile("createDeployment.yaml","createDeployment.yaml", ContentType.APPLICATION_OCTET_STREAM.toString(), inputStream);
+//        File file = new File("springboot-01-login/src/main/java/com/zty/springboot01login/Utils/test.zip");
+//        InputStream inputStream = Files.newInputStream(file.toPath());
+//        MultipartFile multipartFile = new MockMultipartFile("test.zip", "test.zip", ContentType.APPLICATION_OCTET_STREAM.toString(), inputStream);
 
         /*判断上传问价你的大小*/
         Float size = Float.parseFloat(String.valueOf(multipartFile.getSize())) / 1024;
@@ -107,6 +102,4 @@ public class UserScoreController {
         Integer labid = JSON.parseObject(JSON.toJSONString(param.get("labid")), Integer.class);
         return userScoreService.getUserScore(username, labid);
     }
-
-
 }

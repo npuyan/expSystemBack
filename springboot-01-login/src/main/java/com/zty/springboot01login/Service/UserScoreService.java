@@ -112,6 +112,7 @@ public class UserScoreService {
     /*批量下载作业，打包成一个zip文件返回*/
     public RespBean downloadHomeworks(Integer labid, final HttpServletResponse response, final HttpServletRequest request) throws IOException {
         String homeworkname = null;
+        /*得到本实验的名字作为压缩包的名字*/
         CourseLab courseLab = courseLabService.getCourseLabById(labid);
         File tempFile = File.createTempFile(courseLab.getLabName(), ".zip");
         System.err.println("temfilename " + tempFile.getName());
@@ -121,35 +122,25 @@ public class UserScoreService {
             List<UserScore> userScores = userScoreMapper.selectByLabIdWithBLOBs(labid);
             for (UserScore us : userScores) {
                 User user = userService.getByUserId(us.getUserId());
+                /*作业全称*/
                 homeworkname = homeworkName(user, courseLab) + "." + us.getHomeworkType();
 
                 byte[] homework = us.getHomework();
                 if (homework != null && homework.length != 0) {
                     System.err.println(homework.length);
                     System.err.println(homeworkname);
-                    MultipartFile multipartFile = new MockMultipartFile(homeworkname, homeworkname, ContentType.APPLICATION_OCTET_STREAM.toString(), homework);
 
                     /*將文件加入到一个临时文件zip中*/
-//                    String s = MimeUtility.encodeWord(homeworkname);
                     zipOutputStream.putNextEntry(new ZipEntry(homeworkname));
-
-                    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(homework);
-                    InputStream inputStream = multipartFile.getInputStream();
-                    int len = 0;
-                    while ((len = inputStream.read()) != -1) {
-                        zipOutputStream.write(len);
-                    }
-//                    zipOutputStream.write(homework, 0, homework.length);
+                    zipOutputStream.write(homework);
                     zipOutputStream.closeEntry();
-                    System.err.println("写入文件成功一次");
-                    System.err.println("tempfile length " + tempFile.length());
+                   System.err.println("写入文件成功一次");
                 }
             }
+            zipOutputStream.close();
             /*把压缩包传回去*/
             FileInputStream fileInputStream = new FileInputStream(tempFile);
-            System.err.println("tempfile length " + tempFile.length());
             MultipartFile multipartFile = new MockMultipartFile(tempFile.getName(), tempFile.getName(), ContentType.APPLICATION_OCTET_STREAM.toString(), fileInputStream);
-            System.err.println("multifile size "+multipartFile.getSize());
             SftpOperator.downloadFile(multipartFile, response, request);
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,7 +148,6 @@ public class UserScoreService {
         }
         /*关闭file和zip*/
         tempFile.delete();
-        zipOutputStream.close();
         return RespBean.ok("批量下载成功");
     }
 

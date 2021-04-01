@@ -242,8 +242,9 @@ public class SftpOperator {
             outputStream = response.getOutputStream();
             /*清空输出流*/
             response.reset();
-            response.setContentType("application/x-zip");
-            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/x-download;charset=GBK");
+//            response.setContentType("application/x-download;");
+//            response.setCharacterEncoding("UTF-8");
             /*必须河阳传回名字，因为....中文乱码*/
             String s = MimeUtility.encodeWord(multipartFile.getOriginalFilename());
             response.setHeader("Content-Disposition", "attachment;filename=" + s);
@@ -254,6 +255,45 @@ public class SftpOperator {
                     File file = File.createTempFile(split[0], "." + split[1]);
                     multipartFile.transferTo(file);
                     FileInputStream fileInputStream = new FileInputStream(file);
+                    Files.copy(file.toPath(), outputStream);
+                    file.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return RespBean.error("下载失败");
+            }
+            //刷新
+            response.getOutputStream().flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return RespBean.error("下载失败");
+        } finally {
+            try {
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return RespBean.ok("下载成功");
+    }
+
+    /*下載文件,file，用流的方式下载，流的方式赶回*/
+    public static RespBean downloadFile(File file, final HttpServletResponse response, final HttpServletRequest request) {
+        OutputStream outputStream = null;
+        try {
+            // 取得输出流
+            outputStream = response.getOutputStream();
+            /*清空输出流*/
+            response.reset();
+            response.setContentType("application/x-download;charset=GBK");
+            String s = MimeUtility.encodeWord(file.getName());
+            response.setHeader("Content-Disposition", "attachment;filename=" + s);
+
+            System.err.println("originalname" + file.getName());
+            try {
+                if (file != null) {
                     Files.copy(file.toPath(), outputStream);
                     file.delete();
                 }
