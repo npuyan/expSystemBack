@@ -11,11 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 public class UserScoreService {
@@ -100,13 +99,66 @@ public class UserScoreService {
             return RespBean.error("下载失败，未找到用户或实验，参数错误");
         }
         //下载文件
-        UserScore userScore1 = userScoreMapper.selectByPrimaryKey(new UserScoreKey(userid, labid));
+        UserScore userScore1 = userScoreMapper.selectByPrimaryKeyWithBLOBs(new UserScoreKey(userid, labid));
         homeworkname = homeworkname + "." + userScore1.getHomeworkType();
         byte[] homework = userScore1.getHomework();
         System.err.println(homework.length);
 //        InputStream inputStream = new ByteArrayInputStream(homework);
         MultipartFile multipartFile = new MockMultipartFile(homeworkname, homeworkname, ContentType.APPLICATION_OCTET_STREAM.toString(), homework);
+
         return SftpOperator.downloadFile(multipartFile, response, request);
+    }
+
+    /*批量下载作业，打包成一个zip文件返回*/
+    public RespBean downloadHomeworks(Integer labid, final HttpServletResponse response, final HttpServletRequest request) throws IOException {
+        String homeworkname = null;
+        CourseLab courseLab = courseLabService.getCourseLabById(labid);
+        File tempFile = File.createTempFile(courseLab.getLabName(), ".zip");
+        System.err.println("temfilename " + tempFile.getName());
+        ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(tempFile));
+
+        try {
+            List<UserScore> userScores = userScoreMapper.selectByLabIdWithBLOBs(labid);
+            for (UserScore us : userScores) {
+                User user = userService.getByUserId(us.getUserId());
+                homeworkname = homeworkName(user, courseLab) + "." + us.getHomeworkType();
+
+                byte[] homework = us.getHomework();
+                if (homework != null && homework.length != 0) {
+                    System.err.println(homework.length);
+                    System.err.println(homeworkname);
+                    MultipartFile multipartFile = new MockMultipartFile(homeworkname, homeworkname, ContentType.APPLICATION_OCTET_STREAM.toString(), homework);
+
+                    /*將文件加入到一个临时文件zip中*/
+//                    String s = MimeUtility.encodeWord(homeworkname);
+                    zipOutputStream.putNextEntry(new ZipEntry(homeworkname));
+
+                    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(homework);
+                    InputStream inputStream = multipartFile.getInputStream();
+                    int len = 0;
+                    while ((len = inputStream.read()) != -1) {
+                        zipOutputStream.write(len);
+                    }
+//                    zipOutputStream.write(homework, 0, homework.length);
+                    zipOutputStream.closeEntry();
+                    System.err.println("写入文件成功一次");
+                    System.err.println("tempfile length " + tempFile.length());
+                }
+            }
+            /*把压缩包传回去*/
+            FileInputStream fileInputStream = new FileInputStream(tempFile);
+            System.err.println("tempfile length " + tempFile.length());
+            MultipartFile multipartFile = new MockMultipartFile(tempFile.getName(), tempFile.getName(), ContentType.APPLICATION_OCTET_STREAM.toString(), fileInputStream);
+            System.err.println("multifile size "+multipartFile.getSize());
+            SftpOperator.downloadFile(multipartFile, response, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("批量下载失败");
+        }
+        /*关闭file和zip*/
+        tempFile.delete();
+        zipOutputStream.close();
+        return RespBean.ok("批量下载成功");
     }
 
     /*根据实验id得到所有学生的成绩*/
@@ -149,6 +201,7 @@ public class UserScoreService {
         }
         return listmap;
     }
+
 
     /*提交单个學生成績*/
     public RespBean putUserScore(String username, Integer labid, Integer score) throws Exception {

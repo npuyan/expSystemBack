@@ -5,15 +5,20 @@ import com.zty.springboot01login.Pojo.RespBean;
 import com.zty.springboot01login.Pojo.UserScore;
 import com.zty.springboot01login.Service.UserScoreService;
 import com.zty.springboot01login.Service.UserService;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +37,14 @@ public class UserScoreController {
     @RequestMapping("/uploadhomework")
     public RespBean uploadHomework(@RequestParam("userid") Integer userid,
                                    @RequestParam("labid") Integer labid,
-                                   @RequestParam("file") MultipartFile multipartFile,
+//                                   @RequestParam("file") MultipartFile multipartFile,
                                    final HttpServletResponse response, final HttpServletRequest request) throws Exception {
+        /*test*/
+        File file = new File("springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml");
+        InputStream inputStream = Files.newInputStream(file.toPath());
+        MultipartFile multipartFile = new MockMultipartFile("createDeployment.yaml","createDeployment.yaml", ContentType.APPLICATION_OCTET_STREAM.toString(), inputStream);
+
+        /*判断上传问价你的大小*/
         Float size = Float.parseFloat(String.valueOf(multipartFile.getSize())) / 1024;
         BigDecimal b = new BigDecimal(size);
         // 2表示2位 ROUND_HALF_UP表明四舍五入，
@@ -51,6 +62,13 @@ public class UserScoreController {
                                      @RequestParam("labid") Integer labid,
                                      final HttpServletResponse response, final HttpServletRequest request) throws IOException {
         return userScoreService.downloadhomework(userid, labid, response, request);
+    }
+
+    /*批量下载作业，打包成一个zip文件返回*/
+    @RequestMapping("/downloadhomeworks")
+    public RespBean downloadHomeworks(@RequestParam("labid") Integer labis,
+                                      final HttpServletResponse response, final HttpServletRequest request) throws IOException {
+        return userScoreService.downloadHomeworks(labis, response, request);
     }
 
     /*根据实验id得到所有学生的成绩*/

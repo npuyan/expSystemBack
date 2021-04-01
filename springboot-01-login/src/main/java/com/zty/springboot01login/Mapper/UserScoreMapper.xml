@@ -3,43 +3,44 @@
 <mapper namespace="com.zty.springboot01login.Mapper.UserScoreMapper">
     <resultMap id="BaseResultMap" type="com.zty.springboot01login.Pojo.UserScore">
         <!-- 用户id -->
-        <id column="user_id" property="userId" jdbcType="INTEGER" />
-        <id column="lab_id" property="labId" jdbcType="INTEGER" />
-        <result column="score" property="score" jdbcType="INTEGER" />
+        <id column="user_id" property="userId" jdbcType="INTEGER"/>
+        <id column="lab_id" property="labId" jdbcType="INTEGER"/>
+        <result column="score" property="score" jdbcType="INTEGER"/>
 
         <!-- 分数最后一次上传的时间，如果没有时间就代表没有上传 -->
-        <result column="score_time" property="scoreTime" jdbcType="TIMESTAMP" />
+        <result column="score_time" property="scoreTime" jdbcType="TIMESTAMP"/>
 
         <!-- 作业文件类型，因为可能出现不同的类型，但是保存blob时只保存二进制不保存名称，所以需要另外存储 -->
-        <result column="homework_type" property="homeworkType" jdbcType="VARCHAR" />
+        <result column="homework_type" property="homeworkType" jdbcType="VARCHAR"/>
 
         <!-- 作业最后一次上传的时间，没有时间就代表没有上传 -->
-        <result column="homework_time" property="homeworkTime" jdbcType="TIMESTAMP" />
+        <result column="homework_time" property="homeworkTime" jdbcType="TIMESTAMP"/>
     </resultMap>
-    <resultMap id="ResultMapWithBLOBs" type="com.zty.springboot01login.Pojo.UserScore" extends="BaseResultMap" >
-        <result column="homework" property="homework" jdbcType="LONGVARBINARY" />
+    <resultMap id="ResultMapWithBLOBs" type="com.zty.springboot01login.Pojo.UserScore" extends="BaseResultMap">
+        <result column="homework" property="homework" jdbcType="LONGVARBINARY"/>
     </resultMap>
-    <sql id="Base_Column_List" >
+    <sql id="Base_Column_List">
     user_id, lab_id, score, score_time, homework_type, homework_time
   </sql>
-    <sql id="Blob_Column_List" >
+    <sql id="Blob_Column_List">
     homework
   </sql>
-    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="com.zty.springboot01login.Pojo.UserScoreKey" >
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+            parameterType="com.zty.springboot01login.Pojo.UserScoreKey">
         select
-        <include refid="Base_Column_List" />
-<!--        ,-->
-<!--        <include refid="Blob_Column_List" />-->
+        <include refid="Base_Column_List"/>
+        <!--        ,-->
+        <!--        <include refid="Blob_Column_List" />-->
         from tb_user_score
         where user_id = #{userId,jdbcType=INTEGER}
         and lab_id = #{labId,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="com.zty.springboot01login.Pojo.UserScoreKey" >
+    <delete id="deleteByPrimaryKey" parameterType="com.zty.springboot01login.Pojo.UserScoreKey">
     delete from tb_user_score
     where user_id = #{userId,jdbcType=INTEGER}
       and lab_id = #{labId,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" >
+    <insert id="insert">
     insert into tb_user_score (user_id, lab_id, score,
       score_time, homework_type, homework_time,
       homework)
@@ -47,78 +48,78 @@
       #{scoreTime,jdbcType=TIMESTAMP}, #{homeworkType,jdbcType=VARCHAR}, #{homeworkTime,jdbcType=TIMESTAMP},
       #{homework,jdbcType=LONGVARBINARY})
   </insert>
-    <insert id="insertSelective" >
+    <insert id="insertSelective">
         insert into tb_user_score
-        <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="userId != null" >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
                 user_id,
             </if>
-            <if test="labId != null" >
+            <if test="labId != null">
                 lab_id,
             </if>
-            <if test="score != null" >
+            <if test="score != null">
                 score,
             </if>
-            <if test="scoreTime != null" >
+            <if test="scoreTime != null">
                 score_time,
             </if>
-            <if test="homeworkType != null" >
+            <if test="homeworkType != null">
                 homework_type,
             </if>
-            <if test="homeworkTime != null" >
+            <if test="homeworkTime != null">
                 homework_time,
             </if>
-            <if test="homework != null" >
+            <if test="homework != null">
                 homework,
             </if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="userId != null" >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
                 #{userId,jdbcType=INTEGER},
             </if>
-            <if test="labId != null" >
+            <if test="labId != null">
                 #{labId,jdbcType=INTEGER},
             </if>
-            <if test="score != null" >
+            <if test="score != null">
                 #{score,jdbcType=INTEGER},
             </if>
-            <if test="scoreTime != null" >
+            <if test="scoreTime != null">
                 #{scoreTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="homeworkType != null" >
+            <if test="homeworkType != null">
                 #{homeworkType,jdbcType=VARCHAR},
             </if>
-            <if test="homeworkTime != null" >
+            <if test="homeworkTime != null">
                 #{homeworkTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="homework != null" >
+            <if test="homework != null">
                 #{homework,jdbcType=LONGVARBINARY},
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" >
+    <update id="updateByPrimaryKeySelective">
         update tb_user_score
-        <set >
-            <if test="score != null" >
+        <set>
+            <if test="score != null">
                 score = #{score,jdbcType=INTEGER},
             </if>
-            <if test="scoreTime != null" >
+            <if test="scoreTime != null">
                 score_time = #{scoreTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="homeworkType != null" >
+            <if test="homeworkType != null">
                 homework_type = #{homeworkType,jdbcType=VARCHAR},
             </if>
-            <if test="homeworkTime != null" >
+            <if test="homeworkTime != null">
                 homework_time = #{homeworkTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="homework != null" >
+            <if test="homework != null">
                 homework = #{homework,jdbcType=LONGVARBINARY},
             </if>
         </set>
         where user_id = #{userId,jdbcType=INTEGER}
         and lab_id = #{labId,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" >
+    <update id="updateByPrimaryKeyWithBLOBs">
     update tb_user_score
     set score = #{score,jdbcType=INTEGER},
       score_time = #{scoreTime,jdbcType=TIMESTAMP},
@@ -128,7 +129,7 @@
     where user_id = #{userId,jdbcType=INTEGER}
       and lab_id = #{labId,jdbcType=INTEGER}
   </update>
-    <update id="updateByPrimaryKey" >
+    <update id="updateByPrimaryKey">
     update tb_user_score
     set score = #{score,jdbcType=INTEGER},
       score_time = #{scoreTime,jdbcType=TIMESTAMP},
@@ -145,6 +146,38 @@
         <include refid="Base_Column_List"></include>
         from tb_user_score
         where lab_id = #{labId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByLabIdWithBLOBs" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"></include>
+        ,
+        <include refid="Blob_Column_List"></include>
+        from tb_user_score
+        where lab_id = #{labId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"></include>
+        from tb_user_score
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByUserIdWithBLOBs" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"></include>
+        ,
+        <include refid="Blob_Column_List"></include>
+        from tb_user_score
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByPrimaryKeyWithBLOBs" resultMap="ResultMapWithBLOBs"
+            parameterType="com.zty.springboot01login.Pojo.UserScoreKey">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tb_user_score
+        where user_id = #{userId,jdbcType=INTEGER}
+        and lab_id = #{labId,jdbcType=INTEGER}
     </select>
     <!--  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="com.zty.springboot01login.Pojo.UserScoreKey" >-->
     <!--    select-->

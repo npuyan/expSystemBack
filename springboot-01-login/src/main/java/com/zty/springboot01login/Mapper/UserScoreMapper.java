@@ -16,6 +16,7 @@ public interface UserScoreMapper {
 
     int insertSelective(UserScore record);
 
+    /*这个不带blob*/
     UserScore selectByPrimaryKey(UserScoreKey key);
 
     int updateByPrimaryKeySelective(UserScore record);
@@ -25,5 +26,13 @@ public interface UserScoreMapper {
 
     int updateByPrimaryKey(UserScore record);
 
+    UserScore selectByPrimaryKeyWithBLOBs(UserScoreKey key);
+
     List<UserScore> selectByLabId(Integer labId);
+
+    List<UserScore> selectByLabIdWithBLOBs(Integer labid);
+
+    List<UserScore> selectByUserId(Integer userId);
+
+    List<UserScore> selectByUserIdWithBLOBs(Integer userId);
 }

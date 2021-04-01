@@ -1,5 +1,6 @@
 package com.zty.springboot01login.Utils;
 
+import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
 import com.zty.springboot01login.Pojo.RespBean;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
@@ -183,7 +184,8 @@ public class SftpOperator {
             // 清空输出流
             response.reset();
             response.setContentType("application/x-download;charset=GBK");
-            response.setHeader("Content-Disposition", "attachment;filename=" + filename);
+            String s = MimeUtility.encodeWord(filename);
+            response.setHeader("Content-Disposition", "attachment;filename=" + s);
             //下载文件
             SftpOperator sftpOperator = new SftpOperator();
             try {
@@ -233,26 +235,29 @@ public class SftpOperator {
     }
 
     /*下載文件，用流的方式下载，流的方式赶回*/
-    public static RespBean downloadFile(MultipartFile multipartFile, final HttpServletResponse response, final HttpServletRequest request){
+    public static RespBean downloadFile(MultipartFile multipartFile, final HttpServletResponse response, final HttpServletRequest request) {
         OutputStream outputStream = null;
         try {
             // 取得输出流
-            outputStream=response.getOutputStream();
+            outputStream = response.getOutputStream();
             /*清空输出流*/
             response.reset();
-            response.setContentType("application/x-download;charset=GBK");
-            response.setHeader("Content-Disposition", "attachment;filename=" + multipartFile.getOriginalFilename());
-            System.err.println(multipartFile.getOriginalFilename());
+            response.setContentType("application/x-zip");
+            response.setCharacterEncoding("UTF-8");
+            /*必须河阳传回名字，因为....中文乱码*/
+            String s = MimeUtility.encodeWord(multipartFile.getOriginalFilename());
+            response.setHeader("Content-Disposition", "attachment;filename=" + s);
+            System.err.println("originalname" + multipartFile.getOriginalFilename());
             try {
-                if(multipartFile!=null){
+                if (multipartFile != null) {
                     String[] split = multipartFile.getOriginalFilename().split("\\.");
                     File file = File.createTempFile(split[0], "." + split[1]);
                     multipartFile.transferTo(file);
-                    FileInputStream fileInputStream=new FileInputStream(file);
-                    Files.copy(file.toPath(),outputStream);
+                    FileInputStream fileInputStream = new FileInputStream(file);
+                    Files.copy(file.toPath(), outputStream);
                     file.delete();
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 return RespBean.error("下载失败");
             }
@@ -263,7 +268,7 @@ public class SftpOperator {
             return RespBean.error("下载失败");
         } finally {
             try {
-                if(outputStream!=null){
+                if (outputStream != null) {
                     outputStream.close();
                 }
             } catch (IOException e) {
