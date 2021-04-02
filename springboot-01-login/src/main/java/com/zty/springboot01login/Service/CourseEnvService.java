@@ -55,7 +55,7 @@ public class CourseEnvService {
     /*教师通过某一镜像给某一实验创建一个环境.打开这个环境并返回端口*/
     public int addCourseEnv(CourseLab courseLab, CourseImage courseImage, CourseEnv courseEnv) throws Exception {
         User user = userService.getByUserId(courseImage.getCreatorId());
-        String deployName = Pod.PodName(user.getUsername(), courseEnv.getEnvId());
+        String deployName = Pod.PodName(user.getUsername(), courseLab.getLabId());
         System.out.println("deployName" + deployName);
         if (courseImage != null) {
             V1Service service = userLabService.createDeploymentByImageAndServiceByDeployemnt(courseImage, deployName);
@@ -69,9 +69,9 @@ public class CourseEnvService {
     }
 
     /*教师将某一环境保存未经想*/
-    public boolean saveCourseEnvToImage(String username, CourseEnv courseEnv) {
+    public boolean saveCourseEnvToImage(String username,CourseLab courseLab, CourseEnv courseEnv) {
         User user = userService.getByUserName(username);
-        String deployName = Pod.PodName(user.getUsername(), courseEnv.getEnvId());
+        String deployName = Pod.PodName(user.getUsername(),  courseLab.getLabId());
 //        String deployName = Pod.PodName("111", 2);
         try {
             V1Deployment deployment = K8sConnect.getDeploymentByName(null, deployName);

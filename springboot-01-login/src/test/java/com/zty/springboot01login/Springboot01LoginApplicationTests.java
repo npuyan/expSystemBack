@@ -2,10 +2,7 @@ package com.zty.springboot01login;
 
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.zty.springboot01login.Mapper.*;
-import com.zty.springboot01login.Pojo.CourseEnv;
-import com.zty.springboot01login.Pojo.CourseRequest;
-import com.zty.springboot01login.Pojo.User;
-import com.zty.springboot01login.Pojo.UserCourse;
+import com.zty.springboot01login.Pojo.*;
 import com.zty.springboot01login.Service.CourseEnvService;
 import com.zty.springboot01login.Service.UserScoreService;
 import com.zty.springboot01login.Service.UserService;
@@ -127,23 +124,23 @@ class Springboot01LoginApplicationTests {
 
     @Test
     public void testSshd() throws Exception {
-        for (int i = 0; i < 100; i++) {
-            SftpOperator sftpOperator = new SftpOperator();
-            try {
-                sftpOperator.login();
-                sftpOperator.download("chengji.pdf", "src/main/java/META-INF/chengji.pdf");
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    sftpOperator.logout();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-//        V1Deployment deployment1 = (V1Deployment) K8sConnect.loadYaml("src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml");
-//        K8sConnect.createDeployment(null, deployment1);
+//        for (int i = 0; i < 100; i++) {
+//            SftpOperator sftpOperator = new SftpOperator();
+//            try {
+//                sftpOperator.login();
+//                sftpOperator.download("chengji.pdf", "src/main/java/META-INF/chengji.pdf");
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                try {
+//                    sftpOperator.logout();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+        V1Deployment deployment1 = (V1Deployment) K8sConnect.loadYaml("src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml");
+        K8sConnect.createDeployment(null, deployment1);
 //        V1Pod pod = (V1Pod) K8sConnect.loadYaml("src/main/java/com/zty/springboot01login/Utils/createPod.yaml");
 //        K8sConnect.creatPod(null, pod);
     }
@@ -180,7 +177,7 @@ class Springboot01LoginApplicationTests {
 
     @Test
     public void testsaveCourseEnvToImage() throws Exception {
-        courseEnvService.saveCourseEnvToImage("111", new CourseEnv());
+        courseEnvService.saveCourseEnvToImage("111", new CourseLab(),new CourseEnv());
     }
 
     @Test
@@ -193,5 +190,10 @@ class Springboot01LoginApplicationTests {
     @Test
     public void testcourseCommentMapper() throws Exception{
         System.out.println(courseCommentMapper.selectByPrimaryKey(1));
+    }
+
+    @Test
+    public void testMysqlConnect() throws Exception{
+        System.out.println(userCourseMapper.selectAll());
     }
 }

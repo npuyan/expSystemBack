@@ -32,11 +32,12 @@ public class SftpOperator {
     private ClientSession session;
     private SftpFileSystem fs;
 
-    private String host = "124.70.84.98";
+    private String host="10.168.4.167";
+//    private String host = "124.70.84.98";
     private int port = 22;
     private String username = "root";
-    private String password = "Zty981115";
-
+//    private String password = "Zty981115";
+    private String password = "nwpu1102";
     /*只能从这个目录下下载和上传文件，禁止修改其他目录*/
     private String ftpdir = "/home/expSystemBack/docData/";
 

@@ -19,6 +19,18 @@ public class DockerConnect {
     static String ip = "tcp://124.70.84.98:2375";
 
     static {
+//        DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
+//                .withDockerTlsVerify(true)
+//                .withDockerCertPath("springboot-01-login/src/main/resources/dockercerts").withDockerHost(ip)
+//                .withDockerConfig("springboot-01-login/src/main/resources/dockercerts").withApiVersion("1.40").withRegistryUrl("https://index.docker.io/v1/")
+//                .withRegistryUsername("xx").withRegistryPassword("Zty981115")
+//                .withRegistryEmail("zty2804@163.com").build();
+//                .withDockerCertPath("springboot-01-login/src/main/resources/dockercerts")
+//                .withApiVersion("1.40").withRegistryUrl("https://index.docker.io/v1/")
+//                .withRegistryUsername("root").withRegistryPassword("Zty981115")
+//                .withDockerHost(ip)
+//                .withDockerConfig("springboot-01-login/src/main/resources/dockercerts")
+//                .build();
         client = DockerClientBuilder.getInstance(ip).build();
     }
 
@@ -68,10 +80,11 @@ public class DockerConnect {
         client.removeContainerCmd(imageId).exec();
     }
 
-    public static boolean isPasue(String containerId){
+    public static boolean isPasue(String containerId) {
         containerId = formatContainerId(containerId);
         return true;
     }
+
     /* *
      * @描述：暂停容器
      * @param containerId

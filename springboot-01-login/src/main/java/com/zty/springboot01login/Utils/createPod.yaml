@@ -6,7 +6,7 @@ metadata:
   name: pod1
 spec:
   containers:
-      - image: dorowu/ubuntu-desktop-lxde-vnc:bionic-arm64
+      - image: dorowu/ubuntu-desktop-lxde-vnc:lastest
         imagePullPolicy: IfNotPresent
         name: ubuntu1
         resources: {}

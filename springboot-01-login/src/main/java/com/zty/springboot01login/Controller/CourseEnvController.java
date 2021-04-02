@@ -87,7 +87,8 @@ public class CourseEnvController {
     public RespBean saveCourseEnvToImage(@RequestBody Map<String, Object> param) {
         String username = JSON.parseObject(JSON.toJSONString(param.get("username")), String.class);
         CourseEnv courseEnv = JSON.parseObject(JSON.toJSONString(param.get("courseenv")), CourseEnv.class);
-        courseEnvService.saveCourseEnvToImage(username, courseEnv);
+        CourseLab courseLab = JSON.parseObject(JSON.toJSONString(param.get("courselab")), CourseLab.class);
+        courseEnvService.saveCourseEnvToImage(username, courseLab,courseEnv);
         return RespBean.ok("保存镜像成功");
     }
 }

@@ -34,8 +34,8 @@
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://124.70.84.98/experimental_system" userId="root"
-                        password="DhMzWLgAoRN7fGOc">
+                        connectionURL="jdbc:mysql://10.168.4.167/experimental_system" userId="root"
+                        password="Npwu1102*">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>

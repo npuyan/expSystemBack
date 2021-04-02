@@ -35,7 +35,7 @@ public class UserLabService {
         CourseEnv courseEnv = courseEnvService.getByEnvId(courseLab.getEnvId());
 
         /*TODO podname为{pod_username_envid},后期可以修改*/
-        String deployName = Pod.PodName(username, courseEnv.getEnvId());
+        String deployName = Pod.PodName(username, courseLab.getLabId());
         /*先查询对应的实验容器是否已经创建过*/
         if (userLab != null) {
             /*创建过容器*/
@@ -59,18 +59,24 @@ public class UserLabService {
                 }
                 return getServiceNodePortByDeployment(deployName);
             } else {
-                /*TODO 以下代码无效 只有在出现bug时才会走下边的代码 即表里有信息但是服务器没有pod*/
+                CourseImage courseImage =null;
                 /*如果没打开则查询是否有对应的镜像，如果有镜像则直接启动镜像并返回port*/
-
-                CourseImage courseImage = courseImageService.getCourseImageByName(deployName);
+                try {
+                    courseImage = courseImageService.getCourseImageByName(deployName);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 if (courseImage != null) {
+                    System.err.println("imagename " + courseImage.getImageName());
                     /*创建deployment和service*/
                     V1Service service = createDeploymentByImageAndServiceByDeployemnt(courseImage, deployName);
 
                     /*得到service，返回port*/
                     return getServiceNodePortByDeployment(deployName);
                 } else {
-                    throw new Exception("异常:实验表中有数据，但是镜像未创建！");
+                    courseImage = courseImageService.getCourseImageById(courseEnv.getImageId());
+                    V1Service service = createDeploymentByImageAndServiceByDeployemnt(courseImage, deployName);
+                    return getServiceNodePortByDeployment(deployName);
                 }
             }
         } else {
@@ -154,7 +160,7 @@ public class UserLabService {
         User user = userService.getByUserName(username);
         UserLab userLab = userLabMapper.selectByUserIdAndLabId(user.getUserId(), courseLab.getLabId());
         CourseEnv courseEnv = courseEnvService.getByEnvId(courseLab.getEnvId());
-        String deployName = Pod.PodName(username, courseEnv.getEnvId());
+        String deployName = Pod.PodName(username, courseLab.getLabId());
         if (userLab != null) {
             /*暂停*/
             V1Pod pod = K8sConnect.getPodByName(null, deployName);

@@ -19,8 +19,10 @@ import java.io.Reader;
 @Component
 public class K8sConnect {
     /*TODO 使用.kube/config无效，好像是ip是集群内部的，所以此处写死master节点的url，若需要进行动态master节点则需要重写脚本*/
-    private static String url = "https://124.70.84.98:6443";
-    private static String token = "";
+//    private static String url = "https://124.70.84.98:6443";
+//    private static String token = "";
+    private static String url="https://10.168.4.167:6443";
+    private static String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImgxVGpfM2MyMC1DMnBEbFN5MWpiMkNYSEkwdEVFTTBKcElxNGx2bS14MXMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJrdWJvYXJkLXVzZXItdG9rZW4tOTRsMjgiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoia3Vib2FyZC11c2VyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiYWJkYWUzNzgtZmY1Zi00MThhLWI1Y2UtNTZhMjZmYTIyMGFjIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmt1Ym9hcmQtdXNlciJ9.WdYfKH9fZwykR8-dSjiiMpkMhvpLMoKYcnBExJbF1OPgrS2tfGJnaf8txGd0zZHG5lYb9FaffOXrAzOlQ3NP8MgCEBAy36yhTTCIygoGAlfvtxg8YDGmNii53hs71e9FNbAN4pbLjEONUcq1CHmc51-sGiUQw82_MYvTereZzjoWRHXzE6QkrkCvf4oySQdP7NCzxslUKJdfbDagVUMbflYGinXwfI_3g1T-vyd5ss7chRAPfbuBFRg3mJjRLdRLUt-PxTK2ZIIwZCHVAO5WiLVTn8gTCje0yd5UfrGmJDcvimw3dk-zAsCSZ7dwCXV_FXyIB-VdnUt_heOgrDtt5w";
     public static String deploymentPath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml";
     public static String podPath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createPod.yaml";
     public static String servicePath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createService.yaml";
