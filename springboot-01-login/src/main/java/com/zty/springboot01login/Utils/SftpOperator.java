@@ -1,7 +1,7 @@
 package com.zty.springboot01login.Utils;
 
+import javax.mail.internet.MimeUtility;
 //import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
 import com.zty.springboot01login.Pojo.RespBean;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
