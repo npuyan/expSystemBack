@@ -100,7 +100,7 @@ public class DockerConnect {
      * @param containerId
      * @return void
      */
-    public static void unpasueContainer(String containerId) {
+    public static void unpasueContainer(String containerId) throws Exception {
         containerId = formatContainerId(containerId);
         client.unpauseContainerCmd(containerId).exec();
     }

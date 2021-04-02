@@ -1,8 +1,10 @@
 package com.zty.springboot01login.Pojo;
 
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
 @Component
+@Data
 public class RespBean {
     private Integer status;
     private String msg;

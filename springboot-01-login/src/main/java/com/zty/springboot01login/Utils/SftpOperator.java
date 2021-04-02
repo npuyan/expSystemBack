@@ -1,5 +1,6 @@
 package com.zty.springboot01login.Utils;
 
+//import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
 import com.zty.springboot01login.Pojo.RespBean;
 import lombok.Data;
@@ -161,6 +162,7 @@ public class SftpOperator {
      */
     public boolean exists(String path) throws Exception {
         path = this.ftpdir + path;
+        System.err.println("判断文件是否存在");
         return Files.exists(fs.getDefaultDir().resolve(path));
     }
 
@@ -184,7 +186,7 @@ public class SftpOperator {
             outputStream = response.getOutputStream();
             // 清空输出流
             response.reset();
-            response.setContentType("application/x-download;charset=GBK");
+//            response.setContentType("application/x-download;charset=GBK");
             String s = MimeUtility.encodeWord(filename);
             response.setHeader("Content-Disposition", "attachment;filename=" + s);
             //下载文件
@@ -192,6 +194,7 @@ public class SftpOperator {
             try {
                 sftpOperator.login();
                 if (sftpOperator.exists(filename)) {
+                    System.err.println("下载文件名"+filename);
                     sftpOperator.download(filename, outputStream);
                 } else {
                     sftpOperator.download("default.jpg", outputStream);
@@ -243,7 +246,7 @@ public class SftpOperator {
             outputStream = response.getOutputStream();
             /*清空输出流*/
             response.reset();
-            response.setContentType("application/x-download;charset=GBK");
+//            response.setContentType("application/x-download;charset=GBK");
 //            response.setContentType("application/x-download;");
 //            response.setCharacterEncoding("UTF-8");
             /*必须河阳传回名字，因为....中文乱码*/
@@ -288,7 +291,7 @@ public class SftpOperator {
             outputStream = response.getOutputStream();
             /*清空输出流*/
             response.reset();
-            response.setContentType("application/x-download;charset=GBK");
+//            response.setContentType("application/x-download;charset=GBK");
             String s = MimeUtility.encodeWord(file.getName());
             response.setHeader("Content-Disposition", "attachment;filename=" + s);
 

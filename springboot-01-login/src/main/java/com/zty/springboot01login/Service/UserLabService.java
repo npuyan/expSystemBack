@@ -55,7 +55,8 @@ public class UserLabService {
                 try {
                     DockerConnect.unpasueContainer(containerId);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    System.err.println("不需要取消暂停");
+//                    e.printStackTrace();
                 }
                 return getServiceNodePortByDeployment(deployName);
             } else {
