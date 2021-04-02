@@ -52,7 +52,7 @@ public class SftpOperator {
         client.start();
         session = client.connect(username, host, port).verify().getSession();
         session.addPasswordIdentity(password);
-        if (session.auth().verify(3000).isFailure()) {
+        if (session.auth().verify(100000).isFailure()) {
             System.err.println("sftp  连接失败");
             throw new Exception("sftp 连接失败");
         }
