@@ -134,7 +134,7 @@ public class UserScoreService {
                     zipOutputStream.putNextEntry(new ZipEntry(homeworkname));
                     zipOutputStream.write(homework);
                     zipOutputStream.closeEntry();
-                   System.err.println("写入文件成功一次");
+                    System.err.println("写入文件成功一次");
                 }
             }
             zipOutputStream.close();
@@ -206,6 +206,8 @@ public class UserScoreService {
         userScore1.setScoreTime(new Date());
         UserScore selectUserScore = userScoreMapper.selectByPrimaryKey(userScore1);
         if (selectUserScore != null) {
+            userScore1.setHomeworkType(selectUserScore.getHomeworkType());
+            userScore1.setHomeworkTime(selectUserScore.getHomeworkTime());
             userScoreMapper.updateByPrimaryKey(userScore1);
         } else {
             throw new Exception("无法设置分数，不存在这一记录");
