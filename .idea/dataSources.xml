@@ -7,7 +7,32 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://10.168.4.167:3306</jdbc-url>
       <vm-options>-Djava.net.preferIPv4Stack=true</vm-options>
-      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="@10.168.4.167 [2]" uuid="a5dac018-4182-47f1-8e73-8dc657527e32">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://10.168.4.167:3306</jdbc-url>
+      <vm-options>-Djava.net.preferIPv4Stack=true</vm-options>
+      <vm-env>
+        <property name="-Djava.net.preferIPv4Stack" value="true" />
+      </vm-env>
+    </data-source>
+    <data-source source="LOCAL" name="@10.168.4.167 [3]" uuid="25803cb5-1860-4725-abf0-5690f5dcf799">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://10.168.4.167:3306</jdbc-url>
+      <vm-options>-Djava.net.preferIPv4Stack=true</vm-options>
+      <vm-env>
+        <property name="-Djava.net.preferIPv4Stack" value="true" />
+      </vm-env>
+    </data-source>
+    <data-source source="LOCAL" name="@124.70.69.40" uuid="476bb8cb-9ca8-432d-ac6c-46501d737786">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://124.70.69.40:3306</jdbc-url>
     </data-source>
   </component>
 </project>

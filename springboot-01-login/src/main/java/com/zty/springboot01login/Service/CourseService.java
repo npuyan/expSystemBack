@@ -4,6 +4,7 @@ import com.zty.springboot01login.Mapper.CourseMapper;
 import com.zty.springboot01login.Pojo.Course;
 import com.zty.springboot01login.Pojo.CourseLab;
 import com.zty.springboot01login.Pojo.RespBean;
+import com.zty.springboot01login.Pojo.UserCourse;
 import com.zty.springboot01login.Utils.PinyinComparator;
 import com.zty.springboot01login.Utils.SftpOperator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class CourseService {
     CourseLabService courseLabService;
     @Autowired
     UserCourseService userCourseService;
+    @Autowired
+    UserLabService userLabService;
 
     @Autowired
     Course course;
@@ -60,7 +63,7 @@ public class CourseService {
     }
 
     /*通过课程id删除课程*/
-    public boolean delCourseById(@RequestParam() Integer id) throws Exception {
+    public boolean delCourseById(Integer id) throws Exception {
         courseMapper.deleteByPrimaryKey(id);
         return true;
     }
@@ -86,7 +89,7 @@ public class CourseService {
     }
 
     /*上传课程图片*/
-    public Object uploadImage(@RequestParam("courseid") Integer courseid, @RequestParam("file") MultipartFile multipartFiles, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
+    public Object uploadImage(Integer courseid, MultipartFile multipartFiles, final HttpServletResponse response, final HttpServletRequest request) throws Exception {
         Course course1 = courseMapper.selectByPrimaryKey(courseid);
         if (course1 == null) {
             throw new Exception("课程不存在");
@@ -109,5 +112,24 @@ public class CourseService {
     /*下载课程图片*/
     public Object downloadImage(@RequestParam String filename, final HttpServletResponse response, final HttpServletRequest request) {
         return SftpOperator.downloadFile(filename, response, request);
+    }
+
+    /*结束课程，删除课程下的所有容器*/
+    public RespBean finishCourse(int courseid) throws Exception {
+        List<UserCourse> usercourses = userCourseService.getByCourseId(courseid);
+        List<CourseLab> courselabs = courseLabService.getByCourseId(courseid);
+        for(UserCourse userCourse:usercourses){
+            for(CourseLab courseLab:courselabs){
+                try {
+                    userLabService.deleteDeploymentAndService(userCourse.getUserId(),courseLab.getLabId());
+                }catch (Exception e){
+                    // donoting
+                }
+            }
+        }
+        for(UserCourse userCourse:usercourses){
+            userCourseService.dropCourseByid(userCourse.getId());
+        }
+        return RespBean.ok("删除成功");
     }
 }

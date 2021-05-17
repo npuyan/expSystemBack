@@ -26,6 +26,8 @@ public class UserLabService {
     @Autowired
     CourseImageService courseImageService;
     @Autowired
+    CourseLabService courseLabService;
+    @Autowired
     UserService userService;
 
     /*通过实验和用户创建或者打开容器*/
@@ -131,6 +133,24 @@ public class UserLabService {
         return service;
     }
 
+    public RespBean deleteDeploymentAndService(int userid,int  labid) throws Exception{
+        User user=userService.getByUserId(userid);
+        CourseLab courseLab=courseLabService.getCourseLabById(labid);
+        String deployname = Pod.PodName(user.getUsername(), courseLab.getEnvId());
+        return deleteDeploymentAndService(deployname);
+    }
+    /*通多deployname删除deploy和service*/
+    public RespBean deleteDeploymentAndService(String deployName) throws Exception{
+        try {
+            K8sConnect.deleteDeployment(null,deployName);
+            K8sConnect.deleteService(null,deployName);
+        }catch (Exception e){
+            e.printStackTrace();;
+            return RespBean.error("删除失败");
+        }
+        return RespBean.ok("删除成功");
+    }
+
     /*通过镜像创建deploy和service*/
     public V1Service createDeploymentByImageAndServiceByDeployemnt(CourseImage courseImage, String deployName) throws Exception {
         /*创建deploy*/
@@ -171,4 +191,5 @@ public class UserLabService {
             throw new Exception("未找到要暂停的环境");
         }
     }
+
 }

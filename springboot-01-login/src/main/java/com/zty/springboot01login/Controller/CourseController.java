@@ -128,4 +128,17 @@ public class CourseController {
     public Object downloadPicture(@RequestParam String filename, final HttpServletResponse response, final HttpServletRequest request) {
         return SftpOperator.downloadFile(filename, response, request);
     }
+
+    /*结束课程*/
+    @RequestMapping("/finishcourse")
+    public RespBean finishCourse(@RequestBody Map<String,Object> param){
+        int id = JSON.parseObject(JSON.toJSONString(param.get("id")), Integer.class);
+        try {
+            courseService.finishCourse(id);
+        }catch (Exception e){
+            e.printStackTrace();
+            return RespBean.error("结束课程失败");
+        }
+        return RespBean.ok("结束课程成功");
+    }
 }
