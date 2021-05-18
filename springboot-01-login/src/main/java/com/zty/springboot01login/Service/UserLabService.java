@@ -136,7 +136,7 @@ public class UserLabService {
     public RespBean deleteDeploymentAndService(int userid,int  labid) throws Exception{
         User user=userService.getByUserId(userid);
         CourseLab courseLab=courseLabService.getCourseLabById(labid);
-        String deployname = Pod.PodName(user.getUsername(), courseLab.getEnvId());
+        String deployname = Pod.PodName(user.getUsername(), courseLab.getLabId());
         return deleteDeploymentAndService(deployname);
     }
     /*通多deployname删除deploy和service*/

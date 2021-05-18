@@ -36,8 +36,8 @@ spec:
 #          resources: {}
 #          terminationMessagePath: /dev/termination-log1
 #          terminationMessagePolicy: File
-      nodeSelector:
-        label: mu01
+#      nodeSelector:
+#        label: mu01
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
