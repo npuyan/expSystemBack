@@ -16,8 +16,8 @@ import com.github.dockerjava.core.DockerClientBuilder;
  */
 public class DockerConnect {
     static DockerClient client;
-    static String ip = "tcp://10.168.4.167:2375";
-
+//    static String ip = "tcp://10.168.4.167:2375";
+    static  String ip = "tcp://202.117.249.18:2375";
     static {
 //        DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
 //                .withDockerTlsVerify(true)

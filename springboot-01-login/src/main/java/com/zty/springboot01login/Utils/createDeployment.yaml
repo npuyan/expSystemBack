@@ -23,6 +23,7 @@ spec:
       labels:
         app: pod-111-2
     spec:
+      nodeName: mu01
       containers:
         - image: dorowu/ubuntu-desktop-lxde-vnc:lastest
           imagePullPolicy: IfNotPresent

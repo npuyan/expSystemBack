@@ -156,7 +156,7 @@ class Springboot01LoginApplicationTests {
     @Test
     public void testK8sPod() throws Exception {
 //        System.out.println(K8sConnect.getPodByName(null, "dorowu-pod"));
-        V1Pod pod1 = K8sConnect.getPodByName(null, "dorowu-pod");
+        V1Pod pod1 = K8sConnect.getPodByName(null, "ubuntu");
         System.out.println(pod1.getStatus().getContainerStatuses().get(0).getContainerID());
         for (V1ContainerStatus containerStatus : pod1.getStatus().getContainerStatuses()) {
             System.out.println(containerStatus.getName());
