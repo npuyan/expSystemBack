@@ -20,9 +20,9 @@ import java.io.Reader;
 public class K8sConnect {
     /*TODO 使用.kube/config无效，好像是ip是集群内部的，所以此处写死master节点的url，若需要进行动态master节点则需要重写脚本*/
 //    private static String url = "https://124.70.84.98:6443";
-//    private static String token = "";
+//    private  static String url="https://202.117.249.18:6443/";
     private static String url="https://10.168.4.167:6443";
-    private static String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ii1KQlJhYzFlRjJBVlZObzBxTlRqSHlNMTNuazF3ZXVIbVl4Mjd1Q19DZzgifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJrdWJvYXJkLXVzZXItdG9rZW4tYjI1OHAiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoia3Vib2FyZC11c2VyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNTIyZDEwZTAtN2UxMy00YTJhLTgzMWEtMTRkOTI3MDg4ZTQ2Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmt1Ym9hcmQtdXNlciJ9.pP3WYMJxoVjD010BYaOfYTRYPqag_PbaRx0b2UOfFT4OmUAjskGPzb8oCb091piMDIbBZTgNc7J45cWO6QOsYkabKPFqePh8ZjfSX3FoJ2horC_m6k5mQaVdgAXjQKG8DkREmr_YP8kBQU9q_S0wI0Y_orgQQU1-7S5Vb_n9UtCi10NDlfRqmj8k_0RfJvdmO8UMXi6fnluD1pGQtc1WUHMW7VNSK2aspyJQwaTJJMwaawpM-fzw08eh4lgwUigsE9J5uAry2zpB3EOfZQaXkIS2CujWhb8EpUyNiSroCZszv2Sp9gbPrPZ7xh4rrV0VgiavoFwdUDbOo2kPiYEujQ";
+    private static String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFvQ0pHa3h1QXNBZnJidFQzM1BScTlRZWN6WnZnQnJheC1HYWtTR1VHblUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJrdWJvYXJkLXVzZXItdG9rZW4ta3I5c2ciLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoia3Vib2FyZC11c2VyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiY2VkN2IzYmUtODlkOS00OTVlLTg3NzUtNTM0ZGRkNjM3YjA4Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmt1Ym9hcmQtdXNlciJ9.DpzvNPoJFtxqkEv5xD1jDMYH3JwTxFUGpr7xRwoDyw2zC-ZyuGgnl3OGMVl6e_sVA8edaxepUWRXRFvpcTgzmqx-cmHd5SyBcISDFmoICsazP65t5eOepoPxDHHGo-FBGZRJoA3I3UdshW7TSCzQhZ_Enn48S46Ean52XxkOWTJmk57-_LUz9UzbODOFJbfv3LwV3twaI5iRLb9xB2ySAUbY2GkK0a3hSLRD9vsJR3DKPw20W78uGwbUWBAzgxif9Vs5vO5HVoCVF0g3AQ-WCfDzzWrd5Jcr2i0PbybHvRNT-3F6Rm26XhhhGIfeJbYREx-pqECIBw052O3u-fI7eQ";
     public static String deploymentPath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml";
     public static String podPath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createPod.yaml";
     public static String servicePath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createService.yaml";
@@ -163,6 +163,7 @@ public class K8sConnect {
      */
     public static V1Deployment getDeploymentByName(String nameSpace, String deployeName) throws ApiException {
         nameSpace = nameSpaceNullToDefault(nameSpace);
+        System.out.println(deployeName);
 //        return new AppsV1Api().readNamespacedDeployment(deployeName, nameSpace, "true", null, null);
         return new AppsV1Api().readNamespacedDeploymentStatus(deployeName, nameSpace, "true");
     }
