@@ -21,4 +21,6 @@ public interface CourseEnvMapper {
     int updateByPrimaryKey(CourseEnv record);
 
     List<CourseEnv> selectAll();
+
+    CourseEnv selectByCourseEnvName(String name);
 }

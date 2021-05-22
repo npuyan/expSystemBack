@@ -161,6 +161,11 @@
     select <include refid="Base_Column_List"></include>
     from tb_course_env
   </select>
+  <select id="selectByCourseEnvName" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+    from tb_course_env
+    where env_name=#{name,jdbcType=VARCHAR}
+  </select>
 
 <!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >-->
 <!--    select-->

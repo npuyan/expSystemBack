@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,9 +31,14 @@ public class CourseEnvService {
     UserService userService;
     @Autowired
     CourseImageService courseImageService;
+    @Autowired
+    CourseLabService courseLabService;
 
     @Autowired
     CourseImage courseImage;
+    @Autowired
+    CourseEnv courseEnv;
+
 
     public List<CourseEnv> getAllCourseEnv() {
         return courseEnvMapper.selectAll();
@@ -69,10 +75,10 @@ public class CourseEnvService {
     }
 
     /*教师将某一环境保存未经想*/
-    public boolean saveCourseEnvToImage(String username,CourseLab courseLab, CourseEnv courseEnv) {
+    public boolean saveCourseEnvToImage(String username,CourseLab courseLab) {
         User user = userService.getByUserName(username);
+        //
         String deployName = Pod.PodName(user.getUsername(),  courseLab.getLabId());
-//        String deployName = Pod.PodName("111", 2);
         try {
             V1Deployment deployment = K8sConnect.getDeploymentByName(null, deployName);
             V1Pod pod = K8sConnect.getPodByName(null, deployName);
@@ -88,6 +94,21 @@ public class CourseEnvService {
                 courseImage.setVersion(version);
                 courseImage.setPath("node1");
                 courseImageService.addCourseImage(courseImage);
+                courseImage=courseImageService.getCourseImageByName(deployName);
+
+                /*将环境信息加入数据库*/
+                courseEnv.setCreateTime(String.valueOf(new Date().getTime()));
+                courseEnv.setEnvName(deployName);
+                courseEnv.setNodeName("node1");
+                courseEnv.setCpu(1);
+                courseEnv.setMemsize(2);
+                courseEnv.setCreatorId(String.valueOf(userService.getByUserName(username).getUserId()));
+                courseEnv.setImageId(courseImage.getId());
+                courseEnv=courseEnvMapper.selectByCourseEnvName(courseEnv.getEnvName());
+
+                /*关联试验和环境*/
+                courseLab.setEnvId(courseEnv.getEnvId());
+                courseLabService.updateCourseLab(courseLab);
 
                 /*关闭deploy和svc*/
                 K8sConnect.deleteDeployment(null,deployName);

@@ -28,7 +28,7 @@
         <property name="-Djava.net.preferIPv4Stack" value="true" />
       </vm-env>
     </data-source>
-    <data-source source="LOCAL" name="@124.70.69.40" uuid="476bb8cb-9ca8-432d-ac6c-46501d737786">
+    <data-source source="LOCAL" name="@124.70.69.40 [2]" uuid="391ab8b0-a6ff-4712-80a1-c9666bef012b">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>

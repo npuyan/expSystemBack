@@ -177,7 +177,7 @@ class Springboot01LoginApplicationTests {
 
     @Test
     public void testsaveCourseEnvToImage() throws Exception {
-        courseEnvService.saveCourseEnvToImage("111", new CourseLab(),new CourseEnv());
+        courseEnvService.saveCourseEnvToImage("111", new CourseLab());
     }
 
     @Test
