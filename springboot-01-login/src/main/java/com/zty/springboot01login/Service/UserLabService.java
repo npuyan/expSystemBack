@@ -119,7 +119,7 @@ public class UserLabService {
         deployment1.getMetadata().setName(deployName);
         deployment1.getSpec().getSelector().getMatchLabels().replace("app", deployName);
         deployment1.getSpec().getTemplate().getMetadata().getLabels().replace("app", deployName);
-        deployment1.getSpec().getTemplate().getSpec().getContainers().get(0).setImage(courseImage.getImageName());
+        deployment1.getSpec().getTemplate().getSpec().getContainers().get(0).setImage(courseImage.getImageName() + ":" + courseImage.getVersion());
 //        deployment1.getSpec().getTemplate().getSpec().getContainers().get(0).setName(deployName);
         return deployment1;
     }

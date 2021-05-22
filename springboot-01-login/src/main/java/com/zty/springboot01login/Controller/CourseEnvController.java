@@ -71,10 +71,9 @@ public class CourseEnvController {
         /*得到目标实验，目标镜像和要创建的环境基本信息*/
         CourseLab courseLab = JSON.parseObject(JSON.toJSONString(param.get("courselab")), CourseLab.class);
         CourseImage courseImage = JSON.parseObject(JSON.toJSONString(param.get("courseimage")), CourseImage.class);
-        CourseEnv courseEnv = JSON.parseObject(JSON.toJSONString(param.get("courseenv")), CourseEnv.class);
         Integer port = 0;
         try {
-            port = courseEnvService.addCourseEnv(courseLab, courseImage, courseEnv);
+            port = courseEnvService.addCourseEnv(courseLab, courseImage);
         } catch (Exception e) {
             e.printStackTrace();
             return RespBean.error("创建环境失败！");

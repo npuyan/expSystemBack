@@ -59,7 +59,7 @@ public class CourseEnvService {
     }
 
     /*教师通过某一镜像给某一实验创建一个环境.打开这个环境并返回端口*/
-    public int addCourseEnv(CourseLab courseLab, CourseImage courseImage, CourseEnv courseEnv) throws Exception {
+    public int addCourseEnv(CourseLab courseLab, CourseImage courseImage) throws Exception {
         User user = userService.getByUserId(courseImage.getCreatorId());
         String deployName = Pod.PodName(user.getUsername(), courseLab.getLabId());
         System.out.println("deployName" + deployName);
@@ -104,6 +104,7 @@ public class CourseEnvService {
                 courseEnv.setMemsize(2);
                 courseEnv.setCreatorId(String.valueOf(userService.getByUserName(username).getUserId()));
                 courseEnv.setImageId(courseImage.getId());
+                courseEnvMapper.insert(courseEnv);
                 courseEnv=courseEnvMapper.selectByCourseEnvName(courseEnv.getEnvName());
 
                 /*关联试验和环境*/
