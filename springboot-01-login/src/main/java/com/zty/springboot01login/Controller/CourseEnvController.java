@@ -85,9 +85,18 @@ public class CourseEnvController {
     @PostMapping("/savecourseenvtoimage")
     public RespBean saveCourseEnvToImage(@RequestBody Map<String, Object> param) {
         String username = JSON.parseObject(JSON.toJSONString(param.get("username")), String.class);
-        CourseEnv courseEnv = JSON.parseObject(JSON.toJSONString(param.get("courseenv")), CourseEnv.class);
         CourseLab courseLab = JSON.parseObject(JSON.toJSONString(param.get("courselab")), CourseLab.class);
         courseEnvService.saveCourseEnvToImage(username, courseLab);
         return RespBean.ok("保存镜像成功");
+    }
+
+    /*给lab关联已经存在的镜像*/
+    @PostMapping("/usealreadyimage")
+    public RespBean useAlreadyImage(@RequestBody Map<String, Object> param) {
+        CourseLab courseLab = JSON.parseObject(JSON.toJSONString(param.get("courselab")), CourseLab.class);
+        CourseImage courseImage = JSON.parseObject(JSON.toJSONString(param.get("courseimage")), CourseImage.class);
+
+        courseEnvService.useAlreadyImage(courseLab, courseImage);
+        return RespBean.ok("使用已有镜像");
     }
 }

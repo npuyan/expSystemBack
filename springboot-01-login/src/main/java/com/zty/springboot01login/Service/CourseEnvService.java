@@ -74,6 +74,24 @@ public class CourseEnvService {
         }
     }
 
+    /**/
+    public  boolean useAlreadyImage(CourseLab courseLab, CourseImage courseImage) {
+
+        try {
+
+            String deployName = courseImage.getImageName();
+            int envId  = courseEnvMapper.selectByCourseEnvName(deployName).getEnvId();
+
+            /*关联试验和环境*/
+            courseLab.setEnvId(envId);
+            courseLabService.updateCourseLab(courseLab);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return true;
+    }
     /*教师将某一环境保存未经想*/
     public boolean saveCourseEnvToImage(String username,CourseLab courseLab) {
         User user = userService.getByUserName(username);
