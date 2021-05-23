@@ -2,6 +2,7 @@ package com.zty.springboot01login.Service;
 
 import com.zty.springboot01login.Mapper.CourseLabMapper;
 import com.zty.springboot01login.Pojo.CourseEnv;
+import com.zty.springboot01login.Pojo.CourseImage;
 import com.zty.springboot01login.Pojo.CourseLab;
 import com.zty.springboot01login.Pojo.RespBean;
 import com.zty.springboot01login.Utils.SftpOperator;
@@ -52,6 +53,25 @@ public class CourseLabService {
     public boolean updateCourseLab(CourseLab course) throws Exception {
         courseLabMapper.updateByPrimaryKey(course);
         return true;
+    }
+
+    /*给实验关联已有的镜像*/
+    public RespBean useAlreadyImage(CourseLab courseLab,CourseImage courseImage) {
+        int imageId = courseImage.getId();
+        CourseEnv courseEnvByImageId = courseEnvService.getCourseEnvByImageId(imageId);
+        if(courseEnvByImageId!=null){
+            // 如果已经有环境则直接使用
+            courseLab.setEnvId(courseEnvByImageId.getEnvId());
+        }else {
+            try {
+                // 没有环境创建一个新的环境并关联
+                courseEnvService.useAlreadyImage(courseLab, courseImage);
+            }catch (Exception e){
+                e.printStackTrace();
+                return RespBean.error("创建环境失败");
+            }
+        }
+        return RespBean.ok("使用已有镜像");
     }
 
     /*增加一条实验记录*/

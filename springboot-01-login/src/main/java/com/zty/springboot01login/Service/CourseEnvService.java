@@ -73,14 +73,18 @@ public class CourseEnvService {
             throw new Exception("无法创建环境：找不到镜像");
         }
     }
-
-    /**/
+    /*教师通过某一镜像创建一个一个环境，但是不打开pod，也就是说直接用以前的镜像创建环境*/
     public  boolean useAlreadyImage(CourseLab courseLab, CourseImage courseImage) {
-
         try {
-
-            String deployName = courseImage.getImageName();
-            int envId  = courseEnvMapper.selectByCourseEnvName(deployName).getEnvId();
+            courseEnv.setCreateTime(String.valueOf(new Date().getTime()));
+            courseEnv.setEnvName(courseImage.getImageName());
+            courseEnv.setNodeName("node1");
+            courseEnv.setCpu(1);
+            courseEnv.setMemsize(2);
+            courseEnv.setCreatorId(String.valueOf(courseImage.getCreatorId()));
+            courseEnv.setImageId(courseImage.getId());
+            courseEnvMapper.insert(courseEnv);
+            int envId = courseEnvMapper.selectLastInsertId();
 
             /*关联试验和环境*/
             courseLab.setEnvId(envId);
@@ -89,9 +93,9 @@ public class CourseEnvService {
         catch (Exception e){
             e.printStackTrace();
         }
-
         return true;
     }
+
     /*教师将某一环境保存未经想*/
     public boolean saveCourseEnvToImage(String username,CourseLab courseLab) {
         User user = userService.getByUserName(username);
@@ -123,10 +127,10 @@ public class CourseEnvService {
                 courseEnv.setCreatorId(String.valueOf(userService.getByUserName(username).getUserId()));
                 courseEnv.setImageId(courseImage.getId());
                 courseEnvMapper.insert(courseEnv);
-                courseEnv=courseEnvMapper.selectByCourseEnvName(courseEnv.getEnvName());
+                int envid=courseEnvMapper.selectLastInsertId();
 
                 /*关联试验和环境*/
-                courseLab.setEnvId(courseEnv.getEnvId());
+                courseLab.setEnvId(envid);
                 courseLabService.updateCourseLab(courseLab);
 
                 /*关闭deploy和svc*/
@@ -137,5 +141,9 @@ public class CourseEnvService {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public CourseEnv getCourseEnvByImageId(int imageId){
+        return courseEnvMapper.selectByImageId(imageId);
     }
 }

@@ -23,4 +23,9 @@ public interface CourseEnvMapper {
     List<CourseEnv> selectAll();
 
     CourseEnv selectByCourseEnvName(String name);
+
+    CourseEnv selectByImageId(int imageid);
+
+    int selectLastInsertId();
+
 }

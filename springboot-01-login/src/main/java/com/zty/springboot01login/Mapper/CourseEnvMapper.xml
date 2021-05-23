@@ -166,13 +166,12 @@
     from tb_course_env
     where env_name=#{name,jdbcType=VARCHAR}
   </select>
-
-<!--  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >-->
-<!--    select-->
-<!--    <include refid="Base_Column_List" />-->
-<!--    from tb_course_env-->
-<!--    where env_id = #{envId,jdbcType=INTEGER}-->
-<!--  </select>-->
-  <!-- Your codes goes here!!! -->
-
+  <select id="selectByImageId" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"></include>
+    from tb_course_env
+    where image_id=#{imageid,jdbcType=VARCHAR}
+  </select>
+  <select id="selectLastInsertId" resultType="java.lang.Integer">
+        SELECT LAST_INSERT_ID();
+    </select>
 </mapper>

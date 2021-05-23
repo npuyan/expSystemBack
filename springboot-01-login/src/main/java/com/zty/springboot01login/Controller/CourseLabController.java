@@ -2,6 +2,7 @@ package com.zty.springboot01login.Controller;
 
 import com.alibaba.fastjson.JSON;
 import com.zty.springboot01login.Pojo.CourseEnv;
+import com.zty.springboot01login.Pojo.CourseImage;
 import com.zty.springboot01login.Pojo.CourseLab;
 import com.zty.springboot01login.Pojo.RespBean;
 import com.zty.springboot01login.Service.CourseLabService;
@@ -98,6 +99,15 @@ public class CourseLabController {
             return RespBean.error(failure);
         }
         return RespBean.ok(success, courseLab1);
+    }
+
+    /*给lab关联已经存在的镜像*/
+    @PostMapping("/usealreadyimage")
+    public RespBean useAlreadyImage(@RequestBody Map<String, Object> param) {
+        CourseLab courseLab = JSON.parseObject(JSON.toJSONString(param.get("courselab")), CourseLab.class);
+        CourseImage courseImage = JSON.parseObject(JSON.toJSONString(param.get("courseimage")), CourseImage.class);
+
+        return courseLabService.useAlreadyImage(courseLab, courseImage);
     }
 
     /*通过文件名下载文件*/
