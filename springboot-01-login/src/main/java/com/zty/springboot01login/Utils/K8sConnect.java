@@ -5,6 +5,7 @@ import io.kubernetes.client.ApiException;
 import io.kubernetes.client.Configuration;
 import io.kubernetes.client.apis.AppsV1Api;
 import io.kubernetes.client.apis.CoreV1Api;
+import io.kubernetes.client.apis.StorageV1Api;
 import io.kubernetes.client.models.*;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.Yaml;
@@ -21,11 +22,14 @@ public class K8sConnect {
     /*TODO 使用.kube/config无效，好像是ip是集群内部的，所以此处写死master节点的url，若需要进行动态master节点则需要重写脚本*/
 //    private static String url = "https://124.70.84.98:6443";
 //    private  static String url="https://202.117.249.18:6443/";
-    private static String url="https://10.168.4.167:6443";
+    private static String url = "https://10.168.4.167:6443";
     private static String token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFvQ0pHa3h1QXNBZnJidFQzM1BScTlRZWN6WnZnQnJheC1HYWtTR1VHblUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJrdWJvYXJkLXVzZXItdG9rZW4tajlxZGwiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoia3Vib2FyZC11c2VyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiMTdlZTg2YWQtOGQzZi00ZjNkLWIwYWEtM2QxM2YzMmYzMGYyIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmt1Ym9hcmQtdXNlciJ9.X_SQ8QOwcgNRXhGw29lSQHPPhqE9ddvi_6V4HWNs0CBsGfDofprBixKq9luHEsilnO1f8JtcTdK357UExUXqAfZ3UPWBw2JQTkHK11-CG8n21rm361TrvO9DVi1_0JR33Xi4F3ZuFU5ZvUKCpn6mTAA_5PoGLWsi7p_3qNtEfbPkTQiF56OII7ai7ifWXnQvPDXiXgTs51UrIYKK45AIb81B3uIpXHChBG6lcwn-PBfI7w_bOB2J5zwnG7nfPAPEsi5BDcLgF-8m0KYkaT30Vsh2lQFbv3JfnVj3cK-6j3VtWH1a9GFp6NpflHQw3R9SYV5HBob7ZFupU0VT7IzlOg";
     public static String deploymentPath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml";
     public static String podPath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createPod.yaml";
     public static String servicePath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createService.yaml";
+    public static String pvPath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createLocalpv.yaml";
+    public static String pvcPath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createLocalpvc.yaml";
+    public static String storageclassPath = "springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createStorageclass.yaml";
 
     /*初始化client连接*/
     static {
@@ -226,5 +230,39 @@ public class K8sConnect {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /*创建pv*/
+    public static void createPv(String nameSpace, V1PersistentVolume pv) throws ApiException {
+        nameSpace = nameSpaceNullToDefault(nameSpace);
+        new CoreV1Api().createPersistentVolume(pv, "true", null, null);
+    }
+
+    /*查找pv*/
+    public static V1PersistentVolume getPvByName(String nameSpace, String name) throws ApiException {
+        return new CoreV1Api().readPersistentVolume(name,"true",null,null);
+    }
+
+    /*创建pvc*/
+    public static void createPvc(String nameSpace, V1PersistentVolumeClaim pvc) throws ApiException {
+        nameSpace = nameSpaceNullToDefault(nameSpace);
+        new CoreV1Api().createNamespacedPersistentVolumeClaim(nameSpace, pvc, "true", null, null);
+    }
+
+    /*查找pvc*/
+    public static V1PersistentVolumeClaim getPvcByName(String nameSpace, String name) throws ApiException {
+        return new CoreV1Api().readNamespacedPersistentVolumeClaim(name, nameSpace, "true", null, null);
+    }
+
+    /*创建StorageClass*/
+    public static void createStorageClass(String nameSpace, V1StorageClass stg) throws ApiException {
+        nameSpace = nameSpaceNullToDefault(nameSpace);
+        new StorageV1Api().createStorageClass(stg, "true", null, null);
+    }
+
+    /*创建StorageClass*/
+    public static V1StorageClass getStorageClassByName(String nameSpace, String name) throws ApiException {
+        nameSpace = nameSpaceNullToDefault(nameSpace);
+        return new StorageV1Api().readStorageClass(name, "true", null, null);
     }
 }

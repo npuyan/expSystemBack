@@ -1,7 +1,5 @@
 package com.zty.springboot01login.Utils;
 
-import javax.mail.internet.MimeUtility;
-//import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
 import com.zty.springboot01login.Pojo.RespBean;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
@@ -12,6 +10,7 @@ import org.apache.sshd.sftp.client.fs.SftpFileSystem;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.internet.MimeUtility;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -20,6 +19,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
+
+//import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
 
 /* *
  * @描述：sftp协议传输服务器的文件
@@ -149,7 +150,6 @@ public class SftpOperator {
      * @return void
      */
     public void mkdir(String ftpdir) throws Exception {
-        ftpdir = this.ftpdir + ftpdir;
         Path remoteRoot = fs.getDefaultDir().resolve(ftpdir);
         if (!Files.exists(remoteRoot))
             Files.createDirectories(remoteRoot);
@@ -320,5 +320,20 @@ public class SftpOperator {
             }
         }
         return RespBean.ok("下载成功");
+    }
+
+    /*创建卷*/
+    public static RespBean  createVolume(String deployname){
+        SftpOperator sftpOperator = new SftpOperator();
+        String basePath="/exports/volume/";
+        try {
+            sftpOperator.login();
+            sftpOperator.mkdir(basePath+deployname);
+            sftpOperator.logout();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return RespBean.ok("创建目录成功！");
+        //刷新
     }
 }

@@ -5,9 +5,8 @@ import com.zty.springboot01login.Pojo.*;
 import com.zty.springboot01login.Utils.DockerConnect;
 import com.zty.springboot01login.Utils.K8sConnect;
 import com.zty.springboot01login.Utils.Pod;
-import io.kubernetes.client.models.V1Deployment;
-import io.kubernetes.client.models.V1Pod;
-import io.kubernetes.client.models.V1Service;
+import com.zty.springboot01login.Utils.SftpOperator;
+import io.kubernetes.client.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -208,6 +207,43 @@ public class UserLabService {
         return service;
     }
 
+    public V1PersistentVolumeClaim createPVAndPVCByDeployment(String deployName) throws Exception {
+        V1PersistentVolume pv = (V1PersistentVolume) K8sConnect.loadYaml(K8sConnect.pvPath);
+        V1PersistentVolumeClaim pvc = (V1PersistentVolumeClaim) K8sConnect.loadYaml(K8sConnect.pvcPath);
+        V1StorageClass storageClass = (V1StorageClass) K8sConnect.loadYaml(K8sConnect.storageclassPath);
+        /*创建storageclass*/
+        if (K8sConnect.getStorageClassByName(null, deployName) == null) {
+            try {
+                K8sConnect.createStorageClass(null, storageClass);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.err.println("创建StorageClass失败");
+            }
+        }
+        /*填pv字段*/
+        pv.getMetadata().setName(deployName);
+        pv.getSpec().getLocal().setPath("/exports/volume/" + deployName);
+        if (K8sConnect.getPvByName(null, deployName) == null) {
+            try {
+                K8sConnect.createPv(null, pv);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.err.println("创建PV失败");
+            }
+        }
+        /*填pvc字段*/
+        pvc.getMetadata().setName(deployName);
+        if (K8sConnect.getPvcByName(null, deployName) == null) {
+            try {
+                K8sConnect.createPvc(null, pvc);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.err.println("创建PVC失败");
+            }
+        }
+        return K8sConnect.getPvcByName(null, deployName);
+    }
+
     public RespBean deleteDeploymentAndService(int userid, int labid) throws Exception {
         User user = userService.getByUserId(userid);
         CourseLab courseLab = courseLabService.getCourseLabById(labid);
@@ -242,11 +278,16 @@ public class UserLabService {
         return service;
     }
 
-    public V1Service createDeploymentByImageAndServiceByDeployemntWithVolume(CourseImage courseImage, String deployName) throws Exception{
+    public V1Service createDeploymentByImageAndServiceByDeployemntWithVolume(CourseImage courseImage, String deployName) throws Exception {
         /*创建deploy*/
         V1Deployment deployment1 = createDeploymentByImage(courseImage, deployName);
+        SftpOperator.createVolume(deployName);
+        deployment1.getSpec().getTemplate().getSpec().getContainers().get(0).getVolumeMounts().get(0).setMountPath(deployName);
+        deployment1.getSpec().getTemplate().getSpec().getVolumes().get(0).setName(deployName);
+        deployment1.getSpec().getTemplate().getSpec().getVolumes().get(0).getPersistentVolumeClaim().setClaimName(deployName);
         K8sConnect.createDeployment(null, deployment1);
 
+        /*创建*/
         /*创建service*/
         V1Service service = createServiceByDeployemnt(deployName);
         K8sConnect.createService(null, service);
@@ -263,20 +304,25 @@ public class UserLabService {
         }
     }
 
-    /*当用户关闭窗口时，发送请求暂停对应的容器*/
+    /*当用户关闭窗口时，发送请求暂停对应的容器,如果是操作系统类则暂停，如果是其他类则直接删除pod*/
     public boolean pauseLabEnv(String username, CourseLab courseLab) throws Exception {
         User user = userService.getByUserName(username);
         UserLab userLab = userLabMapper.selectByUserIdAndLabId(user.getUserId(), courseLab.getLabId());
         CourseEnv courseEnv = courseEnvService.getByEnvId(courseLab.getEnvId());
         String deployName = Pod.PodName(username, courseLab.getLabId());
-        if (userLab != null) {
-            /*暂停*/
-            V1Pod pod = K8sConnect.getPodByName(null, deployName);
-            DockerConnect.pasueContainer(pod.getStatus().getContainerStatuses().get(0).getContainerID());
-            return true;
+        Course coursebyKey = courseService.getByPrimaryKey(courseLab.getCourseId());
+        if (coursebyKey.getType().equals(0)) {
+            if (userLab != null) {
+                /*暂停*/
+                V1Pod pod = K8sConnect.getPodByName(null, deployName);
+                DockerConnect.pasueContainer(pod.getStatus().getContainerStatuses().get(0).getContainerID());
+                return true;
+            } else {
+                throw new Exception("未找到要暂停的环境");
+            }
         } else {
-            throw new Exception("未找到要暂停的环境");
+            K8sConnect.deleteDeployment(null, deployName);
         }
+        return true;
     }
-
 }

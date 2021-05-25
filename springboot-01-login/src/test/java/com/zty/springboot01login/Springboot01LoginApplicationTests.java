@@ -201,4 +201,8 @@ class Springboot01LoginApplicationTests {
     public void testTime(){
         System.out.println(new Date().getTime());
     }
+    @Test
+    public void testmkdir(){
+        SftpOperator.createVolume("testvolume");
+    }
 }
