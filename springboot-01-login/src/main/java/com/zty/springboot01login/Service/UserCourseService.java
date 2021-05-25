@@ -63,10 +63,13 @@ public class UserCourseService {
 
     /*同意给某一用户选择某一课程,添加到选课表当中*/
     public void agreeChooseCourse(CourseRequest courseRequest) {
-        userCourse.setUserId(courseRequest.getRequestUserId());
-        userCourse.setCourseId(courseRequest.getCourseId());
-        userCourseMapper.insert(userCourse);
-        userScoreService.addUserScoreWhileAgreeChooseCourse(courseRequest.getCourseId(), (courseRequest.getRequestUserId()));
+        UserCourse userCourse = userCourseMapper.selectByUserIdAndCourseId(courseRequest.getRequestUserId(), courseRequest.getCourseId());
+        if(userCourse==null) {
+            this.userCourse.setUserId(courseRequest.getRequestUserId());
+            this.userCourse.setCourseId(courseRequest.getCourseId());
+            userCourseMapper.insert(this.userCourse);
+            userScoreService.addUserScoreWhileAgreeChooseCourse(courseRequest.getCourseId(), (courseRequest.getRequestUserId()));
+        }
     }
 
     /*给某一用户退掉某一课程*/
