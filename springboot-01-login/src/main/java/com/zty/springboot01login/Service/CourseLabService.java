@@ -61,7 +61,14 @@ public class CourseLabService {
         CourseEnv courseEnvByImageId = courseEnvService.getCourseEnvByImageId(imageId);
         if(courseEnvByImageId!=null){
             // 如果已经有环境则直接使用
-            courseLab.setEnvId(courseEnvByImageId.getEnvId());
+            try {
+                courseLab.setEnvId(courseEnvByImageId.getEnvId());
+                updateCourseLab(courseLab);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }else {
             try {
                 // 没有环境创建一个新的环境并关联
