@@ -11,8 +11,6 @@ import io.kubernetes.client.models.V1Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 @Service
 public class UserLabService {
 
@@ -96,7 +94,7 @@ public class UserLabService {
                 userLabInstance.setLabId(courseLab.getLabId());
                 userLabInstance.setEnvId(courseEnv.getEnvId());
                 userLabInstance.setFlag("0");
-                userLabInstance.setStartTime(String.valueOf(new Date().getTime()));
+                userLabInstance.setStartTime(NowTimeFormat.NowTime());
                 try {
                     userLabMapper.insert(userLabInstance);
                 } catch (Exception e) {

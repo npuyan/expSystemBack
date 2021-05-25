@@ -2,13 +2,13 @@ package com.zty.springboot01login.Service;
 
 import com.zty.springboot01login.Mapper.CourseImageMapper;
 import com.zty.springboot01login.Pojo.CourseImage;
+import com.zty.springboot01login.Pojo.NowTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,7 +36,7 @@ public class CourseImageService {
 
     /*增加一条镜像*/
     public CourseImage addCourseImage(CourseImage courseImage) throws Exception {
-        courseImage.setCreateTime(String.valueOf(new Date().getTime()));
+        courseImage.setCreateTime(NowTimeFormat.NowTime());
         courseImageMapper.insert(courseImage);
         int i = courseImageMapper.selectLastInsertId();
         CourseImage courseImage1 = courseImageMapper.selectByPrimaryKey(i);

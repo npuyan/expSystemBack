@@ -27,7 +27,7 @@ public class UserController {
     /*得到当前用户*/
     @RequestMapping("/getuserprincipal")
     public User getUserPrincipal(ModelMap model, Principal principal) {
-        if (principal !=null) {
+        if (principal != null) {
             return (User) principal;
         } else {
             return null;
@@ -131,7 +131,7 @@ public class UserController {
 
     /*审核者得到本人需要审核的队列*/
     @RequestMapping("/getcourserequestqueue")
-    public List<CourseRequest> getCourseRequestQueue(@RequestBody Map<String, Object> param) {
+    public List<Map<String, Object>> getCourseRequestQueue(@RequestBody Map<String, Object> param) {
         String username = JSON.parseObject(JSON.toJSONString(param.get("username")), String.class);
         return userService.getCourseRequestQueue(username);
     }

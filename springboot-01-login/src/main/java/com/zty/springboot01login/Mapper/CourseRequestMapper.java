@@ -22,4 +22,6 @@ public interface CourseRequestMapper {
     int updateByPrimaryKey(CourseRequest record);
 
     List<CourseRequest> selectByCheckUserId(int userId);
+
+    int selectLastInsertId();
 }

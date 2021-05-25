@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -195,5 +196,9 @@ class Springboot01LoginApplicationTests {
     @Test
     public void testMysqlConnect() throws Exception{
         System.out.println(userCourseMapper.selectAll());
+    }
+    @Test
+    public void testTime(){
+        System.out.println(new Date().getTime());
     }
 }

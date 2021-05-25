@@ -1,10 +1,7 @@
 package com.zty.springboot01login.Service;
 
 import com.zty.springboot01login.Mapper.CourseEnvMapper;
-import com.zty.springboot01login.Pojo.CourseEnv;
-import com.zty.springboot01login.Pojo.CourseImage;
-import com.zty.springboot01login.Pojo.CourseLab;
-import com.zty.springboot01login.Pojo.User;
+import com.zty.springboot01login.Pojo.*;
 import com.zty.springboot01login.Utils.DockerConnect;
 import com.zty.springboot01login.Utils.K8sConnect;
 import com.zty.springboot01login.Utils.Pod;
@@ -16,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -76,7 +72,7 @@ public class CourseEnvService {
     /*教师通过某一镜像创建一个一个环境，但是不打开pod，也就是说直接用以前的镜像创建环境*/
     public  boolean useAlreadyImage(CourseLab courseLab, CourseImage courseImage) {
         try {
-            courseEnv.setCreateTime(String.valueOf(new Date().getTime()));
+            courseEnv.setCreateTime(NowTimeFormat.NowTime());
             courseEnv.setEnvName(courseImage.getImageName());
             courseEnv.setNodeName("node1");
             courseEnv.setCpu(1);
@@ -119,7 +115,7 @@ public class CourseEnvService {
                 courseImage=courseImageService.getCourseImageByName(deployName);
 
                 /*将环境信息加入数据库*/
-                courseEnv.setCreateTime(String.valueOf(new Date().getTime()));
+                courseEnv.setCreateTime(NowTimeFormat.NowTime());
                 courseEnv.setEnvName(deployName);
                 courseEnv.setNodeName("node1");
                 courseEnv.setCpu(1);

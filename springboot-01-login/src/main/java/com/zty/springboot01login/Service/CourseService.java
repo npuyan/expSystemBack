@@ -1,10 +1,7 @@
 package com.zty.springboot01login.Service;
 
 import com.zty.springboot01login.Mapper.CourseMapper;
-import com.zty.springboot01login.Pojo.Course;
-import com.zty.springboot01login.Pojo.CourseLab;
-import com.zty.springboot01login.Pojo.RespBean;
-import com.zty.springboot01login.Pojo.UserCourse;
+import com.zty.springboot01login.Pojo.*;
 import com.zty.springboot01login.Utils.PinyinComparator;
 import com.zty.springboot01login.Utils.SftpOperator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -76,7 +72,7 @@ public class CourseService {
 
     /*增加一条课程记录*/
     public Course addCourse(Course course) throws Exception {
-        course.setCreateTime(String.valueOf(new Date().getTime()));
+        course.setCreateTime(NowTimeFormat.NowTime());
         courseMapper.insert(course);
         int i = courseMapper.selectLastInsertId();
         Course course1 = courseMapper.selectByPrimaryKey(i);

@@ -125,6 +125,10 @@
         from tb_course_comment
         where course_id = #{courseId,jdbcType=INTEGER}
     </select>
+
+    <select id="selectLastInsertId" resultType="java.lang.Integer">
+        SELECT LAST_INSERT_ID();
+    </select>
 <!--    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">-->
 <!--        select-->
 <!--        <include refid="Base_Column_List"/>-->

@@ -24,4 +24,6 @@ public interface CourseCommentMapper {
     int updateByPrimaryKey(CourseComment record);
 
     List<CourseComment> selectByCourseId(Integer courseId);
+
+    int selectLastInsertId();
 }

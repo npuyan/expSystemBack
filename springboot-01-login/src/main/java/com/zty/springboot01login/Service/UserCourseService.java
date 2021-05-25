@@ -3,13 +3,13 @@ package com.zty.springboot01login.Service;
 import com.zty.springboot01login.Mapper.CourseRequestMapper;
 import com.zty.springboot01login.Mapper.UserCourseMapper;
 import com.zty.springboot01login.Pojo.CourseRequest;
+import com.zty.springboot01login.Pojo.NowTimeFormat;
 import com.zty.springboot01login.Pojo.User;
 import com.zty.springboot01login.Pojo.UserCourse;
 import com.zty.springboot01login.Utils.RequestType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -57,7 +57,7 @@ public class UserCourseService {
         courseRequest.setCheckUserId(userService.getByUserName(courseService.getByPrimaryKey(courseId).getAuthor()).getUserId());
         courseRequest.setState(0);
         /*添加申请时间*/
-        courseRequest.setRequestTime(new Date().toString());
+        courseRequest.setRequestTime(NowTimeFormat.NowTime());
         courseRequestMapper.insert(courseRequest);
     }
 

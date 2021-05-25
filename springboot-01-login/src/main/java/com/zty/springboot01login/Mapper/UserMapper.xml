@@ -148,4 +148,7 @@
     select <include refid="Base_Column_List"></include>
     from tb_user
   </select>
+  <select id="selectLastInsertId" resultType="java.lang.Integer">
+        SELECT LAST_INSERT_ID();
+  </select>
 </mapper>

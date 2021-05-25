@@ -4,8 +4,6 @@ import com.zty.springboot01login.Pojo.UserLab;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Mapper
 @Repository
 public interface UserLabMapper {
@@ -22,4 +20,6 @@ public interface UserLabMapper {
     int updateByPrimaryKey(UserLab record);
 
     UserLab selectByUserIdAndLabId(Integer userid,Integer labid);
+
+    int selectLastInsertId();
 }

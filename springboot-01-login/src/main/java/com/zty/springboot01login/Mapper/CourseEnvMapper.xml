@@ -173,5 +173,5 @@
   </select>
   <select id="selectLastInsertId" resultType="java.lang.Integer">
         SELECT LAST_INSERT_ID();
-    </select>
+  </select>
 </mapper>

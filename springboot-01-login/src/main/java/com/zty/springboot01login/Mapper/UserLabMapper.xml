@@ -136,6 +136,9 @@
         where user_id = #{param1,jdbcType=INTEGER}
         and lab_id = #{param2,jdbcType=INTEGER}
     </select>
+    <select id="selectLastInsertId" resultType="java.lang.Integer">
+        SELECT LAST_INSERT_ID();
+  </select>
     <!--  <select id="selectByUserIdAndCourseId" resultMap="BaseResultMap">-->
     <!--    select-->
     <!--    <include refid="Base_Column_List"/>-->

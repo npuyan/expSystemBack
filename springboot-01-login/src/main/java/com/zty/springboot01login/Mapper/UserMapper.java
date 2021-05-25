@@ -24,4 +24,6 @@ public interface UserMapper {
     User selectByUserName(String userName);
 
     List<User> selectAll();
+
+    int selectLastInsertId();
 }

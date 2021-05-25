@@ -29,4 +29,5 @@ public interface UserCourseMapper {
 
     UserCourse selectByUserIdAndCourseId(int userId, int courseId);
 
+    int selectLastInsertId();
 }

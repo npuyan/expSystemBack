@@ -35,4 +35,6 @@ public interface UserScoreMapper {
     List<UserScore> selectByUserId(Integer userId);
 
     List<UserScore> selectByUserIdWithBLOBs(Integer userId);
+
+    int selectLastInsertId();
 }

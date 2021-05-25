@@ -2,10 +2,7 @@ package com.zty.springboot01login.Service;
 
 import com.zty.springboot01login.Mapper.CourseRequestMapper;
 import com.zty.springboot01login.Mapper.UserMapper;
-import com.zty.springboot01login.Pojo.Course;
-import com.zty.springboot01login.Pojo.CourseRequest;
-import com.zty.springboot01login.Pojo.User;
-import com.zty.springboot01login.Pojo.UserCourse;
+import com.zty.springboot01login.Pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,8 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -91,42 +88,80 @@ public class UserService implements UserDetailsService {
     }
 
     /*审核者得到本人需要审核的队列*/
-    public List<CourseRequest> getCourseRequestQueue(String username) {
+    public List<Map<String, Object>> getCourseRequestQueue(String username) {
         User user = getByUserName(username);
-        return courseRequestMapper.selectByCheckUserId(user.getUserId());
+        List<CourseRequest> courseRequests = courseRequestMapper.selectByCheckUserId(user.getUserId());
+        courseRequests.sort(new Comparator<CourseRequest>() {
+            @Override
+            public int compare(CourseRequest o1, CourseRequest o2) {
+                return o1.getState() - o2.getState();
+            }
+        });
+        List<Map<String, Object>> joinList = new LinkedList<>();
+        Field[] fields=CourseRequest.class.getDeclaredFields();
+        System.err.println(fields.length);
+        for(Field field:fields){
+            System.err.println(field.getName());
+        }
+        for (CourseRequest courseRequest : courseRequests) {
+            Map<String, Object> map = new HashMap<>();
+            for (int i = 0; i < fields.length; i++) {
+                try {
+                    Field field = fields[i];
+                    field.setAccessible(true);
+                    map.put(field.getName(),field.get(courseRequest));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+            map.put("requestusername",getByUserId(courseRequest.getRequestUserId()).getUsername());
+            map.put("coursename",courseService.getCourseByCourseId(courseRequest.getCourseId()).getCourseName());
+            if(courseRequest.getCheckUserId()!=null) {
+                map.put("checkusername", getByUserId(courseRequest.getCheckUserId()).getUsername());
+            }
+            joinList.add(map);
+        }
+        return joinList;
     }
 
     /*审核者审核申请，同意或者拒绝审核队列中的某一个申请*/
     public boolean checkCourseRequest(CourseRequest courseRequest, boolean agree) throws Exception {
-        if (agree) {//同意申请
-            switch (courseRequest.getRequestType()) {
-                case choose: {//选课
-                    userCourseService.agreeChooseCourse(courseRequest);
-                    break;
+        if (courseRequest.getState() == 0) {
+            if (agree) {//同意申请
+                switch (courseRequest.getRequestType()) {
+                    case choose: {//选课
+                        userCourseService.agreeChooseCourse(courseRequest);
+                        break;
+                    }
+                    case drop: {
+                        break;
+                    }
+                    case add: {
+                        break;
+                    }
+                    case delete: {
+                        break;
+                    }
+                    case update: {
+                        break;
+                    }
+                    default:
+                        throw new Exception("申请类别错误");
                 }
-                case drop: {
-                    break;
-                }
-                case add: {
-                    break;
-                }
-                case delete: {
-                    break;
-                }
-                case update: {
-                    break;
-                }
-                default:
-                    throw new Exception("申请类别错误");
+                //同意申请，将状态改为1
+                courseRequest.setState(1);
+                courseRequest.setCheckTime(NowTimeFormat.NowTime());
+                courseRequestMapper.updateByPrimaryKey(courseRequest);
+                return true;
+            } else {//不同意申请,将状态改为2
+                courseRequest.setState(2);
+                courseRequest.setCheckTime(NowTimeFormat.NowTime());
+                courseRequestMapper.updateByPrimaryKey(courseRequest);
+                return false;
             }
-        } else {//不同意申请,将状态改为2
-            courseRequest.setState(2);
-            courseRequestMapper.updateByPrimaryKey(courseRequest);
-            return false;
+        } else {
+            throw new Exception("请求状态不为待审核");
         }
-        //同意申请，将状态改为1
-        courseRequest.setState(1);
-        courseRequestMapper.updateByPrimaryKey(courseRequest);
-        return true;
     }
 }

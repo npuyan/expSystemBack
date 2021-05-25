@@ -179,6 +179,9 @@
         where user_id = #{userId,jdbcType=INTEGER}
         and lab_id = #{labId,jdbcType=INTEGER}
     </select>
+    <select id="selectLastInsertId" resultType="java.lang.Integer">
+        SELECT LAST_INSERT_ID();
+  </select>
     <!--  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="com.zty.springboot01login.Pojo.UserScoreKey" >-->
     <!--    select-->
     <!--    <include refid="Base_Column_List" />-->
