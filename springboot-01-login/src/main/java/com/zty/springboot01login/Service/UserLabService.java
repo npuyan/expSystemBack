@@ -6,6 +6,7 @@ import com.zty.springboot01login.Utils.DockerConnect;
 import com.zty.springboot01login.Utils.K8sConnect;
 import com.zty.springboot01login.Utils.Pod;
 import com.zty.springboot01login.Utils.SftpOperator;
+import io.kubernetes.client.ApiException;
 import io.kubernetes.client.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -126,8 +127,7 @@ public class UserLabService {
             V1Deployment deployment = null;
             try {
                 deployment = K8sConnect.getDeploymentByName(null, deployName);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception e){
             }
             if (deployment != null) {
                 /*查询对应容器的名称是否已经打开，如果已经打开就取消容器的暂停直接返回port*/
@@ -154,7 +154,11 @@ public class UserLabService {
                 if (courseImage == null) {
                     courseImage = courseImageService.getCourseImageById(courseEnv.getImageId());
                 }
-                V1Service service = createDeploymentByImageAndServiceByDeployemnt(courseImage, deployName);
+                try {
+                    V1Service service = createDeploymentByImageAndServiceByDeployemnt(courseImage, deployName);
+                }catch (ApiException e){
+                    e.printStackTrace();
+                }
                 return getServiceNodePortByDeployment(deployName);
             }
         } else {

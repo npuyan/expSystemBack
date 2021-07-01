@@ -205,4 +205,13 @@ class Springboot01LoginApplicationTests {
     public void testmkdir(){
         SftpOperator.createVolume("testvolume");
     }
+    @Test
+    public void testPath() throws Exception {
+        String path1="src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml";
+        String path2="com/zty/springboot01login/Utils/createDeployment.yaml";
+        String path3="springboot-01-login/src/main/java/com/zty/springboot01login/Utils/createDeployment.yaml";
+        K8sConnect.loadYaml(path3);
+//        K8sConnect.loadYaml(path2);
+//        K8sConnect.loadYaml(path3);
+    }
 }
